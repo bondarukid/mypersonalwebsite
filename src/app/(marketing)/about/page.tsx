@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "About",
   description: "About page — content coming soon.",
-};
+}
 
 export default function AboutPage() {
   return (
@@ -15,5 +15,5 @@ export default function AboutPage() {
         Content coming soon.
       </p>
     </div>
-  );
+  )
 }

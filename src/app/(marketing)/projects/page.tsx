@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata } from "next"
 
 export const metadata: Metadata = {
   title: "Projects",
   description: "Projects page — content coming soon.",
-};
+}
 
 export default function ProjectsPage() {
   return (
@@ -15,5 +15,5 @@ export default function ProjectsPage() {
         Content coming soon.
       </p>
     </div>
-  );
+  )
 }
