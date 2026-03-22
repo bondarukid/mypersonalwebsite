@@ -1,19 +1,25 @@
 'use client'
-import Link from 'next/link'
-import { Logo } from '@/components/logo'
-import { Menu, X } from 'lucide-react'
-import React from 'react'
 
-const menuItems = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Professional', href: '/professional' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Contact', href: '/contact' },
-]
+import { Link } from '@/i18n/routing'
+import { Logo } from '@/components/logo'
+import { LocaleSwitcher } from '@/components/locale-switcher'
+import { Menu, X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import React from 'react'
 
 export const SiteHeader = () => {
     const [menuState, setMenuState] = React.useState(false)
+    const t = useTranslations('header')
+    const tCommon = useTranslations('common')
+
+    const menuItems = [
+        { name: tCommon('home'), href: '/' },
+        { name: tCommon('about'), href: '/about' },
+        { name: tCommon('professional'), href: '/professional' },
+        { name: tCommon('projects'), href: '/projects' },
+        { name: tCommon('contact'), href: '/contact' },
+    ]
+
     return (
         <header>
             <nav
@@ -24,20 +30,20 @@ export const SiteHeader = () => {
                         <div className="flex w-full items-center justify-between gap-12 lg:w-auto">
                             <Link
                                 href="/"
-                                aria-label="home"
+                                aria-label={t('ariaHome')}
                                 className="flex items-center space-x-2">
                                 <Logo />
                             </Link>
 
                             <button
                                 onClick={() => setMenuState(!menuState)}
-                                aria-label={menuState ? 'Close Menu' : 'Open Menu'}
+                                aria-label={menuState ? t('closeMenu') : t('openMenu')}
                                 className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden">
                                 <Menu className="in-data-[state=active]:rotate-180 in-data-[state=active]:scale-0 in-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
                                 <X className="in-data-[state=active]:rotate-0 in-data-[state=active]:scale-100 in-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
                             </button>
 
-                            <div className="hidden lg:block">
+                            <div className="hidden lg:flex lg:items-center lg:gap-8">
                                 <ul className="flex gap-8 text-sm">
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
@@ -49,11 +55,12 @@ export const SiteHeader = () => {
                                         </li>
                                     ))}
                                 </ul>
+                                <LocaleSwitcher />
                             </div>
                         </div>
 
                         <div className="bg-background in-data-[state=active]:block lg:in-data-[state=active]:flex mb-6 hidden w-full flex-wrap items-center justify-end space-y-8 rounded-3xl border p-6 shadow-2xl shadow-zinc-300/20 md:flex-nowrap lg:m-0 lg:flex lg:w-fit lg:gap-6 lg:space-y-0 lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:shadow-none dark:lg:bg-transparent">
-                            <div className="lg:hidden">
+                            <div className="lg:hidden flex flex-col gap-6">
                                 <ul className="space-y-6 text-base">
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
@@ -65,6 +72,7 @@ export const SiteHeader = () => {
                                         </li>
                                     ))}
                                 </ul>
+                                <LocaleSwitcher />
                             </div>
                         </div>
                     </div>

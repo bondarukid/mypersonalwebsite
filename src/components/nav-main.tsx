@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next-intl"
+
 import {
   Collapsible,
   CollapsibleContent,
@@ -31,9 +33,11 @@ export function NavMain({
     }[]
   }[]
 }) {
+  const t = useTranslations("dashboard")
+
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Platform</SidebarGroupLabel>
+      <SidebarGroupLabel>{t("platform")}</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible

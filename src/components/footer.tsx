@@ -1,53 +1,55 @@
 import { Logo } from '@/components/logo'
-import Link from 'next/link'
-
-const links = [
-    {
-        group: 'Product',
-        items: [
-            { title: 'Features', href: '#' },
-            { title: 'Solution', href: '#' },
-            { title: 'Customers', href: '#' },
-            { title: 'Pricing', href: '#' },
-            { title: 'Help', href: '#' },
-            { title: 'About', href: '/about' },
-        ],
-    },
-    {
-        group: 'Solution',
-        items: [
-            { title: 'Startup', href: '#' },
-            { title: 'Freelancers', href: '#' },
-            { title: 'Organizations', href: '#' },
-            { title: 'Students', href: '#' },
-            { title: 'Collaboration', href: '#' },
-            { title: 'Design', href: '#' },
-            { title: 'Management', href: '#' },
-        ],
-    },
-    {
-        group: 'Company',
-        items: [
-            { title: 'About', href: '/about' },
-            { title: 'Careers', href: '#' },
-            { title: 'Blog', href: '#' },
-            { title: 'Press', href: '#' },
-            { title: 'Contact', href: '/contact' },
-            { title: 'Help', href: '#' },
-        ],
-    },
-    {
-        group: 'Legal',
-        items: [
-            { title: 'Licence', href: '#' },
-            { title: 'Privacy', href: '#' },
-            { title: 'Cookies', href: '#' },
-            { title: 'Security', href: '#' },
-        ],
-    },
-]
+import { Link } from '@/i18n/routing'
+import { useTranslations } from 'next-intl'
 
 export default function FooterSection() {
+    const t = useTranslations('footer')
+
+    const links = [
+        {
+            group: t('product'),
+            items: [
+                { title: t('features'), href: '#' },
+                { title: t('solution'), href: '#' },
+                { title: t('customers'), href: '#' },
+                { title: t('pricing'), href: '#' },
+                { title: t('help'), href: '#' },
+                { title: t('about'), href: '/about' },
+            ],
+        },
+        {
+            group: t('solution'),
+            items: [
+                { title: t('startup'), href: '#' },
+                { title: t('freelancers'), href: '#' },
+                { title: t('organizations'), href: '#' },
+                { title: t('students'), href: '#' },
+                { title: t('collaboration'), href: '#' },
+                { title: t('design'), href: '#' },
+                { title: t('management'), href: '#' },
+            ],
+        },
+        {
+            group: t('company'),
+            items: [
+                { title: t('about'), href: '/about' },
+                { title: t('careers'), href: '#' },
+                { title: t('blog'), href: '#' },
+                { title: t('press'), href: '#' },
+                { title: t('contact'), href: '/contact' },
+                { title: t('help'), href: '#' },
+            ],
+        },
+        {
+            group: t('legal'),
+            items: [
+                { title: t('licence'), href: '#' },
+                { title: t('privacy'), href: '#' },
+                { title: t('cookies'), href: '/cookies' },
+                { title: t('security'), href: '#' },
+            ],
+        },
+    ]
     return (
         <footer className="border-b bg-white pt-20 dark:bg-transparent">
             <div className="mx-auto max-w-5xl px-6">
@@ -55,7 +57,7 @@ export default function FooterSection() {
                     <div className="md:col-span-2">
                         <Link
                             href="/"
-                            aria-label="go home"
+                            aria-label={t('ariaGoHome')}
                             className="block size-fit">
                             <Logo />
                         </Link>
@@ -80,13 +82,13 @@ export default function FooterSection() {
                     </div>
                 </div>
                 <div className="mt-12 flex flex-wrap items-end justify-between gap-6 border-t py-6">
-                    <span className="text-muted-foreground order-last block text-center text-sm md:order-first">© {2026} Ivan Bondaruk, All rights reserved</span>
+                    <span className="text-muted-foreground order-last block text-center text-sm md:order-first">{t('copyright', { year: 2026 })}</span>
                     <div className="order-first flex flex-wrap justify-center gap-6 text-sm md:order-last">
                         <Link
                             href="#"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="X/Twitter"
+                            aria-label={t('ariaTwitter')}
                             className="text-muted-foreground hover:text-primary block">
                             <svg
                                 className="size-6"
@@ -103,7 +105,7 @@ export default function FooterSection() {
                             href="#"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="LinkedIn"
+                            aria-label={t('ariaLinkedIn')}
                             className="text-muted-foreground hover:text-primary block">
                             <svg
                                 className="size-6"
@@ -120,7 +122,7 @@ export default function FooterSection() {
                             href="#"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="Facebook"
+                            aria-label={t('ariaFacebook')}
                             className="text-muted-foreground hover:text-primary block">
                             <svg
                                 className="size-6"
@@ -137,7 +139,7 @@ export default function FooterSection() {
                             href="#"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="Threads"
+                            aria-label={t('ariaThreads')}
                             className="text-muted-foreground hover:text-primary block">
                             <svg
                                 className="size-6"
@@ -159,7 +161,7 @@ export default function FooterSection() {
                             href="#"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="Instagram"
+                            aria-label={t('ariaInstagram')}
                             className="text-muted-foreground hover:text-primary block">
                             <svg
                                 className="size-6"
@@ -176,7 +178,7 @@ export default function FooterSection() {
                             href="#"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="TikTok"
+                            aria-label={t('ariaTikTok')}
                             className="text-muted-foreground hover:text-primary block">
                             <svg
                                 className="size-6"
