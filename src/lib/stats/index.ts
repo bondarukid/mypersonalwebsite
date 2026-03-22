@@ -14,11 +14,12 @@ export type Stats = {
   poweredApps: number
 }
 
-async function getGitHubStars(): Promise<number> {
-  const username = process.env.GITHUB_USERNAME
+export async function fetchGitHubStars(
+  username: string,
+  token?: string
+): Promise<number> {
   if (!username) return 0
 
-  const token = process.env.GITHUB_TOKEN
   const headers: HeadersInit = {
     Accept: 'application/vnd.github.v3+json',
   }
@@ -29,41 +30,39 @@ async function getGitHubStars(): Promise<number> {
   try {
     const res = await fetch(
       `https://api.github.com/users/${username}/repos?per_page=100`,
-      { headers, next: { revalidate: 3600 } }
+      { headers }
     )
     if (!res.ok) return 0
     const repos = (await res.json()) as Array<{ stargazers_count: number }>
     return repos.reduce((sum, r) => sum + (r.stargazers_count ?? 0), 0)
   } catch (err) {
-    console.error('[getGitHubStars]', err)
+    console.error('[fetchGitHubStars]', err)
     return 0
   }
 }
 
-async function getGA4Stats(): Promise<{ activeUsers: number; poweredApps: number }> {
-  const propertyIds = process.env.GA_PROPERTY_IDS
+async function getGitHubStars(): Promise<number> {
+  const username = process.env.GITHUB_USERNAME
+  if (!username) return 0
+  return fetchGitHubStars(username, process.env.GITHUB_TOKEN)
+}
+
+export async function fetchGA4ActiveUsers(
+  propertyIds: string[]
+): Promise<{ activeUsers: number }> {
   const clientEmail = process.env.GA_CLIENT_EMAIL
   const privateKey = process.env.GA_PRIVATE_KEY
 
-  if (!propertyIds || !clientEmail || !privateKey) {
-    return { activeUsers: 0, poweredApps: 0 }
+  if (!clientEmail || !privateKey || propertyIds.length === 0) {
+    return { activeUsers: 0 }
   }
 
-  const ids = propertyIds.split(',').map((id) => id.trim()).filter(Boolean)
-  if (ids.length === 0) return { activeUsers: 0, poweredApps: 0 }
-
-  let client: BetaAnalyticsDataClient
-  try {
-    client = new BetaAnalyticsDataClient({
-      credentials: {
-        client_email: clientEmail,
-        private_key: privateKey.replace(/\\n/g, '\n'),
-      },
-    })
-  } catch (err) {
-    console.error('[getGA4Stats] Failed to create client:', err)
-    return { activeUsers: 0, poweredApps: ids.length }
-  }
+  const client = new BetaAnalyticsDataClient({
+    credentials: {
+      client_email: clientEmail,
+      private_key: privateKey.replace(/\\n/g, '\n'),
+    },
+  })
 
   let totalActiveUsers = 0
   const endDate = new Date()
@@ -72,7 +71,7 @@ async function getGA4Stats(): Promise<{ activeUsers: number; poweredApps: number
   const startStr = startDate.toISOString().slice(0, 10)
   const endStr = endDate.toISOString().slice(0, 10)
 
-  for (const id of ids) {
+  for (const id of propertyIds) {
     try {
       const [response] = await client.runReport({
         property: `properties/${id}`,
@@ -96,10 +95,112 @@ async function getGA4Stats(): Promise<{ activeUsers: number; poweredApps: number
     }
   }
 
-  return { activeUsers: totalActiveUsers, poweredApps: ids.length }
+  return { activeUsers: totalActiveUsers }
+}
+
+async function getGA4Stats(): Promise<{
+  activeUsers: number
+  poweredApps: number
+}> {
+  const propertyIds = (
+    process.env.GA_PROPERTY_IDS ?? ''
+  )
+    .split(',')
+    .map((id) => id.trim())
+    .filter(Boolean)
+  const clientEmail = process.env.GA_CLIENT_EMAIL
+  const privateKey = process.env.GA_PRIVATE_KEY
+
+  if (!propertyIds.length || !clientEmail || !privateKey) {
+    return { activeUsers: 0, poweredApps: 0 }
+  }
+
+  const { activeUsers } = await fetchGA4ActiveUsers(propertyIds)
+  return { activeUsers, poweredApps: propertyIds.length }
+}
+
+export async function refreshLandingStatsForCompany(
+  companyId: string,
+  apps: Array<{
+    ga_property_id: string | null
+    github_username: string | null
+    enabled_for_landing: boolean
+  }>,
+  options?: { persist?: boolean; useAdmin?: boolean }
+): Promise<Stats> {
+  const enabled = apps.filter((a) => a.enabled_for_landing)
+  const gaPropertyIds = enabled
+    .map((a) => a.ga_property_id)
+    .filter((id): id is string => !!id?.trim())
+  const githubUsernames = [
+    ...new Set(
+      enabled
+        .map((a) => a.github_username)
+        .filter((u): u is string => !!u?.trim())
+    ),
+  ]
+
+  const clientEmail = process.env.GA_CLIENT_EMAIL
+  const privateKey = process.env.GA_PRIVATE_KEY
+  const token = process.env.GITHUB_TOKEN
+
+  const [ga4Result, ...githubResults] = await Promise.all([
+    gaPropertyIds.length && clientEmail && privateKey
+      ? fetchGA4ActiveUsers(gaPropertyIds)
+      : Promise.resolve({ activeUsers: 0 }),
+    ...githubUsernames.map((u) => fetchGitHubStars(u, token)),
+  ])
+
+  const totalStars = githubResults.reduce((s, n) => s + n, 0)
+  const ga4Users = ga4Result?.activeUsers ?? 0
+  const stats: Stats = {
+    stars: totalStars || FALLBACK.stars,
+    activeUsers: ga4Users || FALLBACK.activeUsers,
+    poweredApps: enabled.length || FALLBACK.poweredApps,
+  }
+
+  if (options?.persist) {
+    const { upsertLandingStatsSnapshot } = await import(
+      '@/lib/supabase/landing-stats-snapshot'
+    )
+    await upsertLandingStatsSnapshot(
+      companyId,
+      {
+        stars: stats.stars,
+        active_users: stats.activeUsers,
+        powered_apps: stats.poweredApps,
+      },
+      { useAdmin: options?.useAdmin }
+    )
+  }
+
+  return stats
 }
 
 async function fetchStatsImpl(): Promise<Stats> {
+  const { getLandingCompany } = await import(
+    '@/lib/supabase/companies'
+  )
+  const { getLandingStatsSnapshot } = await import(
+    '@/lib/supabase/landing-stats-snapshot'
+  )
+
+  const landing = await getLandingCompany()
+  if (landing) {
+    const snapshot = await getLandingStatsSnapshot(landing.id)
+    if (snapshot) {
+      const syncedAt = new Date(snapshot.synced_at).getTime()
+      const maxAge = 25 * 60 * 60 * 1000
+      if (Date.now() - syncedAt < maxAge) {
+        return {
+          stars: snapshot.stars || FALLBACK.stars,
+          activeUsers: snapshot.active_users || FALLBACK.activeUsers,
+          poweredApps: snapshot.powered_apps || FALLBACK.poweredApps,
+        }
+      }
+    }
+  }
+
   const [stars, ga4] = await Promise.all([
     getGitHubStars(),
     getGA4Stats(),

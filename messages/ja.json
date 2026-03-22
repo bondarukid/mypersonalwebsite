@@ -139,6 +139,16 @@
       "ariaLabel": "Cookie同意"
     }
   },
+  "onboarding": {
+    "title": "ようこそ！",
+    "subtitle": "ダッシュボードに進むには表示名を入力してください。",
+    "displayName": "お名前",
+    "displayNamePlaceholder": "山田 太郎",
+    "displayNameRequired": "お名前を入力してください。",
+    "continue": "ダッシュボードへ",
+    "saving": "保存中…",
+    "notAuthenticated": "続行するにはログインしてください。"
+  },
   "signUp": {
     "title": "アカウント作成",
     "subtitle": "ようこそ！アカウントを作成して始めましょう",
@@ -214,6 +224,8 @@
     "changelog": "変更履歴",
     "general": "一般",
     "team": "チーム",
+    "social": "ソーシャル",
+    "landingStats": "ランディング統計",
     "billing": "請求",
     "limits": "制限",
     "designEngineering": "デザインエンジニアリング",
@@ -222,6 +234,32 @@
     "enterprise": "Enterprise",
     "startup": "Startup",
     "free": "無料",
+    "socialPage": {
+      "title": "ソーシャルリンク",
+      "description": "ランディングページに表示するソーシャルネットワークを設定します。",
+      "save": "保存",
+      "saving": "保存中…",
+      "saved": "保存しました。"
+    },
+    "landingStatsPage": {
+      "title": "ランディング統計",
+      "description": "ランディングページに表示するアプリと統計を管理します。",
+      "addApp": "アプリを追加",
+      "syncNow": "同期",
+      "preview": "プレビュー",
+      "noApps": "アプリがありません。アプリを追加してください。",
+      "appName": "アプリ名",
+      "gaPropertyId": "GA4 Property ID",
+      "githubUsername": "GitHub username",
+      "githubRepo": "GitHub repo",
+      "enabledForLanding": "ランディングに表示",
+      "saving": "保存中…",
+      "syncing": "同期中…",
+      "synced": "統計を同期しました。",
+      "appNameRequired": "アプリ名は必須です。",
+      "notAuthenticated": "続行するにはログインしてください。",
+      "appAdded": "アプリを追加しました。"
+    },
     "dataTable": {
       "dragToReorder": "ドラッグで並べ替え",
       "selectAll": "すべて選択",

@@ -139,6 +139,16 @@
       "ariaLabel": "Згода на cookies"
     }
   },
+  "onboarding": {
+    "title": "Ласкаво просимо!",
+    "subtitle": "Введіть ваше ім'я для відображення, щоб перейти до панелі керування.",
+    "displayName": "Ваше ім'я",
+    "displayNamePlaceholder": "Іван Петренко",
+    "displayNameRequired": "Будь ласка, введіть ваше ім'я.",
+    "continue": "Перейти до панелі",
+    "saving": "Збереження…",
+    "notAuthenticated": "Увійдіть, щоб продовжити."
+  },
   "signUp": {
     "title": "Створити обліковий запис",
     "subtitle": "Ласкаво просимо! Створіть обліковий запис, щоб почати",
@@ -214,6 +224,8 @@
     "changelog": "Зміни",
     "general": "Загальне",
     "team": "Команда",
+    "social": "Соцмережі",
+    "landingStats": "Статистика лендінгу",
     "billing": "Оплата",
     "limits": "Ліміти",
     "designEngineering": "Дизайн-інжиніринг",
@@ -222,6 +234,32 @@
     "enterprise": "Enterprise",
     "startup": "Startup",
     "free": "Безкоштовно",
+    "socialPage": {
+      "title": "Соціальні мережі",
+      "description": "Налаштуйте, які соцмережі показувати на лендингу. Увімкніть та додайте посилання.",
+      "save": "Зберегти",
+      "saving": "Збереження…",
+      "saved": "Збережено."
+    },
+    "landingStatsPage": {
+      "title": "Статистика лендінгу",
+      "description": "Керуйте додатками та статистикою на лендингу.",
+      "addApp": "Додати додаток",
+      "syncNow": "Синхронізувати",
+      "preview": "Попередній перегляд",
+      "noApps": "Ще немає додатків. Додайте додаток.",
+      "appName": "Назва додатку",
+      "gaPropertyId": "GA4 Property ID",
+      "githubUsername": "GitHub username",
+      "githubRepo": "GitHub repo",
+      "enabledForLanding": "Показувати на лендингу",
+      "saving": "Збереження…",
+      "syncing": "Синхронізація…",
+      "synced": "Статистику синхронізовано.",
+      "appNameRequired": "Назва додатку обов'язкова.",
+      "notAuthenticated": "Увійдіть, щоб продовжити.",
+      "appAdded": "Додаток додано."
+    },
     "dataTable": {
       "dragToReorder": "Перетягніть для зміни порядку",
       "selectAll": "Вибрати все",

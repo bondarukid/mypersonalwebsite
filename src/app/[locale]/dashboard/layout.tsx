@@ -1,5 +1,13 @@
 import { redirect } from "@/i18n/routing"
 import { createClient } from "@/lib/supabase/server"
+import {
+  getUserCompanies,
+  ensureUserInLanding,
+} from "@/lib/supabase/companies"
+import { getProfileByUserId } from "@/lib/supabase/profiles"
+import { AppSidebar } from "@/components/app-sidebar"
+import { SiteHeader } from "@/components/site-header"
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
 export default async function DashboardLayout({
   children,
@@ -16,7 +24,60 @@ export default async function DashboardLayout({
 
   if (!user) {
     redirect({ href: "/login", locale })
+    return
   }
 
-  return children
+  const userId = user.id
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("display_name")
+    .eq("user_id", userId)
+    .single()
+
+  if (!profile?.display_name?.trim()) {
+    redirect({ href: "/onboarding", locale })
+    return
+  }
+
+  await ensureUserInLanding(userId)
+
+  const [profileData, companies] = await Promise.all([
+    getProfileByUserId(userId),
+    getUserCompanies(userId),
+  ])
+
+  const companiesForSidebar = companies.map((c) => ({
+    id: c.id,
+    name: c.name,
+    slug: c.slug,
+  }))
+  const landing = companies.find((c) => c.slug === "landing")
+
+  return (
+    <SidebarProvider
+      style={
+        {
+          "--sidebar-width": "calc(var(--spacing) * 72)",
+          "--header-height": "calc(var(--spacing) * 12)",
+        } as React.CSSProperties
+      }
+    >
+      <AppSidebar
+        companies={companiesForSidebar}
+        user={{
+          name: profileData?.display_name || user.email || "",
+          email: user.email || "",
+        }}
+        activeCompanyId={landing?.id}
+      />
+      <SidebarInset>
+        <SiteHeader />
+        <div className="flex flex-1 flex-col gap-2">
+          <div className="@container/main flex flex-1 flex-col gap-2">
+            {children}
+          </div>
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
+  )
 }

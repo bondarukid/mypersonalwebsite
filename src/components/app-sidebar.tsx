@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl"
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { CompanySwitcher } from "@/components/company-switcher"
 import {
   Sidebar,
   SidebarContent,
@@ -14,34 +14,33 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon } from "lucide-react"
+import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, Share2Icon, BarChart3Icon } from "lucide-react"
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export type CompanyForSidebar = {
+  id: string
+  name: string
+  slug: string
+}
+
+export type UserForSidebar = {
+  name: string
+  email: string
+  avatar?: string
+}
+
+export function AppSidebar({
+  companies,
+  user,
+  activeCompanyId,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & {
+  companies: CompanyForSidebar[]
+  user: UserForSidebar
+  activeCompanyId?: string | null
+}) {
   const t = useTranslations("dashboard")
 
   const data = {
-    user: {
-      name: "shadcn",
-      email: "m@example.com",
-      avatar: "/avatars/shadcn.jpg",
-    },
-    teams: [
-      {
-        name: "Acme Inc",
-        logo: <GalleryVerticalEndIcon />,
-        plan: t("enterprise"),
-      },
-      {
-        name: "Acme Corp.",
-        logo: <AudioLinesIcon />,
-        plan: t("startup"),
-      },
-      {
-        name: "Evil Corp.",
-        logo: <TerminalIcon />,
-        plan: t("free"),
-      },
-    ],
     navMain: [
       {
         title: t("playground"),
@@ -86,6 +85,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           { title: t("limits"), url: "#" },
         ],
       },
+      {
+        title: t("social"),
+        url: "/dashboard/social",
+        icon: <Share2Icon />,
+        items: [],
+      },
+      {
+        title: t("landingStats"),
+        url: "/dashboard/landing-stats",
+        icon: <BarChart3Icon />,
+        items: [],
+      },
     ],
     projects: [
       { name: t("designEngineering"), url: "#", icon: <FrameIcon /> },
@@ -96,14 +107,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <CompanySwitcher
+          companies={companies}
+          activeCompanyId={activeCompanyId}
+        />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

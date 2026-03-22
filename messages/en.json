@@ -160,6 +160,16 @@
     "noAccount": "Don't have an account?",
     "createAccount": "Create account"
   },
+  "onboarding": {
+    "title": "Welcome!",
+    "subtitle": "Enter your display name to continue to the dashboard.",
+    "displayName": "Your name",
+    "displayNamePlaceholder": "John Doe",
+    "displayNameRequired": "Please enter your name.",
+    "continue": "Continue to Dashboard",
+    "saving": "Saving…",
+    "notAuthenticated": "You must sign in to continue."
+  },
   "signUp": {
     "title": "Create an Account",
     "subtitle": "Welcome! Create an account to get started",
@@ -214,6 +224,8 @@
     "changelog": "Changelog",
     "general": "General",
     "team": "Team",
+    "social": "Social",
+    "landingStats": "Landing Stats",
     "billing": "Billing",
     "limits": "Limits",
     "designEngineering": "Design Engineering",
@@ -222,6 +234,32 @@
     "enterprise": "Enterprise",
     "startup": "Startup",
     "free": "Free",
+    "socialPage": {
+      "title": "Social Links",
+      "description": "Configure which social networks to show on your landing page. Enable and add URLs for each platform.",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saved": "Changes saved."
+    },
+    "landingStatsPage": {
+      "title": "Landing Stats",
+      "description": "Manage apps and stats displayed on your landing page.",
+      "addApp": "Add app",
+      "syncNow": "Sync Now",
+      "preview": "Preview",
+      "noApps": "No apps yet. Add an app to get started.",
+      "appName": "App name",
+      "gaPropertyId": "GA4 Property ID",
+      "githubUsername": "GitHub username",
+      "githubRepo": "GitHub repo",
+      "enabledForLanding": "Show on landing",
+      "saving": "Saving…",
+      "syncing": "Syncing…",
+      "synced": "Stats synced.",
+      "appNameRequired": "App name is required.",
+      "notAuthenticated": "You must sign in to continue.",
+      "appAdded": "App added."
+    },
     "dataTable": {
       "dragToReorder": "Drag to reorder",
       "selectAll": "Select all",

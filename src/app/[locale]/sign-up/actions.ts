@@ -35,9 +35,9 @@ export async function signUpAction(
   }
 
   // When email confirmation is disabled in Supabase, user gets a session immediately.
-  // Redirect to dashboard (with whitelist check) instead of showing "check email".
+  // Redirect to onboarding (with whitelist check) instead of showing "check email".
   if (data.session) {
-    const result = await checkWhitelistAndRedirect()
+    const result = await checkWhitelistAndRedirect("/onboarding")
     if (result && !result.ok) {
       await supabase.auth.signOut()
       return { error: result.error ?? "Access denied." }
