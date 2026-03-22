@@ -53,7 +53,7 @@ export async function checkWhitelistAndRedirect(redirectTo?: string) {
 
   const allowedEmails = (process.env.ALLOWED_EMAILS ?? "")
     .split(",")
-    .map((e) => e.trim().toLowerCase())
+    .map((e) => e.trim().toLowerCase().replace(/^["']|["']$/g, ""))
     .filter(Boolean)
 
   if (allowedEmails.length === 0) {

@@ -6,6 +6,7 @@ export type Company = {
   slug: string
   logo_url: string | null
   created_at: string
+  created_by?: string | null
 }
 
 export type CompanyMember = {
@@ -48,6 +49,66 @@ export async function getLandingCompany(): Promise<Company | null> {
 
   if (error || !data) return null
   return data as Company
+}
+
+function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "") || "company"
+}
+
+export async function createCompanyForUser(
+  userId: string,
+  name: string
+): Promise<{ company?: Company; error?: string }> {
+  const baseSlug = slugify(name)
+  let slug = baseSlug
+  let attempts = 0
+  const maxAttempts = 5
+
+  const supabase = await createClient()
+
+  while (attempts < maxAttempts) {
+    const { data: existing } = await supabase
+      .from("companies")
+      .select("id")
+      .eq("slug", slug)
+      .single()
+
+    if (!existing) break
+    slug = `${baseSlug}-${Math.random().toString(36).slice(2, 8)}`
+    attempts++
+  }
+
+  const { data: company, error: insertError } = await supabase
+    .from("companies")
+    .insert({
+      name: name.trim(),
+      slug,
+      created_by: userId,
+    })
+    .select()
+    .single()
+
+  if (insertError) return { error: insertError.message }
+  if (!company) return { error: "Failed to create company" }
+
+  const { error: memberError } = await supabase.from("company_members").insert({
+    company_id: company.id,
+    user_id: userId,
+    role: "owner",
+  })
+
+  if (memberError) {
+    await supabase.from("companies").delete().eq("id", company.id)
+    return { error: memberError.message }
+  }
+
+  return { company: company as Company }
 }
 
 export async function ensureUserInLanding(userId: string): Promise<void> {

@@ -35,3 +35,29 @@ export async function getTestimonial(
   if (error) return null
   return data as Testimonial | null
 }
+
+export async function getAllTestimonialsForAdmin(): Promise<Testimonial[]> {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("testimonials")
+    .select("id, locale, quote, author, role, avatar_url, sort_order, created_at")
+    .order("locale")
+    .order("sort_order", { ascending: true })
+
+  if (error) return []
+  return (data ?? []) as Testimonial[]
+}
+
+export async function updateTestimonial(
+  id: string,
+  updates: { quote?: string; author?: string; role?: string }
+): Promise<{ error?: string }> {
+  const supabase = await createClient()
+  const { error } = await supabase
+    .from("testimonials")
+    .update(updates)
+    .eq("id", id)
+
+  if (error) return { error: error.message }
+  return {}
+}

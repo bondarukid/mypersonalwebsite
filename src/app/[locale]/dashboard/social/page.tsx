@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server"
 import { getAllSocialLinksForAdmin } from "@/lib/supabase/social-links"
-import { SocialLinksForm } from "./social-links-form"
+import { SocialLinksDataTable } from "./social-links-data-table"
 
 export default async function SocialPage() {
   const t = await getTranslations("dashboard.socialPage")
@@ -12,7 +12,7 @@ export default async function SocialPage() {
         <h1 className="text-2xl font-semibold">{t("title")}</h1>
         <p className="text-muted-foreground mt-1">{t("description")}</p>
       </div>
-      <SocialLinksForm links={links} />
+      <SocialLinksDataTable data={links} />
     </div>
   )
 }

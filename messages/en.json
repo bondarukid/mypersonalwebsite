@@ -11,7 +11,8 @@
   "header": {
     "openMenu": "Open Menu",
     "closeMenu": "Close Menu",
-    "ariaHome": "home"
+    "ariaHome": "home",
+    "repoAria": "View source code on GitHub: {repo}"
   },
   "footer": {
     "about": "About",
@@ -162,10 +163,13 @@
   },
   "onboarding": {
     "title": "Welcome!",
-    "subtitle": "Enter your display name to continue to the dashboard.",
+    "subtitle": "Enter your display name and company name to continue to the dashboard.",
     "displayName": "Your name",
     "displayNamePlaceholder": "John Doe",
     "displayNameRequired": "Please enter your name.",
+    "companyName": "Company name for your site",
+    "companyNamePlaceholder": "My Portfolio",
+    "companyNameRequired": "Please enter a company name (at least 2 characters).",
     "continue": "Continue to Dashboard",
     "saving": "Saving…",
     "notAuthenticated": "You must sign in to continue."
@@ -225,6 +229,7 @@
     "general": "General",
     "team": "Team",
     "social": "Social",
+    "testimonials": "Testimonials",
     "landingStats": "Landing Stats",
     "billing": "Billing",
     "limits": "Limits",
@@ -240,6 +245,44 @@
       "save": "Save changes",
       "saving": "Saving…",
       "saved": "Changes saved."
+    },
+    "localization": {
+      "sidebarTitle": "Locales",
+      "searchPlaceholder": "Filter keys…",
+      "fieldKeyColumn": "Key",
+      "keyColumn": "Label",
+      "sourceColumn": "Default (EN)",
+      "translationColumn": "Translation",
+      "editingDefault": "Editing default English content.",
+      "editingTranslation": "Translating to {locale}.",
+      "enterValue": "Enter value…",
+      "enterTranslation": "Enter translation…",
+      "saved": "Changes saved.",
+      "noTestimonials": "No testimonials found. Run migrations: npx supabase db push",
+      "keys": {
+        "quote": "Quote",
+        "author": "Author",
+        "role": "Role"
+      }
+    },
+    "testimonialsPage": {
+      "title": "Testimonials",
+      "description": "Edit the quote shown on the landing page. Changes appear after saving.",
+      "edit": "Edit testimonials",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "saved": "Changes saved.",
+      "fieldsRequired": "Quote, author, and role are required.",
+      "noTestimonials": "No testimonials found. Run migrations: npx supabase db push",
+      "editingDefault": "Edit default content (English)",
+      "editingTranslation": "Translate to {locale}",
+      "editingHint": "Changes save automatically when you click outside the field.",
+      "placeholderQuote": "Enter quote text…",
+      "placeholderAuthor": "Author name…",
+      "placeholderRole": "Role or title…",
+      "preview": "Preview",
+      "previewHint": "How it appears on the landing page.",
+      "translation": "Your translation"
     },
     "landingStatsPage": {
       "title": "Landing Stats",
@@ -258,7 +301,14 @@
       "synced": "Stats synced.",
       "appNameRequired": "App name is required.",
       "notAuthenticated": "You must sign in to continue.",
-      "appAdded": "App added."
+      "appAdded": "App added.",
+      "apiCredentials": "API Credentials",
+      "apiCredentialsDescription": "GA4 service account and GitHub token. Stored encrypted. Leave empty to keep existing.",
+      "gaClientEmail": "GA4 Client Email",
+      "gaPrivateKey": "GA4 Private Key",
+      "githubToken": "GitHub Token",
+      "saveCredentials": "Save credentials",
+      "credentialsSaved": "Credentials saved."
     },
     "dataTable": {
       "dragToReorder": "Drag to reorder",

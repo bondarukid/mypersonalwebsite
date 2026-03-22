@@ -4,6 +4,7 @@ import { getTranslations } from "next-intl/server"
 import { getAppsByCompanyId } from "@/lib/supabase/apps"
 import { refreshLandingStatsForCompany } from "@/lib/stats"
 import { createApp, updateApp } from "@/lib/supabase/apps"
+import { upsertStatsCredentials } from "@/lib/supabase/stats-credentials"
 import { createClient } from "@/lib/supabase/server"
 
 export async function syncStatsAction(
@@ -86,4 +87,44 @@ export async function updateAppAction(
 
   if (error) return { error }
   return null
+}
+
+export async function saveCredentialsAction(
+  _prevState: { error?: string; success?: string } | null,
+  formData: FormData
+): Promise<{ error?: string; success?: string } | null> {
+  const t = await getTranslations("dashboard.landingStatsPage")
+  const companyId = formData.get("companyId") as string
+  if (!companyId) return { error: "Missing company" }
+
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { error: t("notAuthenticated") }
+
+  const hasExisting = formData.get("hasCredentials") === "1"
+  const gaClientEmail = (formData.get("gaClientEmail") as string)?.trim()
+  const gaPrivateKey = (formData.get("gaPrivateKey") as string)?.trim()
+  const githubToken = (formData.get("githubToken") as string)?.trim()
+
+  const creds: {
+    gaClientEmail?: string
+    gaPrivateKey?: string
+    githubToken?: string
+  } = {}
+  if (gaClientEmail !== undefined && gaClientEmail !== "")
+    creds.gaClientEmail = gaClientEmail
+  else if (!hasExisting) creds.gaClientEmail = ""
+  if (gaPrivateKey !== undefined && gaPrivateKey !== "")
+    creds.gaPrivateKey = gaPrivateKey
+  else if (!hasExisting) creds.gaPrivateKey = ""
+  if (githubToken !== undefined && githubToken !== "")
+    creds.githubToken = githubToken
+  else if (!hasExisting) creds.githubToken = ""
+
+  const { error } = await upsertStatsCredentials(companyId, creds)
+
+  if (error) return { error }
+  return { success: t("credentialsSaved") }
 }

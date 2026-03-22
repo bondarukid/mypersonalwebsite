@@ -11,7 +11,8 @@
   "header": {
     "openMenu": "Відкрити меню",
     "closeMenu": "Закрити меню",
-    "ariaHome": "головна"
+    "ariaHome": "головна",
+    "repoAria": "Переглянути вихідний код на GitHub: {repo}"
   },
   "footer": {
     "about": "Про мене",
@@ -141,10 +142,13 @@
   },
   "onboarding": {
     "title": "Ласкаво просимо!",
-    "subtitle": "Введіть ваше ім'я для відображення, щоб перейти до панелі керування.",
+    "subtitle": "Введіть ваше ім'я та назву компанії для сайту, щоб перейти до панелі керування.",
     "displayName": "Ваше ім'я",
     "displayNamePlaceholder": "Іван Петренко",
     "displayNameRequired": "Будь ласка, введіть ваше ім'я.",
+    "companyName": "Назва компанії для вашого сайту",
+    "companyNamePlaceholder": "Мій портфоліо",
+    "companyNameRequired": "Будь ласка, введіть назву компанії (мінімум 2 символи).",
     "continue": "Перейти до панелі",
     "saving": "Збереження…",
     "notAuthenticated": "Увійдіть, щоб продовжити."
@@ -225,6 +229,7 @@
     "general": "Загальне",
     "team": "Команда",
     "social": "Соцмережі",
+    "testimonials": "Цитати",
     "landingStats": "Статистика лендінгу",
     "billing": "Оплата",
     "limits": "Ліміти",
@@ -240,6 +245,44 @@
       "save": "Зберегти",
       "saving": "Збереження…",
       "saved": "Збережено."
+    },
+    "localization": {
+      "sidebarTitle": "Локалі",
+      "searchPlaceholder": "Фільтр ключів…",
+      "fieldKeyColumn": "Ключ",
+      "keyColumn": "Мітка",
+      "sourceColumn": "За замовчуванням (EN)",
+      "translationColumn": "Переклад",
+      "editingDefault": "Редагування контенту англійською за замовчуванням.",
+      "editingTranslation": "Переклад на {locale}.",
+      "enterValue": "Введіть значення…",
+      "enterTranslation": "Введіть переклад…",
+      "saved": "Збережено.",
+      "noTestimonials": "Цитати не знайдено. Запустіть міграції: npx supabase db push",
+      "keys": {
+        "quote": "Цитата",
+        "author": "Автор",
+        "role": "Роль"
+      }
+    },
+    "testimonialsPage": {
+      "title": "Цитати",
+      "description": "Редагуйте цитату на лендингу. Зміни зʼявляться після збереження.",
+      "edit": "Редагувати",
+      "save": "Зберегти",
+      "saving": "Збереження…",
+      "saved": "Збережено.",
+      "fieldsRequired": "Цитата, автор та роль обовʼязкові.",
+      "noTestimonials": "Цитати не знайдено. Запустіть міграції: npx supabase db push",
+      "editingDefault": "Редагування контенту за замовчуванням (англійською)",
+      "editingTranslation": "Переклад на {locale}",
+      "editingHint": "Зміни зберігаються автоматично при кліку поза полем.",
+      "placeholderQuote": "Введіть текст цитати…",
+      "placeholderAuthor": "Імʼя автора…",
+      "placeholderRole": "Посада…",
+      "preview": "Попередній перегляд",
+      "previewHint": "Як виглядатиме на лендингу.",
+      "translation": "Ваш переклад"
     },
     "landingStatsPage": {
       "title": "Статистика лендінгу",
@@ -258,7 +301,14 @@
       "synced": "Статистику синхронізовано.",
       "appNameRequired": "Назва додатку обов'язкова.",
       "notAuthenticated": "Увійдіть, щоб продовжити.",
-      "appAdded": "Додаток додано."
+      "appAdded": "Додаток додано.",
+      "apiCredentials": "API облікові дані",
+      "apiCredentialsDescription": "GA4 service account та GitHub token. Зберігаються зашифровано.",
+      "gaClientEmail": "GA4 Client Email",
+      "gaPrivateKey": "GA4 Private Key",
+      "githubToken": "GitHub Token",
+      "saveCredentials": "Зберегти",
+      "credentialsSaved": "Облікові дані збережено."
     },
     "dataTable": {
       "dragToReorder": "Перетягніть для зміни порядку",

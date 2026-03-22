@@ -282,16 +282,18 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     id: "actions",
     cell: () => (
       <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Button
-            variant="ghost"
-            className="flex size-8 text-muted-foreground data-open:bg-muted"
-            size="icon"
-          >
-            <EllipsisVerticalIcon />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="ghost"
+              className="flex size-8 text-muted-foreground data-open:bg-muted"
+              size="icon"
+            >
+              <EllipsisVerticalIcon />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          }
+        />
         <DropdownMenuContent align="end" className="w-32">
           <DropdownMenuItem>Edit</DropdownMenuItem>
           <DropdownMenuItem>Make a copy</DropdownMenuItem>
@@ -433,13 +435,15 @@ export function DataTable({
         </TabsList>
         <div className="flex items-center gap-2">
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <Button variant="outline" size="sm">
-                <Columns3Icon data-icon="inline-start" />
-                Columns
-                <ChevronDownIcon data-icon="inline-end" />
-              </Button>
-            </DropdownMenuTrigger>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="outline" size="sm">
+                  <Columns3Icon data-icon="inline-start" />
+                  Columns
+                  <ChevronDownIcon data-icon="inline-end" />
+                </Button>
+              }
+            />
             <DropdownMenuContent align="end" className="w-32">
               {table
                 .getAllColumns()

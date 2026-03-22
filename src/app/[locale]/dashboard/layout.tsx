@@ -51,7 +51,7 @@ export default async function DashboardLayout({
     name: c.name,
     slug: c.slug,
   }))
-  const landing = companies.find((c) => c.slug === "landing")
+  const activeCompanyId = companies[0]?.id ?? null
 
   return (
     <SidebarProvider
@@ -68,7 +68,7 @@ export default async function DashboardLayout({
           name: profileData?.display_name || user.email || "",
           email: user.email || "",
         }}
-        activeCompanyId={landing?.id}
+        activeCompanyId={activeCompanyId}
       />
       <SidebarInset>
         <SiteHeader />

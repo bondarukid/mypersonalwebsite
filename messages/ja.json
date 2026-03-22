@@ -11,7 +11,8 @@
   "header": {
     "openMenu": "メニューを開く",
     "closeMenu": "メニューを閉じる",
-    "ariaHome": "ホーム"
+    "ariaHome": "ホーム",
+    "repoAria": "GitHubでソースコードを見る: {repo}"
   },
   "footer": {
     "about": "について",
@@ -141,10 +142,13 @@
   },
   "onboarding": {
     "title": "ようこそ！",
-    "subtitle": "ダッシュボードに進むには表示名を入力してください。",
+    "subtitle": "ダッシュボードに進むには表示名とサイト用の会社名を入力してください。",
     "displayName": "お名前",
     "displayNamePlaceholder": "山田 太郎",
     "displayNameRequired": "お名前を入力してください。",
+    "companyName": "サイト用の会社名",
+    "companyNamePlaceholder": "マイポートフォリオ",
+    "companyNameRequired": "会社名を入力してください（2文字以上）。",
     "continue": "ダッシュボードへ",
     "saving": "保存中…",
     "notAuthenticated": "続行するにはログインしてください。"
@@ -225,6 +229,7 @@
     "general": "一般",
     "team": "チーム",
     "social": "ソーシャル",
+    "testimonials": "お客様の声",
     "landingStats": "ランディング統計",
     "billing": "請求",
     "limits": "制限",
@@ -240,6 +245,44 @@
       "save": "保存",
       "saving": "保存中…",
       "saved": "保存しました。"
+    },
+    "localization": {
+      "sidebarTitle": "ロケール",
+      "searchPlaceholder": "キーをフィルター…",
+      "fieldKeyColumn": "キー",
+      "keyColumn": "ラベル",
+      "sourceColumn": "デフォルト (EN)",
+      "translationColumn": "翻訳",
+      "editingDefault": "デフォルトの英語コンテンツを編集しています。",
+      "editingTranslation": "{locale}に翻訳しています。",
+      "enterValue": "値を入力…",
+      "enterTranslation": "翻訳を入力…",
+      "saved": "保存しました。",
+      "noTestimonials": "引用が見つかりません。マイグレーションを実行: npx supabase db push",
+      "keys": {
+        "quote": "引用",
+        "author": "著者",
+        "role": "役職"
+      }
+    },
+    "testimonialsPage": {
+      "title": "お客様の声",
+      "description": "ランディングページに表示する引用を編集します。保存後に変更が反映されます。",
+      "edit": "編集",
+      "save": "保存",
+      "saving": "保存中…",
+      "saved": "保存しました。",
+      "fieldsRequired": "引用、著者、役職は必須です。",
+      "noTestimonials": "引用が見つかりません。マイグレーションを実行: npx supabase db push",
+      "editingDefault": "デフォルトコンテンツを編集（英語）",
+      "editingTranslation": "{locale}に翻訳",
+      "editingHint": "フィールド外をクリックすると自動保存されます。",
+      "placeholderQuote": "引用文を入力…",
+      "placeholderAuthor": "著者名…",
+      "placeholderRole": "役職…",
+      "preview": "プレビュー",
+      "previewHint": "ランディングページでの表示例。",
+      "translation": "翻訳"
     },
     "landingStatsPage": {
       "title": "ランディング統計",
@@ -258,7 +301,14 @@
       "synced": "統計を同期しました。",
       "appNameRequired": "アプリ名は必須です。",
       "notAuthenticated": "続行するにはログインしてください。",
-      "appAdded": "アプリを追加しました。"
+      "appAdded": "アプリを追加しました。",
+      "apiCredentials": "API認証情報",
+      "apiCredentialsDescription": "GA4とGitHubの認証情報。暗号化して保存します。",
+      "gaClientEmail": "GA4 Client Email",
+      "gaPrivateKey": "GA4 Private Key",
+      "githubToken": "GitHub Token",
+      "saveCredentials": "保存",
+      "credentialsSaved": "認証情報を保存しました。"
     },
     "dataTable": {
       "dragToReorder": "ドラッグで並べ替え",

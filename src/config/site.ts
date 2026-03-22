@@ -8,3 +8,22 @@ export function getHeroImageSrc(): string {
   if (!supabaseUrl) return UNSPLASH_FALLBACK
   return `${supabaseUrl}/storage/v1/object/public/${HERO_IMAGE_PATH}`
 }
+
+/**
+ * GitHub repo slug (owner/repo). Owner comes from GITHUB_USERNAME when repo-only.
+ * - NEXT_PUBLIC_GITHUB_REPO=mypersonalwebsite → GITHUB_USERNAME/mypersonalwebsite
+ * - NEXT_PUBLIC_GITHUB_REPO=owner/repo → used as-is
+ */
+export function getGithubRepo(): string | null {
+  const repo = process.env.NEXT_PUBLIC_GITHUB_REPO?.trim()
+  if (!repo) return null
+
+  if (repo.includes("/")) {
+    return repo
+  }
+
+  const username = process.env.GITHUB_USERNAME?.trim()
+  if (!username) return null
+
+  return `${username}/${repo}`
+}

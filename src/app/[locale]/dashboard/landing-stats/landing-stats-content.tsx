@@ -6,6 +6,7 @@ import {
   syncStatsAction,
   addAppAction,
   updateAppAction,
+  saveCredentialsAction,
 } from "./actions"
 import type { App } from "@/lib/supabase/apps"
 import type { LandingStatsSnapshot } from "@/lib/supabase/landing-stats-snapshot"
@@ -24,10 +25,12 @@ export function LandingStatsContent({
   companyId,
   apps,
   snapshot,
+  hasCredentials,
 }: {
   companyId: string
   apps: App[]
   snapshot: LandingStatsSnapshot | null
+  hasCredentials: boolean
 }) {
   const t = useTranslations("dashboard.landingStatsPage")
   const [syncState, syncFormAction, syncPending] = useActionState(
@@ -39,6 +42,10 @@ export function LandingStatsContent({
     updateAppAction,
     null
   )
+  const [credState, credFormAction, credPending] = useActionState(
+    saveCredentialsAction,
+    null
+  )
 
   const stars = snapshot?.stars ?? 0
   const activeUsers = snapshot?.active_users ?? 0
@@ -46,6 +53,63 @@ export function LandingStatsContent({
 
   return (
     <div className="space-y-8">
+      <Card>
+        <CardHeader>
+          <h2 className="text-lg font-medium">{t("apiCredentials")}</h2>
+          <p className="text-sm text-muted-foreground">
+            {t("apiCredentialsDescription")}
+          </p>
+        </CardHeader>
+        <CardContent>
+          <form action={credFormAction} className="flex flex-col gap-4 max-w-md">
+            <input type="hidden" name="companyId" value={companyId} />
+            <input type="hidden" name="hasCredentials" value={hasCredentials ? "1" : "0"} />
+            <div className="space-y-2">
+              <Label htmlFor="gaClientEmail">{t("gaClientEmail")}</Label>
+              <Input
+                id="gaClientEmail"
+                name="gaClientEmail"
+                type="text"
+                placeholder={hasCredentials ? "••••••••" : "your-sa@project.iam.gserviceaccount.com"}
+                autoComplete="off"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="gaPrivateKey">{t("gaPrivateKey")}</Label>
+              <Input
+                id="gaPrivateKey"
+                name="gaPrivateKey"
+                type="password"
+                placeholder={hasCredentials ? "••••••••" : "Paste private key"}
+                autoComplete="off"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="githubToken">{t("githubToken")}</Label>
+              <Input
+                id="githubToken"
+                name="githubToken"
+                type="password"
+                placeholder={hasCredentials ? "••••••••" : "ghp_xxx"}
+                autoComplete="off"
+              />
+            </div>
+            <Button type="submit" disabled={credPending}>
+              {credPending ? t("saving") : t("saveCredentials")}
+            </Button>
+            {(credState?.success || credState?.error) && (
+              <p
+                className={`text-sm ${
+                  credState?.error ? "text-destructive" : "text-green-600"
+                }`}
+              >
+                {credState?.success ?? credState?.error}
+              </p>
+            )}
+          </form>
+        </CardContent>
+      </Card>
+
       <Card>
         <CardHeader>
           <h2 className="text-lg font-medium">{t("preview")}</h2>

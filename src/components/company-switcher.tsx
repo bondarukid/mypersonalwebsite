@@ -33,18 +33,24 @@ export function CompanySwitcher({
   activeCompanyId?: string | null
 }) {
   const { isMobile } = useSidebar()
+  const fallbackCompany: CompanyForSwitcher = {
+    id: "landing",
+    name: "Landing",
+    slug: "landing",
+  }
   const active =
-    companies.find((c) => c.id === activeCompanyId) ?? companies[0]
+    companies.find((c) => c.id === activeCompanyId) ??
+    companies[0] ??
+    fallbackCompany
   const [activeCompany, setActiveCompany] = React.useState(active)
 
   React.useEffect(() => {
-    const next = companies.find((c) => c.id === activeCompanyId) ?? companies[0]
+    const next =
+      companies.find((c) => c.id === activeCompanyId) ??
+      companies[0] ??
+      fallbackCompany
     setActiveCompany(next)
   }, [activeCompanyId, companies])
-
-  if (!activeCompany) {
-    return null
-  }
 
   return (
     <SidebarMenu>
@@ -79,7 +85,7 @@ export function CompanySwitcher({
               <DropdownMenuLabel className="text-xs text-muted-foreground">
                 Companies
               </DropdownMenuLabel>
-              {companies.map((company, index) => (
+              {(companies.length > 0 ? companies : [fallbackCompany]).map((company, index) => (
                 <DropdownMenuItem
                   key={company.id}
                   onClick={() => setActiveCompany(company)}

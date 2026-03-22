@@ -1,7 +1,11 @@
 import { getTranslations } from "next-intl/server"
-import { getLandingCompany } from "@/lib/supabase/companies"
+import {
+  getUserCompanies,
+  getLandingCompany,
+} from "@/lib/supabase/companies"
 import { getAppsByCompanyId } from "@/lib/supabase/apps"
 import { getLandingStatsSnapshot } from "@/lib/supabase/landing-stats-snapshot"
+import { hasStatsCredentials } from "@/lib/supabase/stats-credentials"
 import { createClient } from "@/lib/supabase/server"
 import { LandingStatsContent } from "./landing-stats-content"
 
@@ -13,12 +17,17 @@ export default async function LandingStatsPage() {
   } = await supabase.auth.getUser()
   if (!user) return null
 
-  const landing = await getLandingCompany()
-  if (!landing) return null
+  const [userCompanies, landing] = await Promise.all([
+    getUserCompanies(user.id),
+    getLandingCompany(),
+  ])
+  const company = userCompanies[0] ?? landing
+  if (!company) return null
 
-  const [apps, snapshot] = await Promise.all([
-    getAppsByCompanyId(landing.id),
-    getLandingStatsSnapshot(landing.id),
+  const [apps, snapshot, hasCredentials] = await Promise.all([
+    getAppsByCompanyId(company.id),
+    getLandingStatsSnapshot(company.id),
+    hasStatsCredentials(company.id),
   ])
 
   return (
@@ -28,9 +37,10 @@ export default async function LandingStatsPage() {
         <p className="text-muted-foreground mt-1">{t("description")}</p>
       </div>
       <LandingStatsContent
-        companyId={landing.id}
+        companyId={company.id}
         apps={apps}
         snapshot={snapshot}
+        hasCredentials={hasCredentials}
       />
     </div>
   )

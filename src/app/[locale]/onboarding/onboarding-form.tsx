@@ -36,6 +36,16 @@ export function OnboardingForm({
           autoComplete="name"
         />
       </div>
+      <div className="space-y-2">
+        <Label htmlFor="companyName">{t("companyName")}</Label>
+        <Input
+          type="text"
+          name="companyName"
+          id="companyName"
+          placeholder={t("companyNamePlaceholder")}
+          autoComplete="organization"
+        />
+      </div>
       <Button type="submit" className="w-full" disabled={isPending}>
         {isPending ? t("saving") : t("continue")}
       </Button>

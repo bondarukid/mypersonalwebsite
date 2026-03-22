@@ -48,10 +48,11 @@ async function getGitHubStars(): Promise<number> {
 }
 
 export async function fetchGA4ActiveUsers(
-  propertyIds: string[]
+  propertyIds: string[],
+  credentials?: { gaClientEmail: string; gaPrivateKey: string }
 ): Promise<{ activeUsers: number }> {
-  const clientEmail = process.env.GA_CLIENT_EMAIL
-  const privateKey = process.env.GA_PRIVATE_KEY
+  const clientEmail = credentials?.gaClientEmail || process.env.GA_CLIENT_EMAIL
+  const privateKey = credentials?.gaPrivateKey || process.env.GA_PRIVATE_KEY
 
   if (!clientEmail || !privateKey || propertyIds.length === 0) {
     return { activeUsers: 0 }
@@ -140,13 +141,21 @@ export async function refreshLandingStatsForCompany(
     ),
   ]
 
-  const clientEmail = process.env.GA_CLIENT_EMAIL
-  const privateKey = process.env.GA_PRIVATE_KEY
-  const token = process.env.GITHUB_TOKEN
+  const dbCredentials = await import('@/lib/supabase/stats-credentials').then(
+    (m) => m.getStatsCredentials(companyId, { useAdmin: options?.useAdmin })
+  )
+  const clientEmail = dbCredentials?.gaClientEmail || process.env.GA_CLIENT_EMAIL
+  const privateKey = dbCredentials?.gaPrivateKey || process.env.GA_PRIVATE_KEY
+  const token = dbCredentials?.githubToken || process.env.GITHUB_TOKEN
+
+  const ga4Creds =
+    clientEmail && privateKey
+      ? { gaClientEmail: clientEmail, gaPrivateKey: privateKey }
+      : undefined
 
   const [ga4Result, ...githubResults] = await Promise.all([
-    gaPropertyIds.length && clientEmail && privateKey
-      ? fetchGA4ActiveUsers(gaPropertyIds)
+    gaPropertyIds.length && ga4Creds
+      ? fetchGA4ActiveUsers(gaPropertyIds, ga4Creds)
       : Promise.resolve({ activeUsers: 0 }),
     ...githubUsernames.map((u) => fetchGitHubStars(u, token)),
   ])
@@ -177,7 +186,18 @@ export async function refreshLandingStatsForCompany(
   return stats
 }
 
-async function fetchStatsImpl(): Promise<Stats> {
+function fetchStatsFromEnv(): Promise<Stats> {
+  return Promise.all([
+    getGitHubStars(),
+    getGA4Stats(),
+  ]).then(([stars, ga4]) => ({
+    stars: stars || FALLBACK.stars,
+    activeUsers: ga4.activeUsers || FALLBACK.activeUsers,
+    poweredApps: ga4.poweredApps || FALLBACK.poweredApps,
+  }))
+}
+
+export async function getStats(): Promise<Stats> {
   const { getLandingCompany } = await import(
     '@/lib/supabase/companies'
   )
@@ -201,22 +221,9 @@ async function fetchStatsImpl(): Promise<Stats> {
     }
   }
 
-  const [stars, ga4] = await Promise.all([
-    getGitHubStars(),
-    getGA4Stats(),
-  ])
-
-  return {
-    stars: stars || FALLBACK.stars,
-    activeUsers: ga4.activeUsers || FALLBACK.activeUsers,
-    poweredApps: ga4.poweredApps || FALLBACK.poweredApps,
-  }
-}
-
-export async function getStats(): Promise<Stats> {
   return unstable_cache(
-    fetchStatsImpl,
-    ['stats-github-ga4'],
+    fetchStatsFromEnv,
+    ['stats-github-ga4-env'],
     { revalidate: 3600 }
   )()
 }

@@ -3,7 +3,7 @@
 import { redirect } from "@/i18n/routing"
 import { createClient } from "@/lib/supabase/server"
 import { getTranslations } from "next-intl/server"
-import { ensureUserInLanding } from "@/lib/supabase/companies"
+import { createCompanyForUser } from "@/lib/supabase/companies"
 import { upsertProfile } from "@/lib/supabase/profiles"
 import { routing } from "@/i18n/routing"
 import { headers } from "next/headers"
@@ -13,10 +13,15 @@ export async function completeOnboardingAction(
   formData: FormData
 ): Promise<{ error?: string } | null> {
   const displayName = (formData.get("displayName") as string)?.trim()
+  const companyName = (formData.get("companyName") as string)?.trim()
   const t = await getTranslations("onboarding")
 
   if (!displayName) {
     return { error: t("displayNameRequired") }
+  }
+
+  if (!companyName || companyName.length < 2) {
+    return { error: t("companyNameRequired") }
   }
 
   const supabase = await createClient()
@@ -33,7 +38,10 @@ export async function completeOnboardingAction(
     return { error: profileError }
   }
 
-  await ensureUserInLanding(user.id)
+  const { error: companyError } = await createCompanyForUser(user.id, companyName)
+  if (companyError) {
+    return { error: companyError }
+  }
 
   const headersList = await headers()
   const locale =
