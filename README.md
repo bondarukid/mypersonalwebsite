@@ -1,5 +1,7 @@
 # Portfolio Website
 
+**Repository**: [https://github.com/bondarukid/mypersonalwebsite](https://github.com/bondarukid/mypersonalwebsite)
+
 A personal portfolio site built with Next.js 16, featuring a public marketing landing page and an authenticated dashboard for content management.
 
 ## Features
@@ -34,7 +36,7 @@ A personal portfolio site built with Next.js 16, featuring a public marketing la
 ### Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/bondarukid/mypersonalwebsite.git
 cd mypersonalwebsite
 npm install
 ```
