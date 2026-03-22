@@ -5,8 +5,11 @@ import StatsSection from "@/components/stats"
 import TestimonialsSection from "@/components/testimonials"
 import FooterSection from "@/components/footer"
 import FAQsThree from "@/components/faqs-3"
+import { getSocialLinks } from "@/lib/supabase/social-links"
 
-export default function Home() {
+export default async function Home() {
+  const socialLinks = await getSocialLinks()
+
   return (
     <div className="">
       <HeroSection />
@@ -15,7 +18,7 @@ export default function Home() {
       <StatsSection />
       <TestimonialsSection />
       <FAQsThree />
-      <FooterSection />
+      <FooterSection socialLinks={socialLinks} />
     </div>
   )
 }

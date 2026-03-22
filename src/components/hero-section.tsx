@@ -6,16 +6,11 @@ import Image from 'next/image'
 import { getHeroImageSrc } from '@/config/site'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
-import { Spotify } from '@/components/ui/svgs/spotify'
 import { VercelFull } from '@/components/ui/svgs/vercel'
 import { SupabaseFull } from '@/components/ui/svgs/supabase'
-import { Hulu } from '@/components/ui/svgs/hulu'
-import { Bolt } from '@/components/ui/svgs/bolt'
 import { FirebaseFull } from '@/components/ui/svgs/firebase'
-import { Beacon } from '@/components/ui/svgs/beacon'
 import { Claude } from '@/components/ui/svgs/claude'
 import { Figma } from '@/components/ui/svgs/figma'
-import { Cisco } from '@/components/ui/svgs/cisco'
 
 export default async function HeroSection() {
     const t = await getTranslations('hero')
@@ -60,28 +55,12 @@ export default async function HeroSection() {
                                     speedOnHover={20}
                                     speed={40}
                                     gap={112}>
-                                    <Bolt
-                                        height={22}
-                                        width={56}
-                                    />
                                     <VercelFull
                                         height={22}
                                         width={84}
                                     />
                                     <SupabaseFull className="h-6" />
-                                    <Hulu
-                                        height={18}
-                                        width={56}
-                                    />
-                                    <Spotify
-                                        height={24}
-                                        width={80}
-                                    />
                                     <FirebaseFull
-                                        height={24}
-                                        width={80}
-                                    />
-                                    <Beacon
                                         height={24}
                                         width={80}
                                     />
@@ -92,10 +71,6 @@ export default async function HeroSection() {
                                     <Figma
                                         height={24}
                                         width={24}
-                                    />
-                                    <Cisco
-                                        height={30}
-                                        width={60}
                                     />
                                 </InfiniteSlider>
 
