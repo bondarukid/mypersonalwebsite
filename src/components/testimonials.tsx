@@ -20,7 +20,7 @@ export default async function TestimonialsSection() {
                                     width="400"
                                     loading="lazy"
                                 />
-                                <AvatarFallback>ST</AvatarFallback>
+                                <AvatarFallback>AM</AvatarFallback>
                             </Avatar>
 
                             <div className="space-y-1 border-l pl-6">
