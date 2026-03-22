@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter as useNextRouter } from "next/navigation"
 import { useLocale } from "next-intl"
 import { routing, usePathname, useRouter } from "@/i18n/routing"
 import {
@@ -31,6 +32,7 @@ const localeConfig: Record<
 export function LocaleSwitcher() {
   const locale = useLocale()
   const router = useRouter()
+  const nextRouter = useNextRouter()
   const pathname = usePathname()
 
   const handleChange = (value: string | null) => {
@@ -40,13 +42,21 @@ export function LocaleSwitcher() {
         routing.locales
       )
       router.replace(pathWithoutLocale, { locale: value })
+      nextRouter.refresh()
     }
   }
 
+  const current = localeConfig[locale] ?? { label: locale, flag: "" }
+
   return (
-    <Select value={locale} onValueChange={handleChange}>
+    <Select key={locale} value={locale} onValueChange={handleChange}>
       <SelectTrigger className="w-[120px] h-8">
-        <SelectValue />
+        <SelectValue>
+          <span className="flex items-center gap-2">
+            {current.flag && <span aria-hidden>{current.flag}</span>}
+            {current.label}
+          </span>
+        </SelectValue>
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="en">

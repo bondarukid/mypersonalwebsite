@@ -3,6 +3,7 @@ import { Link } from '@/i18n/routing'
 import { getTranslations } from 'next-intl/server'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import { getHeroImageSrc } from '@/config/site'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 import { Spotify } from '@/components/ui/svgs/spotify'
@@ -36,8 +37,8 @@ export default async function HeroSection() {
                             <div className="lg:w-166 @max-lg:-translate-x-20 not-dark:invert mask-radial-from-35% mask-radial-to-70% max-lg:size-120 max-lg:order-first max-lg:mx-auto max-lg:-mb-20 lg:absolute lg:inset-0 lg:-inset-y-56 lg:ml-auto lg:translate-x-28">
                                 <div className="z-1 absolute inset-0 bg-zinc-950 opacity-80 mix-blend-overlay" />
                                 <Image
-                                    className="size-full object-cover object-right grayscale"
-                                    src="https://images.unsplash.com/photo-1586173806725-797f4d632f5d?q=80&w=2388&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                    className="size-full object-cover object-right"
+                                    src={getHeroImageSrc()}
                                     alt={t('imageAlt')}
                                     height={2000}
                                     width={1500}
