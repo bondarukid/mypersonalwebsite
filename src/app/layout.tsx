@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { headers } from "next/headers"
 import { Geist, Geist_Mono } from "next/font/google"
+import { NextIntlClientProvider } from "next-intl"
 import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { AnalyticsInit } from "@/features/analytics/components/analytics-init"
@@ -38,6 +39,7 @@ export default async function RootLayout({
   const headersList = await headers()
   const locale =
     headersList.get("x-next-intl-locale") ?? routing.defaultLocale
+  const messages = (await import(`../../messages/${locale}.json`)).default
 
   return (
     <html
@@ -46,18 +48,20 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AnalyticsInit>
-            <TooltipProvider>
-              <div className="flex flex-1 flex-col">{children}</div>
-            </TooltipProvider>
-          </AnalyticsInit>
-        </ThemeProvider>
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <AnalyticsInit>
+              <TooltipProvider>
+                <div className="flex flex-1 flex-col">{children}</div>
+              </TooltipProvider>
+            </AnalyticsInit>
+          </ThemeProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   )
