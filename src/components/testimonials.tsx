@@ -6,7 +6,7 @@ export default function TestimonialsSection() {
             <div className="mx-auto max-w-5xl px-6">
                 <div className="mx-auto max-w-2xl text-center">
                     <blockquote>
-                        <p className="text-lg font-medium sm:text-xl md:text-3xl">Working with Ivan Bondaruk has been like unlocking a secret design superpower. It&apos;s the perfect fusion of simplicity and versatility, enabling us to create UIs that are as stunning as they are user-friendly.</p>
+                        <p className="text-lg font-medium sm:text-xl md:text-3xl">Using TailsUI has been like unlocking a secret design superpower. It&apos;s the perfect fusion of simplicity and versatility, enabling us to create UIs that are as stunning as they are user-friendly.</p>
 
                         <div className="mt-12 flex items-center justify-center gap-6">
                             <Avatar className="size-12">

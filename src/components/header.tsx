@@ -2,17 +2,17 @@
 import Link from 'next/link'
 import { Logo } from '@/components/logo'
 import { Menu, X } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import React from 'react'
 
 const menuItems = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Professional', href: '/professional' },
-    { name: 'Projects', href: '/projects' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Features', href: '#link' },
+    { name: 'Solution', href: '#link' },
+    { name: 'Pricing', href: '#link' },
+    { name: 'About', href: '#link' },
 ]
 
-export const SiteHeader = () => {
+export const HeroHeader = () => {
     const [menuState, setMenuState] = React.useState(false)
     return (
         <header>
@@ -65,6 +65,10 @@ export const SiteHeader = () => {
                                         </li>
                                     ))}
                                 </ul>
+                            </div>
+                            <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                                <Button variant="outline" size="sm" render={<Link href="#" />} nativeButton={false}><span>Login</span></Button>
+                                <Button size="sm" render={<Link href="#" />} nativeButton={false}><span>Sign Up</span></Button>
                             </div>
                         </div>
                     </div>
