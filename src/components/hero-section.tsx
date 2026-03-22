@@ -36,9 +36,10 @@ export default function HeroSection() {
                                     className="size-full object-cover object-right grayscale"
                                     src="https://images.unsplash.com/photo-1586173806725-797f4d632f5d?q=80&w=2388&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                     alt="Abstract Object"
-                                    height="2000"
-                                    width="1500"
+                                    height={2000}
+                                    width={1500}
                                     sizes="(max-width: 768px) 100vw, 50vw"
+                                    priority
                                 />
                             </div>
                         </div>
