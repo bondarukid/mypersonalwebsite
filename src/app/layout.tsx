@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/theme-provider";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { SiteHeader } from "@/components/header";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,22 +25,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <TooltipProvider>
-            <SiteHeader />
-            <main className="flex flex-1 flex-col pt-14">{children}</main>
-          </TooltipProvider>
-        </ThemeProvider>
-      </body>
     </html>
   );
 }
