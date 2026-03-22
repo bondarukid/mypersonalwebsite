@@ -1,9 +1,8 @@
 "use server"
 
-import { redirect } from "@/i18n/routing"
 import { createClient } from "@/lib/supabase/server"
 import { getTranslations } from "next-intl/server"
-import { routing } from "@/i18n/routing"
+import { checkWhitelistAndRedirect } from "@/app/[locale]/login/actions"
 
 export async function signUpAction(
   _prevState: { error?: string; success?: string } | null,
@@ -20,7 +19,7 @@ export async function signUpAction(
   }
 
   const supabase = await createClient()
-  const { error: signUpError } = await supabase.auth.signUp({
+  const { data, error: signUpError } = await supabase.auth.signUp({
     email: email.trim(),
     password,
     options: {
@@ -33,6 +32,17 @@ export async function signUpAction(
 
   if (signUpError) {
     return { error: signUpError.message }
+  }
+
+  // When email confirmation is disabled in Supabase, user gets a session immediately.
+  // Redirect to dashboard (with whitelist check) instead of showing "check email".
+  if (data.session) {
+    const result = await checkWhitelistAndRedirect()
+    if (result && !result.ok) {
+      await supabase.auth.signOut()
+      return { error: result.error ?? "Access denied." }
+    }
+    return null
   }
 
   const t = await getTranslations("signUp")
