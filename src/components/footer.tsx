@@ -5,113 +5,44 @@ const links = [
     {
         group: 'Product',
         items: [
-            {
-                title: 'Features',
-                href: '#',
-            },
-            {
-                title: 'Solution',
-                href: '#',
-            },
-            {
-                title: 'Customers',
-                href: '#',
-            },
-            {
-                title: 'Pricing',
-                href: '#',
-            },
-            {
-                title: 'Help',
-                href: '#',
-            },
-            {
-                title: 'About',
-                href: '#',
-            },
+            { title: 'Features', href: '#' },
+            { title: 'Solution', href: '#' },
+            { title: 'Customers', href: '#' },
+            { title: 'Pricing', href: '#' },
+            { title: 'Help', href: '#' },
+            { title: 'About', href: '/about' },
         ],
     },
     {
         group: 'Solution',
         items: [
-            {
-                title: 'Startup',
-                href: '#',
-            },
-            {
-                title: 'Freelancers',
-                href: '#',
-            },
-            {
-                title: 'Organizations',
-                href: '#',
-            },
-            {
-                title: 'Students',
-                href: '#',
-            },
-            {
-                title: 'Collaboration',
-                href: '#',
-            },
-            {
-                title: 'Design',
-                href: '#',
-            },
-            {
-                title: 'Management',
-                href: '#',
-            },
+            { title: 'Startup', href: '#' },
+            { title: 'Freelancers', href: '#' },
+            { title: 'Organizations', href: '#' },
+            { title: 'Students', href: '#' },
+            { title: 'Collaboration', href: '#' },
+            { title: 'Design', href: '#' },
+            { title: 'Management', href: '#' },
         ],
     },
     {
         group: 'Company',
         items: [
-            {
-                title: 'About',
-                href: '#',
-            },
-            {
-                title: 'Careers',
-                href: '#',
-            },
-            {
-                title: 'Blog',
-                href: '#',
-            },
-            {
-                title: 'Press',
-                href: '#',
-            },
-            {
-                title: 'Contact',
-                href: '#',
-            },
-            {
-                title: 'Help',
-                href: '#',
-            },
+            { title: 'About', href: '/about' },
+            { title: 'Careers', href: '#' },
+            { title: 'Blog', href: '#' },
+            { title: 'Press', href: '#' },
+            { title: 'Contact', href: '/contact' },
+            { title: 'Help', href: '#' },
         ],
     },
     {
         group: 'Legal',
         items: [
-            {
-                title: 'Licence',
-                href: '#',
-            },
-            {
-                title: 'Privacy',
-                href: '#',
-            },
-            {
-                title: 'Cookies',
-                href: '#',
-            },
-            {
-                title: 'Security',
-                href: '#',
-            },
+            { title: 'Licence', href: '#' },
+            { title: 'Privacy', href: '#' },
+            { title: 'Cookies', href: '#' },
+            { title: 'Security', href: '#' },
         ],
     },
 ]
@@ -149,7 +80,7 @@ export default function FooterSection() {
                     </div>
                 </div>
                 <div className="mt-12 flex flex-wrap items-end justify-between gap-6 border-t py-6">
-                    <span className="text-muted-foreground order-last block text-center text-sm md:order-first">© {2026} Tailark, All rights reserved</span>
+                    <span className="text-muted-foreground order-last block text-center text-sm md:order-first">© {2026} Ivan Bondaruk, All rights reserved</span>
                     <div className="order-first flex flex-wrap justify-center gap-6 text-sm md:order-last">
                         <Link
                             href="#"
