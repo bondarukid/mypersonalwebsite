@@ -14,7 +14,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, Share2Icon, BarChart3Icon, QuoteIcon } from "lucide-react"
+import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon, Share2Icon, BarChart3Icon, QuoteIcon, AwardIcon } from "lucide-react"
 
 export type CompanyForSidebar = {
   id: string
@@ -101,6 +101,12 @@ export function AppSidebar({
         title: t("testimonials"),
         url: "/dashboard/testimonials",
         icon: <QuoteIcon />,
+        items: [],
+      },
+      {
+        title: t("certificates"),
+        url: "/dashboard/certificates",
+        icon: <AwardIcon />,
         items: [],
       },
     ],

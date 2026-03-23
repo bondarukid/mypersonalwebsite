@@ -253,6 +253,7 @@
     "team": "Team",
     "social": "Social",
     "testimonials": "Testimonials",
+    "certificates": "Certificates",
     "landingStats": "Landing Stats",
     "billing": "Billing",
     "limits": "Limits",
@@ -307,6 +308,31 @@
       "previewHint": "How it appears on the landing page.",
       "translation": "Your translation"
     },
+    "certificatesPage": {
+      "title": "Certificates",
+      "description": "Manage your certificates displayed on the Professional page. Add, edit, or delete certificates with localized names and descriptions.",
+      "addCertificate": "Add certificate",
+      "editCertificate": "Edit certificate",
+      "noCertificates": "No certificates yet. Add your first certificate.",
+      "name": "Name",
+      "namePlaceholder": "Certificate name…",
+      "description": "Description",
+      "descriptionPlaceholder": "Course or certification description…",
+      "dateObtained": "Date obtained",
+      "uploadImage": "Upload image",
+      "uploadImageHint": "Leave empty to keep the current image.",
+      "dragToReplace": "Drag and drop or click to replace",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "created": "Certificate added.",
+      "saved": "Changes saved.",
+      "deleted": "Certificate deleted.",
+      "imageRequired": "Please upload an image.",
+      "invalidData": "Invalid data. Please check all required fields.",
+      "invalidDate": "Please enter a valid date.",
+      "unexpectedError": "Something went wrong. Please try again."
+    },
     "landingStatsPage": {
       "title": "Landing Stats",
       "description": "Manage apps and stats displayed on your landing page.",
@@ -353,6 +379,39 @@
       "focusDocuments": "Focus Documents",
       "addSection": "Add Section",
       "selectValue": "Select a value"
+    }
+  },
+  "professional": {
+    "experience": {
+      "heading": "Experience"
+    },
+    "experiences": {
+      "1": {
+        "title": "Senior Software Engineer",
+        "description": "Leading development of scalable web applications using React, TypeScript, and Node.js. Mentoring developers and implementing best practices."
+      },
+      "2": {
+        "title": "Full Stack Developer",
+        "description": "Built and maintained client websites and e-commerce platforms. Collaborated with design teams on pixel-perfect UI/UX."
+      },
+      "3": {
+        "title": "Frontend Developer",
+        "description": "Developed responsive web applications using modern JavaScript frameworks. Optimized performance and accessibility."
+      },
+      "4": {
+        "title": "Junior Developer",
+        "description": "Assisted in building web applications and learning modern development practices. Contributed to team projects."
+      }
+    },
+    "intro": {
+      "title": "Experience & Certifications",
+      "description": "Below you can find my professional certifications and work experience."
+    },
+    "certificates": {
+      "heading": "Certificates",
+      "dateObtained": "Date obtained",
+      "emptyTitle": "No certificates yet",
+      "emptyDescription": "Certificates you add from the dashboard will appear here."
     }
   },
   "metadata": {

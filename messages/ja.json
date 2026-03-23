@@ -253,6 +253,7 @@
     "team": "チーム",
     "social": "ソーシャル",
     "testimonials": "お客様の声",
+    "certificates": "証明書",
     "landingStats": "ランディング統計",
     "billing": "請求",
     "limits": "制限",
@@ -307,6 +308,31 @@
       "previewHint": "ランディングページでの表示例。",
       "translation": "翻訳"
     },
+    "certificatesPage": {
+      "title": "証明書",
+      "description": "プロフェッショナルページに表示する証明書を管理します。ローカライズされた名前と説明で追加、編集、削除ができます。",
+      "addCertificate": "証明書を追加",
+      "editCertificate": "証明書を編集",
+      "noCertificates": "証明書がありません。最初の証明書を追加してください。",
+      "name": "名前",
+      "namePlaceholder": "証明書名…",
+      "description": "説明",
+      "descriptionPlaceholder": "コースまたは認定の説明…",
+      "dateObtained": "取得日",
+      "uploadImage": "画像をアップロード",
+      "uploadImageHint": "現在の画像を維持する場合は空のままにしてください。",
+      "dragToReplace": "ドラッグ＆ドロップまたはクリックして置き換え",
+      "save": "保存",
+      "cancel": "キャンセル",
+      "delete": "削除",
+      "created": "証明書を追加しました。",
+      "saved": "保存しました。",
+      "deleted": "証明書を削除しました。",
+      "imageRequired": "画像をアップロードしてください。",
+      "invalidData": "無効なデータです。必須項目を確認してください。",
+      "invalidDate": "有効な日付を入力してください。",
+      "unexpectedError": "問題が発生しました。もう一度お試しください。"
+    },
     "landingStatsPage": {
       "title": "ランディング統計",
       "description": "ランディングページに表示するアプリと統計を管理します。",
@@ -353,6 +379,39 @@
       "focusDocuments": "重点書類",
       "addSection": "セクションを追加",
       "selectValue": "値を選択"
+    }
+  },
+  "professional": {
+    "experience": {
+      "heading": "経験"
+    },
+    "experiences": {
+      "1": {
+        "title": "シニアソフトウェアエンジニア",
+        "description": "React、TypeScript、Node.jsを使用したスケーラブルなWebアプリケーションの開発をリード。開発者のメンタリングとベストプラクティスの実装。"
+      },
+      "2": {
+        "title": "フルスタックデベロッパー",
+        "description": "クライアントサイトとEコマースプラットフォームの構築・保守。デザインチームと協力してピクセルパーフェクトなUI/UXを実装。"
+      },
+      "3": {
+        "title": "フロントエンドデベロッパー",
+        "description": "モダンなJavaScriptフレームワークを使用したレスポンシブWebアプリケーションの開発。パフォーマンスとアクセシビリティの最適化。"
+      },
+      "4": {
+        "title": "ジュニアデベロッパー",
+        "description": "Webアプリケーションの構築とモダン開発手法の習得に貢献。チームプロジェクトへの参加。"
+      }
+    },
+    "intro": {
+      "title": "経験と資格",
+      "description": "以下に、専門資格と職務経験をご覧いただけます。"
+    },
+    "certificates": {
+      "heading": "証明書",
+      "dateObtained": "取得日",
+      "emptyTitle": "証明書はまだありません",
+      "emptyDescription": "ダッシュボードから追加した証明書がここに表示されます。"
     }
   },
   "metadata": {
