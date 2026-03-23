@@ -1,14 +1,18 @@
 import type { Metadata } from "next"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
 import { Link } from "@/i18n/routing"
 import { ChangePreferencesButton } from "./change-preferences-button"
+import { createMetadata } from "@/lib/seo/metadata"
 
 export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("cookies.policy")
-  return {
-    title: t("title"),
-    description: t("description"),
-  }
+  const locale = await getLocale()
+  const t = await getTranslations("metadata")
+  return createMetadata({
+    title: t("cookiesTitle"),
+    description: t("cookiesDescription"),
+    path: "cookies",
+    locale,
+  })
 }
 
 export default async function CookiesPage() {

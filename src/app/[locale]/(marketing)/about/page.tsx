@@ -1,12 +1,16 @@
 import type { Metadata } from "next"
-import { getTranslations } from "next-intl/server"
+import { getLocale, getTranslations } from "next-intl/server"
+import { createMetadata } from "@/lib/seo/metadata"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale()
   const t = await getTranslations("metadata")
-  return {
+  return createMetadata({
     title: t("aboutTitle"),
     description: t("aboutDescription"),
-  }
+    path: "about",
+    locale,
+  })
 }
 
 export default async function AboutPage() {

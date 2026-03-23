@@ -4,13 +4,17 @@ import ProfessionalIntroSection from "@/components/professional-intro-section"
 import CertificatesSection from "@/components/certificates-section"
 import ExperienceSection from "@/components/experience-section"
 import { getCertificatesForLocale } from "@/lib/supabase/certificates"
+import { createMetadata } from "@/lib/seo/metadata"
 
 export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getLocale()
   const t = await getTranslations("metadata")
-  return {
+  return createMetadata({
     title: t("professionalTitle"),
     description: t("professionalDescription"),
-  }
+    path: "professional",
+    locale,
+  })
 }
 
 export default async function ProfessionalPage() {

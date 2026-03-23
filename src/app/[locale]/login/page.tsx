@@ -1,6 +1,11 @@
+import type { Metadata } from "next"
 import { redirect } from "@/i18n/routing"
 import { createClient } from "@/lib/supabase/server"
 import { LoginForm } from "./login-form"
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 export default async function LoginPage({
   params,

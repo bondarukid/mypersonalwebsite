@@ -415,17 +415,17 @@
     }
   },
   "metadata": {
-    "defaultTitle": "Ivan Bondaruk — ソフトウェア開発者",
-    "defaultDescription": "ソフトウェア開発者Ivan Bondarukの個人サイトとポートフォリオ。",
-    "aboutTitle": "について",
-    "aboutDescription": "についてのページ — コンテンツは近日公開予定。",
-    "contactTitle": "お問い合わせ",
-    "contactDescription": "お問い合わせページ — コンテンツは近日公開予定。",
-    "professionalTitle": "プロフェッショナル",
-    "professionalDescription": "プロフェッショナルページ — コンテンツは近日公開予定。",
-    "projectsTitle": "プロジェクト",
-    "projectsDescription": "プロジェクトページ — コンテンツは近日公開予定。",
-    "cookiesTitle": "Cookieポリシー",
-    "cookiesDescription": "本サイトで使用するCookieについての情報。"
+    "defaultTitle": "Ivan Bondaruk — フルスタック開発者・Webエンジニア",
+    "defaultDescription": "モダンなWebアプリを構築するフルスタック開発者。React、Next.js、TypeScript。プロジェクト、スキル、資格、連絡先。",
+    "aboutTitle": "Ivan Bondarukについて — 開発者・クリエイティブプロフェッショナル",
+    "aboutDescription": "Ivan Bondarukの経歴、専門性、スケーラブルなWebソリューション構築アプローチをご紹介します。",
+    "contactTitle": "Ivan Bondarukへのお問い合わせ — 開発者を雇う",
+    "contactDescription": "コラボレーションのご依頼はお気軽に。フリーランスおよび正社員の機会。一緒に何か作りましょう。",
+    "professionalTitle": "Ivan Bondaruk — プロフェッショナルプロフィール・経験",
+    "professionalDescription": "資格、実務経験、プロフェッショナルスキル。フルスタック開発、モダンフレームワーク、クリーンなソリューション。",
+    "projectsTitle": "Ivan Bondarukのプロジェクト — Web・モバイル開発",
+    "projectsDescription": "Ivan BondarukによるWebアプリ、モバイルソリューション、オープンソースプロジェクトのポートフォリオ。React、Next.js。",
+    "cookiesTitle": "Cookieポリシー — Ivan Bondaruk",
+    "cookiesDescription": "本サイトで使用するCookie及び設定の管理方法について。必須CookieとアナリティクスCookie。"
   }
 }

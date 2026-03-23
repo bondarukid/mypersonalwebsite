@@ -415,17 +415,17 @@
     }
   },
   "metadata": {
-    "defaultTitle": "Ivan Bondaruk — Software Developer",
-    "defaultDescription": "Personal website and portfolio of Ivan Bondaruk, software developer.",
-    "aboutTitle": "About",
-    "aboutDescription": "About page — content coming soon.",
-    "contactTitle": "Contact",
-    "contactDescription": "Contact page — content coming soon.",
-    "professionalTitle": "Professional",
-    "professionalDescription": "Professional page — content coming soon.",
-    "projectsTitle": "Projects",
-    "projectsDescription": "Projects page — content coming soon.",
-    "cookiesTitle": "Cookie Policy",
-    "cookiesDescription": "Information about cookies used on this site and how to manage your preferences."
+    "defaultTitle": "Ivan Bondaruk — Full-Stack Developer & Web Engineer",
+    "defaultDescription": "Full-stack developer building modern web apps. React, Next.js, TypeScript. Browse projects, skills, certificates & contact.",
+    "aboutTitle": "About Ivan Bondaruk — Developer & Creative Professional",
+    "aboutDescription": "Learn about Ivan Bondaruk: background, expertise, and approach to building scalable web solutions.",
+    "contactTitle": "Contact Ivan Bondaruk — Hire a Developer",
+    "contactDescription": "Get in touch for collaboration. Freelance and full-time opportunities. Let's build something great together.",
+    "professionalTitle": "Ivan Bondaruk — Professional Profile & Experience",
+    "professionalDescription": "View certificates, work experience, and professional skills. Full-stack development, modern frameworks, and clean solutions.",
+    "projectsTitle": "Ivan Bondaruk's Projects — Web & Mobile Development",
+    "projectsDescription": "Portfolio of web apps, mobile solutions, and open-source projects by Ivan Bondaruk. React, Next.js, TypeScript.",
+    "cookiesTitle": "Cookie Policy — Ivan Bondaruk",
+    "cookiesDescription": "Information about cookies used on this site and how to manage your preferences. Essential and analytics cookies."
   }
 }

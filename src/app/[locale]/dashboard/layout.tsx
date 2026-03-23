@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { redirect } from "@/i18n/routing"
 import { createClient } from "@/lib/supabase/server"
 import {
@@ -8,6 +9,10 @@ import { getProfileByUserId } from "@/lib/supabase/profiles"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 export default async function DashboardLayout({
   children,

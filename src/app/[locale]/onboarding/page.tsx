@@ -1,9 +1,14 @@
+import type { Metadata } from "next"
 import { redirect } from "@/i18n/routing"
 import { createClient } from "@/lib/supabase/server"
 import { OnboardingForm } from "./onboarding-form"
 import { getTranslations } from "next-intl/server"
 import { LogoIcon } from "@/components/logo"
 import { Link } from "@/i18n/routing"
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+}
 
 export default async function OnboardingPage({
   params,

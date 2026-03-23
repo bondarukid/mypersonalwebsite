@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { AnalyticsInit } from "@/features/analytics/components/analytics-init"
 import { routing } from "@/i18n/routing"
+import { SITE_URL } from "@/config/seo"
 import "./globals.css"
 
 const geistSans = Geist({
@@ -26,6 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const metadata = (messages as { metadata?: { defaultTitle?: string; defaultDescription?: string } })
     .metadata
   return {
+    metadataBase: new URL(SITE_URL),
     title: metadata?.defaultTitle ?? "Ivan Bondaruk",
     description: metadata?.defaultDescription ?? "Personal website",
   }
