@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from "next-intl/server"
 import ProfessionalIntroSection from "@/components/professional-intro-section"
 import CertificatesSection from "@/components/certificates-section"
 import ExperienceSection from "@/components/experience-section"
+import { JsonLdCertificates } from "@/components/seo/json-ld-certificates"
 import { getCertificatesForLocale } from "@/lib/supabase/certificates"
 import { createMetadata } from "@/lib/seo/metadata"
 
@@ -24,6 +25,7 @@ export default async function ProfessionalPage() {
 
   return (
     <div className="mx-auto flex flex-1 flex-col px-6 py-16 md:max-w-4xl">
+      <JsonLdCertificates certificates={certificates} />
       <ProfessionalIntroSection />
       <CertificatesSection certificates={certificates} />
       <ExperienceSection />
