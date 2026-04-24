@@ -1,3 +1,20 @@
+/*
+ * Copyright (C) 2026 Ivan Bondaruk (https://bondarukid.com)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { createClient } from "./server"
 
 export type Company = {
@@ -39,16 +56,61 @@ export async function getUserCompanies(
   return (companies ?? []) as Company[]
 }
 
+/**
+ * Resolves the Landing site company (slug `landing`).
+ * If the row is missing (e.g. migrations not applied on remote), calls RPC
+ * `ensure_landing_company` (idempotent insert), then retries SELECT.
+ * Falls back to membership-based lookup for dashboard users.
+ */
 export async function getLandingCompany(): Promise<Company | null> {
   const supabase = await createClient()
-  const { data, error } = await supabase
+
+  const selectLanding = async () => {
+    const { data, error } = await supabase
+      .from("companies")
+      .select("*")
+      .eq("slug", "landing")
+      .maybeSingle()
+    if (error || !data) return null
+    return data as Company
+  }
+
+  let row = await selectLanding()
+  if (row) return row
+
+  const { error: rpcError } = await supabase.rpc("ensure_landing_company")
+  if (!rpcError) {
+    row = await selectLanding()
+    if (row) return row
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data: memberships } = await supabase
+    .from("company_members")
+    .select("company_id")
+    .eq("user_id", user.id)
+
+  const ids = memberships?.map((m) => m.company_id) ?? []
+  if (ids.length === 0) return null
+
+  const { data: byMembership } = await supabase
     .from("companies")
     .select("*")
     .eq("slug", "landing")
-    .single()
+    .in("id", ids)
+    .maybeSingle()
 
-  if (error || !data) return null
-  return data as Company
+  return (byMembership as Company | null) ?? null
+}
+
+/** Returns the landing site company UUID, or null if missing / inaccessible. */
+export async function getLandingCompanyId(): Promise<string | null> {
+  const company = await getLandingCompany()
+  return company?.id ?? null
 }
 
 function slugify(name: string): string {
@@ -111,23 +173,46 @@ export async function createCompanyForUser(
   return { company: company as Company }
 }
 
-export async function ensureUserInLanding(userId: string): Promise<void> {
+/**
+ * Ensures the Landing company row exists (RPC), resolves it, and adds the user
+ * to company_members for that company. Required before RLS allows reading or
+ * inserting landing-scoped rows (e.g. faq_sets with company_id = landing).
+ */
+export async function ensureUserInLanding(
+  userId: string
+): Promise<{ error?: string }> {
   const supabase = await createClient()
+
+  const { error: rpcErr } = await supabase.rpc("ensure_landing_company")
+  if (rpcErr) {
+    // Continue: getLandingCompany may still work if the row already exists
+  }
+
   const landing = await getLandingCompany()
-  if (!landing) return
+  if (!landing) {
+    return {
+      error:
+        "Landing company is missing. Apply migrations (ensure_landing_company RPC) or insert companies row slug=landing.",
+    }
+  }
 
   const { data: existing } = await supabase
     .from("company_members")
     .select("id")
     .eq("company_id", landing.id)
     .eq("user_id", userId)
-    .single()
+    .maybeSingle()
 
-  if (existing) return
+  if (existing) return {}
 
-  await supabase.from("company_members").insert({
+  const { error: insertErr } = await supabase.from("company_members").insert({
     company_id: landing.id,
     user_id: userId,
     role: "member",
   })
+
+  if (insertErr) {
+    return { error: insertErr.message }
+  }
+  return {}
 }

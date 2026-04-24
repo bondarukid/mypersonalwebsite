@@ -5,8 +5,10 @@ import {
 } from "@/lib/supabase/companies"
 import { getAppsByCompanyId } from "@/lib/supabase/apps"
 import { getLandingStatsSnapshot } from "@/lib/supabase/landing-stats-snapshot"
+import { getLandingStatsContent } from "@/lib/supabase/landing-stats-content"
 import { hasStatsCredentials } from "@/lib/supabase/stats-credentials"
 import { createClient } from "@/lib/supabase/server"
+import { getStatsForLandingDisplay } from "@/lib/stats"
 import { LandingStatsContent } from "./landing-stats-content"
 
 export default async function LandingStatsPage() {
@@ -24,11 +26,15 @@ export default async function LandingStatsPage() {
   const company = userCompanies[0] ?? landing
   if (!company) return null
 
-  const [apps, snapshot, hasCredentials] = await Promise.all([
+  const [apps, snapshot, hasCredentials, statsContent] = await Promise.all([
     getAppsByCompanyId(company.id),
     getLandingStatsSnapshot(company.id),
     hasStatsCredentials(company.id),
+    landing
+      ? getLandingStatsContent(landing.id)
+      : Promise.resolve(null),
   ])
+  const displayStatsForSection = await getStatsForLandingDisplay(statsContent)
 
   return (
     <div className="flex flex-col gap-6 py-4 px-4 md:py-6 md:px-6">
@@ -41,6 +47,8 @@ export default async function LandingStatsPage() {
         apps={apps}
         snapshot={snapshot}
         hasCredentials={hasCredentials}
+        statsContent={statsContent}
+        displayStatsForSection={displayStatsForSection}
       />
     </div>
   )

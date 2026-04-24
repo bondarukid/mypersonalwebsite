@@ -1,38 +1,50 @@
 "use client"
 
 import { useActionState } from "react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import {
   syncStatsAction,
   addAppAction,
   updateAppAction,
   saveCredentialsAction,
 } from "./actions"
+import { formatActiveUsers } from "@/lib/stats-display"
 import type { App } from "@/lib/supabase/apps"
 import type { LandingStatsSnapshot } from "@/lib/supabase/landing-stats-snapshot"
+import type { LandingStatsContentRow } from "@/lib/supabase/landing-stats-content-i18n"
+import { getLocalizedLandingStatsContent } from "@/lib/supabase/landing-stats-content-i18n"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-
-function formatActiveUsers(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1e6).toFixed(1)} Million`
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`
-  return new Intl.NumberFormat().format(n)
-}
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { LandingStatsSectionEditor } from "./landing-stats-section-editor"
+import type { Stats } from "@/lib/stats"
 
 export function LandingStatsContent({
   companyId,
   apps,
   snapshot,
   hasCredentials,
+  statsContent,
+  displayStatsForSection,
 }: {
   companyId: string
   apps: App[]
   snapshot: LandingStatsSnapshot | null
   hasCredentials: boolean
+  statsContent: LandingStatsContentRow | null
+  displayStatsForSection: Stats
 }) {
   const t = useTranslations("dashboard.landingStatsPage")
+  const tStats = useTranslations("stats")
+  const loc = useLocale()
+  const labels = statsContent
+    ? getLocalizedLandingStatsContent(statsContent, loc)
+    : null
+  const stars = displayStatsForSection.stars
+  const activeUsers = displayStatsForSection.activeUsers
+  const poweredApps = displayStatsForSection.poweredApps
   const [syncState, syncFormAction, syncPending] = useActionState(
     syncStatsAction,
     null
@@ -47,12 +59,17 @@ export function LandingStatsContent({
     null
   )
 
-  const stars = snapshot?.stars ?? 0
-  const activeUsers = snapshot?.active_users ?? 0
-  const poweredApps = snapshot?.powered_apps ?? 0
-
   return (
     <div className="space-y-8">
+      {statsContent ? (
+        <LandingStatsSectionEditor initial={statsContent} />
+      ) : (
+        <Alert>
+          <AlertTitle>{t("title")}</AlertTitle>
+          <AlertDescription>{t("missingStatsContent")}</AlertDescription>
+        </Alert>
+      )}
+
       <Card>
         <CardHeader>
           <h2 className="text-lg font-medium">{t("apiCredentials")}</h2>
@@ -117,17 +134,23 @@ export function LandingStatsContent({
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-3">
             <div>
-              <p className="text-sm text-muted-foreground">Stars on GitHub</p>
+              <p className="text-sm text-muted-foreground">
+                {labels?.labelStars ?? tStats("starsOnGithub")}
+              </p>
               <p className="text-2xl font-bold">+{stars.toLocaleString()}</p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Active Users</p>
+              <p className="text-sm text-muted-foreground">
+                {labels?.labelActive ?? tStats("activeUsers")}
+              </p>
               <p className="text-2xl font-bold">
                 {formatActiveUsers(activeUsers)}
               </p>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground">Powered Apps</p>
+              <p className="text-sm text-muted-foreground">
+                {labels?.labelPowered ?? tStats("poweredApps")}
+              </p>
               <p className="text-2xl font-bold">
                 +{poweredApps.toLocaleString()}
               </p>

@@ -5,8 +5,16 @@
     "professional": "プロフェッショナル",
     "projects": "プロジェクト",
     "contact": "お問い合わせ",
-    "contentComingSoon": "コンテンツは近日公開予定です。",
+    "contentComingSoon": "このページは未実装のプレースホルダーです。まだ中身を用意していません。",
     "backToHome": "ホームに戻る"
+  },
+  "projectsPage": {
+    "heading": "プロジェクト",
+    "intro": "携わったアプリ・サイト・ツールの紹介です。公開されているプロジェクトはここに並び、詳細・対応プラットフォーム・FAQ（ある場合）を開けます。",
+    "emptyTitle": "まだプロジェクトがありません",
+    "emptyDescription": "掲載されるとここに表示されます。今はトップに戻るか、他のページをご覧ください。",
+    "viewProject": "詳細を見る",
+    "listAria": "プロジェクト一覧"
   },
   "header": {
     "openMenu": "メニューを開く",
@@ -82,6 +90,7 @@
     "tabWeb": "ウェブ開発",
     "tabIDEs": "IDE",
     "tabRobotics": "ロボティクス・IoT",
+    "noTechCategories": "技術を表示するには、ダッシュボード（ランディング → フィーチャーとスタック）でタブ用のカテゴリを追加してください。",
     "learnMore": "詳細",
     "kotlin": "Kotlin",
     "kotlinDesc": "Androidおよびマルチプラットフォーム開発のための現代的言語。簡潔な構文とnull safetyを提供。",
@@ -254,6 +263,23 @@
     "social": "ソーシャル",
     "testimonials": "お客様の声",
     "certificates": "証明書",
+    "faq": "ランディングFAQ",
+    "landingHome": "フィーチャーとスタック",
+    "aboutTimeline": "Aboutタイムライン",
+    "projects": "プロジェクト",
+    "projectNav": {
+      "backToProjects": "プロジェクトに戻る",
+      "overview": "概要",
+      "platforms": "プラットフォーム",
+      "faq": "FAQ"
+    },
+    "navProjects": {
+      "label": "プロジェクト",
+      "viewProject": "プロジェクトを表示",
+      "shareProject": "プロジェクトを共有",
+      "deleteProject": "プロジェクトを削除",
+      "more": "その他"
+    },
     "landingStats": "ランディング統計",
     "billing": "請求",
     "limits": "制限",
@@ -306,6 +332,8 @@
       "placeholderRole": "役職…",
       "preview": "プレビュー",
       "previewHint": "ランディングページでの表示例。",
+      "previewLanguage": "プレビュー言語",
+      "showPreview": "プレビューを表示",
       "translation": "翻訳"
     },
     "certificatesPage": {
@@ -333,6 +361,143 @@
       "invalidDate": "有効な日付を入力してください。",
       "unexpectedError": "問題が発生しました。もう一度お試しください。"
     },
+    "projectsPage": {
+      "title": "プロジェクト",
+      "description": "ポートフォリオのプロジェクトを管理します。アプリ、プラットフォーム、ストアリンク、FAQを追加できます。",
+      "addProject": "プロジェクトを追加",
+      "newProject": "新規プロジェクト",
+      "name": "名前",
+      "slug": "URLスラッグ",
+      "namePlaceholder": "マイアプリ",
+      "slugPlaceholder": "my-awesome-app",
+      "create": "作成",
+      "cancel": "キャンセル",
+      "creating": "作成中…",
+      "projectCreated": "プロジェクトを作成しました。",
+      "noProjects": "プロジェクトがありません。最初のプロジェクトを作成してください。",
+      "nameAndSlugRequired": "名前とスラッグは必須です。"
+    },
+    "aboutTimelinePage": {
+      "title": "Aboutタイムライン",
+      "description": "公開のAboutページに表示する人生のマイルストーンと詳細イベントを編集します。各言語ごとに保存されます。",
+      "noLanding": "ランディング会社が見つかりません。データベース設定を確認してください。",
+      "milestoneTitle": "タイトル",
+      "milestoneDescription": "説明",
+      "depthTitle": "タイトル",
+      "depthBody": "本文",
+      "dateLabel": "日付",
+      "depthSectionTitle": "詳細イベント",
+      "addMilestone": "マイルストーンを追加",
+      "addDepthEvent": "詳細イベントを追加",
+      "deleteMilestone": "マイルストーンを削除",
+      "deleteDepthEvent": "詳細イベントを削除",
+      "dragToReorder": "ドラッグしてマイルストーンの順序を変更",
+      "dragDepthToReorder": "ドラッグして詳細イベントの順序を変更",
+      "saved": "変更を保存しました。",
+      "milestoneAdded": "マイルストーンを追加しました。",
+      "milestoneDeleted": "マイルストーンを削除しました。",
+      "depthAdded": "詳細イベントを追加しました。",
+      "depthDeleted": "詳細イベントを削除しました。",
+      "newMilestoneTitle": "新しいマイルストーン",
+      "newDepthTitle": "新しい詳細イベント",
+      "dateStart": "開始日",
+      "endDateLabel": "終了日（任意）",
+      "milestoneSkills": "このマイルストーンのスキル",
+      "milestoneTags": "このマイルストーンのタグ",
+      "addSkillsInLibrary": "上のライブラリでスキルを追加し、ここで選択してください。",
+      "addTagsInLibrary": "上のライブラリでタグを追加し、ここで選択してください。",
+      "skillsLibrary": "スキル一覧",
+      "tagsLibrary": "タグ一覧",
+      "tagsLibraryEnOnly": "タグ名は英語のみです。言語ごとの翻訳はありません。",
+      "tagNameEn": "タグ名（英語）",
+      "labelEn": "英語",
+      "labelUk": "ウクライナ語",
+      "labelJa": "日本語",
+      "skillsEmpty": "スキルがまだありません。下で作成してください。",
+      "tagsEmpty": "タグがまだありません。下で作成してください。",
+      "addSkill": "スキルを追加",
+      "addTag": "タグを追加",
+      "newSkillPlaceholder": "新しいスキル（英語ラベル）",
+      "newTagPlaceholder": "新しいタグ名…",
+      "skillCreated": "スキルを追加しました。",
+      "tagCreated": "タグを追加しました。",
+      "skillDeleted": "スキルを削除しました。",
+      "tagDeleted": "タグを削除しました。",
+      "deleteSkill": "スキルを削除",
+      "deleteTag": "タグを削除",
+      "attachmentsTitle": "添付（リンク・メモ・ファイル・画像）",
+      "attachmentsEmpty": "添付はまだありません。",
+      "addLink": "リンクを追加",
+      "addNote": "テキストメモ",
+      "linkTitleOptional": "タイトル（任意）",
+      "noteBodyPlaceholder": "メモの内容…",
+      "saveLink": "リンクを保存",
+      "saveNote": "メモを保存",
+      "uploadFileOrImage": "画像またはファイルをアップロード",
+      "image": "画像",
+      "file": "ファイル",
+      "uploadImage": "画像をアップロード",
+      "uploadFile": "ファイルをアップロード",
+      "attachmentAdded": "添付を追加しました。",
+      "attachmentDeleted": "添付を削除しました。",
+      "removeAttachment": "添付を削除",
+      "urlRequired": "URLが必要です。",
+      "noteTextRequired": "メモのテキストが必要です。"
+    },
+    "landingHomePage": {
+      "title": "ランディング：フィーチャーと技術スタック",
+      "description": "トップの「基盤」グリッドと「Tech stack & ツール」ブロックを編集します。文言は各言語で保存されます。",
+      "errorTitle": "読み込めません",
+      "noLanding": "ランディング用の会社が見つかりません。データベース設定を確認してください。",
+      "missingDataTitle": "コンテンツが見つかりません",
+      "missingData": "フィーチャーまたは技術スタックのテーブルが空です。最新のSupabaseマイグレーションを適用（例: supabase db push）し、ページを更新してください。",
+      "saved": "保存しました。",
+      "saving": "保存中…",
+      "saveSection": "保存",
+      "featureSectionTitle": "フィーチャー（イントロ）",
+      "featureHeading": "見出し",
+      "featureIntro": "リード文",
+      "featureCards": "フィーチャーカード",
+      "addFeatureCard": "カードを追加",
+      "techStackSectionTitle": "技術スタック（見出し）",
+      "techStackCategories": "タブのカテゴリ",
+      "techStackCategoriesHelp": "トップにタブとして表示するラベルです。取っ手で並び替え可能。カテゴリの追加・削除に応じて、下に各カテゴリの技術リストがあります。",
+      "addCategory": "カテゴリを追加",
+      "categoryLabel": "タブのラベル",
+      "categoryAdded": "カテゴリを追加しました。",
+      "categoryDeleted": "カテゴリを削除しました。",
+      "newCategoryLabel": "新しいカテゴリ",
+      "addCategoryFirst": "少なくとも1つタブ用のカテゴリを追加してください。",
+      "techStackItems": "カテゴリ別の技術",
+      "addTechItem": "このカテゴリに技術を追加",
+      "titleField": "タイトル",
+      "bodyField": "説明",
+      "descriptionField": "説明",
+      "itemAdded": "項目を追加しました。",
+      "itemDeleted": "項目を削除しました。",
+      "newCardTitle": "新しい項目",
+      "newTechItemTitle": "新しい技術",
+      "field_heading": "セクション見出し",
+      "field_subcopy": "サブコピー",
+      "field_learn_more": "「詳細」ボタンのラベル"
+    },
+    "faqPage": {
+      "title": "ランディングFAQ",
+      "description": "ランディングページに表示するFAQを編集します。質問と回答はローカライズされています。",
+      "noFaqSet": "ランディング用のFAQセットを読み込めませんでした。データベースにLanding会社があり、あなたがメンバーであることを確認してからページを更新してください。",
+      "question": "質問",
+      "answer": "回答",
+      "questionPlaceholder": "質問を入力…",
+      "answerPlaceholder": "回答を入力…",
+      "addItem": "FAQ項目を追加",
+      "deleteItem": "削除",
+      "dragToReorder": "ドラッグで並べ替え",
+      "saved": "変更を保存しました。",
+      "itemAdded": "FAQ項目を追加しました。",
+      "itemDeleted": "項目を削除しました。",
+      "newQuestionPlaceholder": "新しい質問",
+      "newAnswerPlaceholder": "新しい回答"
+    },
     "landingStatsPage": {
       "title": "ランディング統計",
       "description": "ランディングページに表示するアプリと統計を管理します。",
@@ -357,7 +522,22 @@
       "gaPrivateKey": "GA4 Private Key",
       "githubToken": "GitHub Token",
       "saveCredentials": "保存",
-      "credentialsSaved": "認証情報を保存しました。"
+      "credentialsSaved": "認証情報を保存しました。",
+      "sectionCopyTitle": "「数字」セクション（公開テキスト）",
+      "sectionCopyDescription": "見出し・説明・各メトリクスのラベルを編集します。手動の数値を有効にすると、ホームで同期/APIの代わりに表示できます。",
+      "sectionHeading": "セクション見出し",
+      "sectionDescription": "セクション説明",
+      "labelStars": "ラベル — スター",
+      "labelActive": "ラベル — アクティブユーザー",
+      "labelPowered": "ラベル — アプリ数",
+      "useManualTotals": "ホームで手動の数値を使う",
+      "useManualTotalsHelp": "オンにすると、公開ブロックの3つの数は下の値を表示します。オフの場合は従来どおり同期・APIの結果を使います。",
+      "manualStars": "スター数（手動）",
+      "manualActiveUsers": "アクティブユーザー（手動）",
+      "manualPoweredApps": "アプリ数（手動）",
+      "saveSectionCopy": "セクションを保存",
+      "saved": "保存しました。",
+      "missingStatsContent": "stats用のテーブルがありません。最新のSupabaseマイグレーションを適用（例: supabase db push）し、再読み込みしてください。"
     },
     "dataTable": {
       "dragToReorder": "ドラッグで並べ替え",
@@ -414,11 +594,139 @@
       "emptyDescription": "ダッシュボードから追加した証明書がここに表示されます。"
     }
   },
+  "aboutPage": {
+    "hero": {
+      "title": "Ivan Bondaruk",
+      "subtitle": "ロボット工学に情熱を注ぐ情報科学の教師です。Web開発とIoTを中心に、必要に応じてモバイルアプリ開発の経験も活かしています。",
+      "ctaProjects": "プロジェクトを見る",
+      "ctaContact": "お問い合わせ"
+    },
+    "intro": {
+      "heading": "歴史",
+      "p1": "情報科学を教え、ロボット工学で生徒を指導しています。ソフトウェア、ハードウェア、実世界の課題解決をつなぎます。このサイトはその活動のポートフォリオです。",
+      "p2": "実装の多くはWebと接続デバイス（IoT）です。ネイティブやクロスプラットフォームが求められるときにモバイル体験を届けます。",
+      "badgeWeb": "Web開発",
+      "badgeIoT": "IoT・接続デバイス",
+      "badgeRobotics": "ロボット教育",
+      "badgeMobile": "モバイル開発",
+      "badgeTeaching": "情報科学の教育",
+      "badgeTeachingDesc": "教室での指導と、情報科学の基礎・計算的思考のカリキュラム。",
+      "badgeRoboticsDesc": "実践的なロボット工学、競技、ハードウェアを使ったプロジェクト型学習。",
+      "badgeWebDesc": "モダンなWebスタック、React、Next.js、フルスタックでの提供。",
+      "badgeIoTDesc": "センサー、組み込みフロー、接続されたプロダクト体験。",
+      "badgeMobileDesc": "プロダクトにモバイルが必要な場合のネイティブおよびクロスプラットフォームアプリ。",
+      "badgeAI": "AI",
+      "badgeAIDesc": "大規模言語モデル、ツール、教育やプロダクトへの実践的なAI統合。"
+    },
+    "timeline": {
+      "heading": "人生とマイルストーン",
+      "subheading": "このページでは、マイルストーンと詳細イベントを開始日の古い順に表示します。文言はダッシュボードで言語ごとに編集し、表示順は手動の並び替えではなく日付に従います。",
+      "dateOngoing": "継続中",
+      "filterBySkills": "スキルで絞り込み",
+      "clearFilter": "絞り込みをクリア",
+      "emptyFilter": "選択したスキルに一致するマイルストーンがありません。全件表示するには絞り込みをクリアしてください。",
+      "openFile": "ファイルを開く",
+      "viewImage": "画像を表示",
+      "emptyTimeline": "タイムラインのマイルストーンはまだありません。ダッシュボードの「Aboutタイムライン」から追加してください。",
+      "depthContextPrevious": "前のマイルストーン",
+      "depthContextNext": "次のマイルストーン",
+      "depthSelectDetail": "左の一覧から項目を選ぶと、ここに全文が表示されます。",
+      "depthDialogSubtitle": "この期間の詳細な年表",
+      "item1": {
+        "date": "2010-09-01",
+        "title": "STEM教育への第一歩",
+        "description": "プレースホルダー：教育や技術との出会いを記入してください。",
+        "depth": [
+          {
+            "date": "2008-06-15",
+            "title": "最初の実践的な技術プロジェクト",
+            "body": "プレースホルダー：サマーキャンプ、電子工作、初期のプログラミングなど。"
+          },
+          {
+            "date": "2009-03-10",
+            "title": "教育への志向",
+            "body": "プレースホルダー：選択科目、メンター、コンテストの影響。"
+          },
+          {
+            "date": "2010-08-20",
+            "title": "この章の本格的な始まり",
+            "body": "プレースホルダー：入学、最初の教室体験、象徴的なプロジェクト。"
+          }
+        ]
+      },
+      "item2": {
+        "date": "2015-01-01",
+        "title": "ロボット工学とプログラミングの深化",
+        "description": "プレースホルダー：キット、競技、教室での取り組みなど。",
+        "depth": [
+          {
+            "date": "2012-04-01",
+            "title": "教室での最初のロボットキット",
+            "body": "プレースホルダー：プラットフォーム、学年、最初の制作物。"
+          },
+          {
+            "date": "2013-11-05",
+            "title": "地域大会や発表",
+            "body": "プレースホルダー：チーム、受賞、学び。"
+          },
+          {
+            "date": "2014-09-12",
+            "title": "カリキュラムへの統合",
+            "body": "プレースホルダー：情報科学との接続と評価。"
+          }
+        ]
+      },
+      "item3": {
+        "date": "2020-06-01",
+        "title": "WebとIoTのプロジェクト",
+        "description": "プレースホルダー：強調したいWebやハードウェアの成果。",
+        "depth": [
+          {
+            "date": "2017-02-18",
+            "title": "最初の本番向けWebスタック",
+            "body": "プレースホルダー：フレームワーク、ホスティング、ユーザー向けリリース。"
+          },
+          {
+            "date": "2018-10-30",
+            "title": "IoTプロトタイプからパイロットへ",
+            "body": "プレースホルダー：ハードウェア、プロトコル、実地テスト。"
+          },
+          {
+            "date": "2019-12-01",
+            "title": "スケールと信頼性",
+            "body": "プレースホルダー：セキュリティと保守性。"
+          }
+        ]
+      },
+      "item4": {
+        "date": "2024-01-01",
+        "title": "現在",
+        "description": "プレースホルダー：現在の活動—講座、プロダクト、研究など。",
+        "depth": [
+          {
+            "date": "2021-06-01",
+            "title": "現在の教育の焦点",
+            "body": "プレースホルダー：講義、ロボットラボ、学生の成果。"
+          },
+          {
+            "date": "2022-09-15",
+            "title": "プロダクトまたは研究ライン",
+            "body": "プレースホルダー：進行中のWeb、IoT、モバイル。"
+          },
+          {
+            "date": "2023-11-01",
+            "title": "近い目標",
+            "body": "プレースホルダー：次回のタイムライン更新までに達成したいこと。"
+          }
+        ]
+      }
+    }
+  },
   "metadata": {
     "defaultTitle": "Ivan Bondaruk — フルスタック開発者・Webエンジニア",
     "defaultDescription": "モダンなWebアプリを構築するフルスタック開発者。React、Next.js、TypeScript。プロジェクト、スキル、資格、連絡先。",
-    "aboutTitle": "Ivan Bondarukについて — 開発者・クリエイティブプロフェッショナル",
-    "aboutDescription": "Ivan Bondarukの経歴、専門性、スケーラブルなWebソリューション構築アプローチをご紹介します。",
+    "aboutTitle": "Ivan Bondarukについて — 情報科教師、ロボット工学とWeb",
+    "aboutDescription": "ロボット工学、Web開発、IoTに焦点を当てた情報科教師。経歴、専門分野、マイルストーン。",
     "contactTitle": "Ivan Bondarukへのお問い合わせ — 開発者を雇う",
     "contactDescription": "コラボレーションのご依頼はお気軽に。フリーランスおよび正社員の機会。一緒に何か作りましょう。",
     "professionalTitle": "Ivan Bondaruk — 資格、経験、スキル",

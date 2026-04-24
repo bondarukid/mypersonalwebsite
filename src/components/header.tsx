@@ -3,13 +3,11 @@
 import { Link } from '@/i18n/routing'
 import { Logo } from '@/components/logo'
 import { LocaleSwitcher } from '@/components/locale-switcher'
-import { RepoInfoBlock } from '@/components/repo-info-block'
 import { Menu, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import React from 'react'
-import type { RepoInfo } from '@/lib/github/repo-info'
 
-export const SiteHeader = ({ repoInfo }: { repoInfo?: RepoInfo | null }) => {
+export const SiteHeader = () => {
     const [menuState, setMenuState] = React.useState(false)
     const t = useTranslations('header')
     const tCommon = useTranslations('common')
@@ -45,7 +43,7 @@ export const SiteHeader = ({ repoInfo }: { repoInfo?: RepoInfo | null }) => {
                                 <X className="in-data-[state=active]:rotate-0 in-data-[state=active]:scale-100 in-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
                             </button>
 
-                            <div className="hidden lg:flex lg:flex-1 lg:items-center lg:gap-8">
+                            <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-between lg:gap-8">
                                 <ul className="flex gap-8 text-sm">
                                     {menuItems.map((item, index) => (
                                         <li key={index}>
@@ -58,12 +56,6 @@ export const SiteHeader = ({ repoInfo }: { repoInfo?: RepoInfo | null }) => {
                                     ))}
                                 </ul>
                                 <LocaleSwitcher />
-                                {repoInfo && (
-                                    <RepoInfoBlock
-                                        repoInfo={repoInfo}
-                                        className="ml-auto"
-                                    />
-                                )}
                             </div>
                         </div>
 
@@ -81,12 +73,6 @@ export const SiteHeader = ({ repoInfo }: { repoInfo?: RepoInfo | null }) => {
                                     ))}
                                 </ul>
                                 <LocaleSwitcher />
-                                {repoInfo && (
-                                    <RepoInfoBlock
-                                        repoInfo={repoInfo}
-                                        className="ml-auto w-fit"
-                                    />
-                                )}
                             </div>
                         </div>
                     </div>

@@ -92,6 +92,8 @@ Timeline.displayName = "Timeline"
 
 interface TimelineItemProps extends React.HTMLAttributes<HTMLLIElement> {
   date?: string | Date | number
+  /** Replaces the default formatted `date` in the left column when set (e.g. a date range). */
+  dateLine?: string
   title?: string
   description?: string
   icon?: React.ReactNode
@@ -99,9 +101,15 @@ interface TimelineItemProps extends React.HTMLAttributes<HTMLLIElement> {
   status?: "completed" | "in-progress" | "pending"
   showConnector?: boolean
   iconsize?: "sm" | "md" | "lg"
+  /** When set, the timeline node is a button (opens detail, etc.). */
+  onBubbleClick?: () => void
+  /** Accessible name for the bubble button (required for screen readers when clickable). */
+  bubbleAriaLabel?: string
+  /** Highlights the node (e.g. selected row in a detail modal). */
+  selected?: boolean
 }
 
-function formatTimelineDate(date?: string | Date | number): string {
+export function formatTimelineDate(date?: string | Date | number): string {
   if (!date) return ""
   try {
     const d = new Date(date)
@@ -121,6 +129,7 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
     {
       className,
       date,
+      dateLine,
       title,
       description,
       icon,
@@ -128,6 +137,9 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
       status = "completed",
       showConnector = true,
       iconsize = "md",
+      onBubbleClick,
+      bubbleAriaLabel,
+      selected = false,
       ...props
     },
     ref
@@ -141,6 +153,32 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
       accent: "bg-accent text-accent-foreground",
       destructive: "bg-destructive text-destructive-foreground",
     }
+    const bubbleClassName = cn(
+      "relative z-10 flex items-center justify-center rounded-full ring-8 ring-background shadow-sm",
+      sizeClasses[iconsize],
+      colorClasses[iconColor]
+    )
+    const bubbleContents = (
+      <>
+        {icon ? (
+          <div
+            className={cn(
+              "flex items-center justify-center",
+              iconSizeClasses[iconsize]
+            )}
+          >
+            {icon}
+          </div>
+        ) : (
+          <div
+            className={cn(
+              "rounded-full bg-current opacity-50",
+              iconSizeClasses[iconsize]
+            )}
+          />
+        )}
+      </>
+    )
     return (
       <li
         ref={ref}
@@ -154,32 +192,41 @@ const TimelineItem = React.forwardRef<HTMLLIElement, TimelineItemProps>(
               dateTime={date ? new Date(date).toISOString() : undefined}
               className="text-sm font-medium tracking-tight text-muted-foreground text-right pr-4"
             >
-              {formatTimelineDate(date)}
+              {dateLine?.trim() ? dateLine : formatTimelineDate(date)}
             </time>
           </div>
           <div className="flex flex-col items-center">
-            <div
-              className={cn(
-                "relative z-10 flex items-center justify-center rounded-full ring-8 ring-background shadow-sm",
-                sizeClasses[iconsize],
-                colorClasses[iconColor]
-              )}
-            >
-              {icon ? (
-                <div
-                  className={cn(
-                    "flex items-center justify-center",
-                    iconSizeClasses[iconsize]
-                  )}
-                >
-                  {icon}
-                </div>
-              ) : (
-                <div
-                  className={cn("rounded-full bg-current opacity-50", iconSizeClasses[iconsize])}
-                />
-              )}
-            </div>
+            {onBubbleClick ? (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onBubbleClick()
+                }}
+                aria-label={
+                  bubbleAriaLabel ??
+                  (title ? `Open details: ${title}` : "Open timeline details")
+                }
+                className={cn(
+                  bubbleClassName,
+                  "cursor-pointer border-0 p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                  selected &&
+                    "z-20 outline outline-2 outline-offset-2 outline-zinc-400"
+                )}
+              >
+                {bubbleContents}
+              </button>
+            ) : (
+              <div
+                className={cn(
+                  bubbleClassName,
+                  selected &&
+                    "z-20 outline outline-2 outline-offset-2 outline-zinc-400"
+                )}
+              >
+                {bubbleContents}
+              </div>
+            )}
             {showConnector && (
               <div
                 className={cn(

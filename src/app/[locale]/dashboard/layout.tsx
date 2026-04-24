@@ -4,8 +4,10 @@ import { createClient } from "@/lib/supabase/server"
 import {
   getUserCompanies,
   ensureUserInLanding,
+  getLandingCompany,
 } from "@/lib/supabase/companies"
 import { getProfileByUserId } from "@/lib/supabase/profiles"
+import { getProjectsByCompanyId } from "@/lib/supabase/projects"
 import { AppSidebar } from "@/components/app-sidebar"
 import { SiteHeader } from "@/components/site-header"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
@@ -46,10 +48,15 @@ export default async function DashboardLayout({
 
   await ensureUserInLanding(userId)
 
-  const [profileData, companies] = await Promise.all([
+  const [profileData, companies, landing] = await Promise.all([
     getProfileByUserId(userId),
     getUserCompanies(userId),
+    getLandingCompany(),
   ])
+
+  const projects = landing?.id
+    ? await getProjectsByCompanyId(landing.id)
+    : []
 
   const companiesForSidebar = companies.map((c) => ({
     id: c.id,
@@ -74,6 +81,7 @@ export default async function DashboardLayout({
           email: user.email || "",
         }}
         activeCompanyId={activeCompanyId}
+        projects={projects}
       />
       <SidebarInset>
         <SiteHeader />

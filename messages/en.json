@@ -5,8 +5,16 @@
     "professional": "Professional",
     "projects": "Projects",
     "contact": "Contact",
-    "contentComingSoon": "Content coming soon.",
+    "contentComingSoon": "This page is a placeholder. Full content is not implemented here yet.",
     "backToHome": "Back to home"
+  },
+  "projectsPage": {
+    "heading": "Projects",
+    "intro": "A selection of apps, sites, and tools I have built or lead. Open a project to see details, platforms, and FAQs when available.",
+    "emptyTitle": "No projects yet",
+    "emptyDescription": "When projects are published, they will appear here. In the meantime, you can return to the home page or explore the rest of the site.",
+    "viewProject": "View project",
+    "listAria": "Project portfolio"
   },
   "header": {
     "openMenu": "Open Menu",
@@ -82,6 +90,7 @@
     "tabWeb": "Web development",
     "tabIDEs": "IDEs",
     "tabRobotics": "Robotics & IoT",
+    "noTechCategories": "Add categories in the dashboard (Landing → Features & stack) to show technologies here.",
     "learnMore": "Learn More",
     "kotlin": "Kotlin",
     "kotlinDesc": "Modern language for Android and multiplatform development with concise syntax and null safety.",
@@ -254,6 +263,23 @@
     "social": "Social",
     "testimonials": "Testimonials",
     "certificates": "Certificates",
+    "faq": "Landing FAQ",
+    "landingHome": "Features & stack",
+    "aboutTimeline": "About timeline",
+    "projects": "Projects",
+    "projectNav": {
+      "backToProjects": "Back to Projects",
+      "overview": "Overview",
+      "platforms": "Platforms",
+      "faq": "FAQ"
+    },
+    "navProjects": {
+      "label": "Projects",
+      "viewProject": "View Project",
+      "shareProject": "Share Project",
+      "deleteProject": "Delete Project",
+      "more": "More"
+    },
     "landingStats": "Landing Stats",
     "billing": "Billing",
     "limits": "Limits",
@@ -306,6 +332,8 @@
       "placeholderRole": "Role or title…",
       "preview": "Preview",
       "previewHint": "How it appears on the landing page.",
+      "previewLanguage": "Preview language",
+      "showPreview": "Show preview",
       "translation": "Your translation"
     },
     "certificatesPage": {
@@ -333,6 +361,177 @@
       "invalidDate": "Please enter a valid date.",
       "unexpectedError": "Something went wrong. Please try again."
     },
+    "projectPlatforms": {
+      "title": "Platforms",
+      "description": "Configure store links, supported platforms, and minimum OS versions.",
+      "storeLinks": "Store links",
+      "platforms": "Platforms",
+      "platformsHint": "Select which platforms this project supports.",
+      "minOsVersions": "Minimum OS versions",
+      "minOsHint": "e.g. iOS 14.0, Android 8.0",
+      "saved": "Changes saved."
+    },
+    "projectFaq": {
+      "title": "Project FAQ",
+      "description": "Add FAQ items for this project. They appear on the project page.",
+      "noFaqSet": "FAQ set not found. Create a project first."
+    },
+    "projectOverview": {
+      "title": "Overview",
+      "description": "Edit project name, slug, description, and app icon.",
+      "basicInfo": "Basic info",
+      "name": "Name",
+      "slug": "URL slug",
+      "namePlaceholder": "My App",
+      "slugPlaceholder": "my-app",
+      "description": "Description",
+      "descriptionPlaceholder": "Short description of the project…",
+      "uploadIcon": "Upload icon",
+      "iconUploaded": "Icon uploaded.",
+      "itunesIcon": "Fetch icon from iTunes",
+      "itunesIconHint": "Enter your App Store bundle ID to fetch the app icon automatically.",
+      "fetchFromiTunes": "Fetch from iTunes",
+      "itunesBundleIdRequired": "Enter bundle ID first.",
+      "iconFetched": "Icon fetched and saved.",
+      "saved": "Changes saved."
+    },
+    "projectsPage": {
+      "title": "Projects",
+      "description": "Manage your portfolio projects. Add apps, platforms, store links, and project-specific FAQ.",
+      "addProject": "Add project",
+      "newProject": "New project",
+      "name": "Name",
+      "slug": "URL slug",
+      "namePlaceholder": "My Awesome App",
+      "slugPlaceholder": "my-awesome-app",
+      "create": "Create",
+      "cancel": "Cancel",
+      "creating": "Creating…",
+      "projectCreated": "Project created.",
+      "noProjects": "No projects yet. Create your first project.",
+      "nameAndSlugRequired": "Name and slug are required."
+    },
+    "aboutTimelinePage": {
+      "title": "About timeline",
+      "description": "Edit life milestones and nested depth events for the public About page. Content is stored per locale.",
+      "noLanding": "Landing company was not found. Check your database configuration.",
+      "milestoneTitle": "Title",
+      "milestoneDescription": "Description",
+      "depthTitle": "Title",
+      "depthBody": "Body",
+      "dateLabel": "Date",
+      "depthSectionTitle": "Depth events",
+      "addMilestone": "Add milestone",
+      "addDepthEvent": "Add depth event",
+      "deleteMilestone": "Delete milestone",
+      "deleteDepthEvent": "Delete depth event",
+      "dragToReorder": "Drag to reorder milestones",
+      "dragDepthToReorder": "Drag to reorder depth events",
+      "saved": "Changes saved.",
+      "milestoneAdded": "Milestone added.",
+      "milestoneDeleted": "Milestone deleted.",
+      "depthAdded": "Depth event added.",
+      "depthDeleted": "Depth event deleted.",
+      "newMilestoneTitle": "New milestone",
+      "newDepthTitle": "New depth event",
+      "dateStart": "Start date",
+      "endDateLabel": "End date (optional)",
+      "milestoneSkills": "Skills for this milestone",
+      "milestoneTags": "Tags for this milestone",
+      "addSkillsInLibrary": "Add skills in the library above, then check them here.",
+      "addTagsInLibrary": "Add tags in the library above, then check them here.",
+      "skillsLibrary": "Skill library",
+      "tagsLibrary": "Tag library",
+      "tagsLibraryEnOnly": "Tag names are English only. They are not translated per language.",
+      "tagNameEn": "Tag (English)",
+      "labelEn": "English",
+      "labelUk": "Ukrainian",
+      "labelJa": "Japanese",
+      "skillsEmpty": "No skills yet. Create one below.",
+      "tagsEmpty": "No tags yet. Create one below.",
+      "addSkill": "Add skill",
+      "addTag": "Add tag",
+      "newSkillPlaceholder": "New skill (English label)",
+      "newTagPlaceholder": "New tag name…",
+      "skillCreated": "Skill created.",
+      "tagCreated": "Tag created.",
+      "skillDeleted": "Skill removed.",
+      "tagDeleted": "Tag removed.",
+      "deleteSkill": "Delete skill",
+      "deleteTag": "Delete tag",
+      "attachmentsTitle": "Attachments (links, notes, files, images)",
+      "attachmentsEmpty": "No attachments yet.",
+      "addLink": "Add link",
+      "addNote": "Text note",
+      "linkTitleOptional": "Title (optional)",
+      "noteBodyPlaceholder": "Note text…",
+      "saveLink": "Save link",
+      "saveNote": "Save note",
+      "uploadFileOrImage": "Upload an image or other file",
+      "image": "Image",
+      "file": "File",
+      "uploadImage": "Upload image",
+      "uploadFile": "Upload file",
+      "attachmentAdded": "Attachment added.",
+      "attachmentDeleted": "Attachment removed.",
+      "removeAttachment": "Remove attachment",
+      "urlRequired": "URL is required.",
+      "noteTextRequired": "Note text is required."
+    },
+    "landingHomePage": {
+      "title": "Landing: Features & tech stack",
+      "description": "Edit the “foundation” (features grid) and “Tech stack & tooling” blocks on the home page. All copy is stored per language.",
+      "errorTitle": "Cannot load",
+      "noLanding": "Landing company was not found. Check your database configuration.",
+      "missingDataTitle": "Content not found",
+      "missingData": "The landing features or tech stack tables are empty. Apply the latest Supabase migration (e.g. supabase db push) and refresh this page.",
+      "saved": "Changes saved.",
+      "saving": "Saving…",
+      "saveSection": "Save",
+      "featureSectionTitle": "Feature block (intro)",
+      "featureHeading": "Heading",
+      "featureIntro": "Intro",
+      "featureCards": "Feature cards",
+      "addFeatureCard": "Add feature card",
+      "techStackSectionTitle": "Tech stack (headings)",
+      "techStackCategories": "Tab categories",
+      "techStackCategoriesHelp": "These labels appear as tabs on the home page. Reorder with the handle. Add or remove categories as needed—each has its own list of technologies below.",
+      "addCategory": "Add category",
+      "categoryLabel": "Tab label",
+      "categoryAdded": "Category added.",
+      "categoryDeleted": "Category removed.",
+      "newCategoryLabel": "New category",
+      "addCategoryFirst": "Add at least one tab category to manage technologies.",
+      "techStackItems": "Technologies by category",
+      "addTechItem": "Add technology in this category",
+      "titleField": "Title",
+      "bodyField": "Description",
+      "descriptionField": "Description",
+      "itemAdded": "Item added.",
+      "itemDeleted": "Item deleted.",
+      "newCardTitle": "New item",
+      "newTechItemTitle": "New technology",
+      "field_heading": "Section heading",
+      "field_subcopy": "Subcopy under heading",
+      "field_learn_more": "“Learn more” button label"
+    },
+    "faqPage": {
+      "title": "Landing FAQ",
+      "description": "Edit FAQ items shown on the landing page. Questions and answers are localized.",
+      "noFaqSet": "Could not load or create the landing FAQ set. Ensure the Landing company exists in the database and you are a member, then refresh.",
+      "question": "Question",
+      "answer": "Answer",
+      "questionPlaceholder": "Enter question…",
+      "answerPlaceholder": "Enter answer…",
+      "addItem": "Add FAQ item",
+      "deleteItem": "Delete item",
+      "dragToReorder": "Drag to reorder",
+      "saved": "Changes saved.",
+      "itemAdded": "FAQ item added.",
+      "itemDeleted": "FAQ item deleted.",
+      "newQuestionPlaceholder": "New question",
+      "newAnswerPlaceholder": "New answer"
+    },
     "landingStatsPage": {
       "title": "Landing Stats",
       "description": "Manage apps and stats displayed on your landing page.",
@@ -357,7 +556,22 @@
       "gaPrivateKey": "GA4 Private Key",
       "githubToken": "GitHub Token",
       "saveCredentials": "Save credentials",
-      "credentialsSaved": "Credentials saved."
+      "credentialsSaved": "Credentials saved.",
+      "sectionCopyTitle": "Ivan Bondaruk in numbers (public copy)",
+      "sectionCopyDescription": "Edit the section heading, description, and metric labels. Optional manual numbers replace synced totals on the home page when enabled.",
+      "sectionHeading": "Section heading",
+      "sectionDescription": "Section description",
+      "labelStars": "Label — stars",
+      "labelActive": "Label — active users",
+      "labelPowered": "Label — powered / apps",
+      "useManualTotals": "Use manual numbers on the home page",
+      "useManualTotalsHelp": "If enabled, the public block shows the three numbers below instead of sync/API results. If disabled, sync and the snapshot still apply as before.",
+      "manualStars": "Stars (manual)",
+      "manualActiveUsers": "Active users (manual)",
+      "manualPoweredApps": "Powered apps (manual)",
+      "saveSectionCopy": "Save section",
+      "saved": "Changes saved.",
+      "missingStatsContent": "The stats copy table is not set up. Run the latest Supabase migration (e.g. supabase db push) and refresh."
     },
     "dataTable": {
       "dragToReorder": "Drag to reorder",
@@ -414,11 +628,139 @@
       "emptyDescription": "Certificates you add from the dashboard will appear here."
     }
   },
+  "aboutPage": {
+    "hero": {
+      "title": "Ivan Bondaruk",
+      "subtitle": "Computer science teacher with a passion for robotics. I focus on web development and IoT, with solid experience building mobile apps when the project needs it.",
+      "ctaProjects": "View projects",
+      "ctaContact": "Get in touch"
+    },
+    "intro": {
+      "heading": "History",
+      "p1": "I teach computer science and mentor students in robotics—bridging software, hardware, and real-world problem solving. This site is a living portfolio of that work.",
+      "p2": "Most of my hands-on development is on the web and connected devices (IoT). I ship mobile experiences when the product calls for native or cross-platform apps.",
+      "badgeWeb": "Web development",
+      "badgeIoT": "IoT & connected devices",
+      "badgeRobotics": "Robotics education",
+      "badgeMobile": "Mobile development",
+      "badgeTeaching": "Computer science teaching",
+      "badgeTeachingDesc": "Classroom instruction and curriculum for CS fundamentals and computational thinking.",
+      "badgeRoboticsDesc": "Hands-on robotics, competitions, and project-based learning with hardware.",
+      "badgeWebDesc": "Modern web stacks, React, Next.js, and full-stack delivery.",
+      "badgeIoTDesc": "Sensors, embedded workflows, and connected product experiences.",
+      "badgeMobileDesc": "Native and cross-platform apps when products need mobile surfaces.",
+      "badgeAI": "AI",
+      "badgeAIDesc": "LLMs, tooling, and practical AI integration in products and teaching workflows."
+    },
+    "timeline": {
+      "heading": "Life & milestones",
+      "subheading": "On this page, milestones and detailed events are ordered by start date (oldest to newest). You control copy per language in the dashboard; order on the site follows the timeline, not the dashboard drag order.",
+      "dateOngoing": "Present",
+      "filterBySkills": "Filter by skills",
+      "clearFilter": "Clear filter",
+      "emptyFilter": "No milestones match the selected skills. Clear the filter to see all milestones.",
+      "openFile": "Open file",
+      "viewImage": "View full image",
+      "emptyTimeline": "No timeline milestones yet. Add them in the dashboard under About timeline.",
+      "depthContextPrevious": "Previous milestone",
+      "depthContextNext": "Next milestone",
+      "depthSelectDetail": "Select an event on the left to read the full story.",
+      "depthDialogSubtitle": "Detailed chronology for this period",
+      "item1": {
+        "date": "2010-09-01",
+        "title": "First step into STEM education",
+        "description": "Placeholder: add how you discovered teaching or technology.",
+        "depth": [
+          {
+            "date": "2008-06-15",
+            "title": "First hands-on tech projects",
+            "body": "Placeholder: summer camps, hobby electronics, or early programming experiments that pointed you toward STEM."
+          },
+          {
+            "date": "2009-03-10",
+            "title": "Choosing a teaching-oriented path",
+            "body": "Placeholder: school electives, mentors, or competitions that shaped your interest in education."
+          },
+          {
+            "date": "2010-08-20",
+            "title": "Formal start of this chapter",
+            "body": "Placeholder: enrollment, first classroom experience, or a defining project before this milestone date."
+          }
+        ]
+      },
+      "item2": {
+        "date": "2015-01-01",
+        "title": "Deepening robotics & programming",
+        "description": "Placeholder: robotics kits, competitions, or classroom initiatives.",
+        "depth": [
+          {
+            "date": "2012-04-01",
+            "title": "First robotics kit in the classroom",
+            "body": "Placeholder: platform, age group, and what students built first."
+          },
+          {
+            "date": "2013-11-05",
+            "title": "Regional competition or showcase",
+            "body": "Placeholder: team structure, awards, and lessons learned."
+          },
+          {
+            "date": "2014-09-12",
+            "title": "Curriculum integration",
+            "body": "Placeholder: how robotics fit into wider CS goals and assessment."
+          }
+        ]
+      },
+      "item3": {
+        "date": "2020-06-01",
+        "title": "Web & IoT projects",
+        "description": "Placeholder: major web builds or hardware projects you want to highlight.",
+        "depth": [
+          {
+            "date": "2017-02-18",
+            "title": "First production web stack",
+            "body": "Placeholder: frameworks, hosting, and what shipped to real users."
+          },
+          {
+            "date": "2018-10-30",
+            "title": "IoT prototype to pilot",
+            "body": "Placeholder: hardware, protocols, and field testing."
+          },
+          {
+            "date": "2019-12-01",
+            "title": "Scaling lessons",
+            "body": "Placeholder: reliability, security, and maintainability before the main milestone."
+          }
+        ]
+      },
+      "item4": {
+        "date": "2024-01-01",
+        "title": "Today",
+        "description": "Placeholder: what you are working on now—courses, products, or research.",
+        "depth": [
+          {
+            "date": "2021-06-01",
+            "title": "Current teaching focus",
+            "body": "Placeholder: courses, robotics labs, or student outcomes you prioritize."
+          },
+          {
+            "date": "2022-09-15",
+            "title": "Product or research thread",
+            "body": "Placeholder: web, IoT, or mobile work in progress."
+          },
+          {
+            "date": "2023-11-01",
+            "title": "Near-term goals",
+            "body": "Placeholder: what you want to achieve before the next update to this timeline."
+          }
+        ]
+      }
+    }
+  },
   "metadata": {
     "defaultTitle": "Ivan Bondaruk — Full-Stack Developer & Web Engineer",
     "defaultDescription": "Full-stack developer building modern web apps. React, Next.js, TypeScript. Browse projects, skills, certificates & contact.",
-    "aboutTitle": "About Ivan Bondaruk — Developer & Creative Professional",
-    "aboutDescription": "Learn about Ivan Bondaruk: background, expertise, and approach to building scalable web solutions.",
+    "aboutTitle": "About Ivan Bondaruk — CS Teacher, Robotics & Web",
+    "aboutDescription": "Computer science teacher focused on robotics, web development, and IoT. Background, focus areas, and milestones.",
     "contactTitle": "Contact Ivan Bondaruk — Hire a Developer",
     "contactDescription": "Get in touch for collaboration. Freelance and full-time opportunities. Let's build something great together.",
     "professionalTitle": "Ivan Bondaruk — Certificates, Experience & Skills",

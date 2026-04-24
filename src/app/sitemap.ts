@@ -17,6 +17,8 @@
 
 import type { MetadataRoute } from "next"
 import { SITE_URL, LOCALES, DEFAULT_LOCALE, absoluteUrl } from "@/config/seo"
+import { getLandingCompany } from "@/lib/supabase/companies"
+import { getProjectsByCompanyId } from "@/lib/supabase/projects"
 
 type Locale = (typeof LOCALES)[number]
 
@@ -29,7 +31,7 @@ const MARKETING_PATHS = [
   { path: "cookies", changeFrequency: "yearly" as const, priority: 0.3 },
 ]
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = []
 
   for (const { path, changeFrequency, priority } of MARKETING_PATHS) {
@@ -48,6 +50,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
         languages,
       },
     })
+  }
+
+  const landing = await getLandingCompany()
+  if (landing) {
+    const projects = await getProjectsByCompanyId(landing.id)
+    for (const project of projects) {
+      const path = `projects/${project.slug}`
+      const languages: Record<string, string> = {}
+      for (const loc of LOCALES) {
+        languages[loc] = absoluteUrl(path, loc)
+      }
+      languages["x-default"] = absoluteUrl(path, DEFAULT_LOCALE)
+
+      entries.push({
+        url: absoluteUrl(path, DEFAULT_LOCALE),
+        lastModified: new Date(project.updated_at),
+        changeFrequency: "weekly",
+        priority: 0.8,
+        alternates: {
+          languages,
+        },
+      })
+    }
   }
 
   return entries

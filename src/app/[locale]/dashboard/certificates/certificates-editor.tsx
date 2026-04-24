@@ -16,12 +16,13 @@
 
 "use client"
 
-import { useState, useRef, useCallback } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useRef, useCallback, useEffect } from "react"
+import { useParams, useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
+import { DatePicker } from "@/components/ui/date-picker"
 import { Card, CardContent } from "@/components/ui/card"
 import {
   Dialog,
@@ -62,13 +63,21 @@ interface CertificatesEditorProps {
 export function CertificatesEditor({ certificates }: CertificatesEditorProps) {
   const t = useTranslations("dashboard.certificatesPage")
   const router = useRouter()
+  const params = useParams()
+  const uiLocale = (params?.locale as string) ?? "en"
   const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [createDate, setCreateDate] = useState("")
+  const [editDate, setEditDate] = useState("")
   const [editingGroup, setEditingGroup] = useState<CertificateGroup | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [createFile, setCreateFile] = useState<File | null>(null)
   const [editFile, setEditFile] = useState<File | null>(null)
   const [saving, setSaving] = useState(false)
   const createFormRef = useRef<HTMLFormElement>(null)
+
+  useEffect(() => {
+    if (editingGroup) setEditDate(editingGroup.date_obtained)
+  }, [editingGroup])
 
   const injectFileIntoInput = useCallback(
     (form: HTMLFormElement | null, file: File | null) => {
@@ -102,15 +111,17 @@ export function CertificatesEditor({ certificates }: CertificatesEditorProps) {
       toast.error(t("imageRequired"))
       return
     }
+    if (!createDate.trim()) {
+      toast.error(t("invalidDate"))
+      return
+    }
     const form = e.currentTarget
     const name_en = (form.querySelector('[name="name_en"]') as HTMLInputElement)
       ?.value
     const description_en = (
       form.querySelector('[name="description_en"]') as HTMLTextAreaElement
     )?.value
-    const date_obtained = (
-      form.querySelector('[name="date_obtained"]') as HTMLInputElement
-    )?.value
+    const date_obtained = createDate.trim()
 
     setSaving(true)
     try {
@@ -154,6 +165,7 @@ export function CertificatesEditor({ certificates }: CertificatesEditorProps) {
           toast.success(t("created"))
           setIsCreateOpen(false)
           setCreateFile(null)
+          setCreateDate("")
           form.reset()
           router.refresh()
           return
@@ -165,6 +177,7 @@ export function CertificatesEditor({ certificates }: CertificatesEditorProps) {
       toast.success(t("created"))
       setIsCreateOpen(false)
       setCreateFile(null)
+      setCreateDate("")
       form.reset()
       router.refresh()
     } catch (err) {
@@ -298,6 +311,7 @@ export function CertificatesEditor({ certificates }: CertificatesEditorProps) {
       <Dialog
         open={isCreateOpen}
         onOpenChange={(open) => {
+          if (open) setCreateDate("")
           if (!open) setCreateFile(null)
           setIsCreateOpen(open)
         }}
@@ -328,12 +342,15 @@ export function CertificatesEditor({ certificates }: CertificatesEditorProps) {
               </div>
             </div>
             <div>
+              <input type="hidden" name="date_obtained" value={createDate} />
               <Label htmlFor="create-date">{t("dateObtained")}</Label>
-              <Input
+              <DatePicker
                 id="create-date"
-                name="date_obtained"
-                type="date"
-                required
+                value={createDate}
+                onValueChange={setCreateDate}
+                locale={uiLocale}
+                placeholder={t("dateObtained")}
+                aria-label={t("dateObtained")}
               />
             </div>
             <div>
@@ -456,13 +473,15 @@ export function CertificatesEditor({ certificates }: CertificatesEditorProps) {
                 )}
               </Tabs>
               <div>
+                <input type="hidden" name="date_obtained" value={editDate} />
                 <Label htmlFor="edit-date">{t("dateObtained")}</Label>
-                <Input
+                <DatePicker
                   id="edit-date"
-                  name="date_obtained"
-                  type="date"
-                  defaultValue={editingGroup.date_obtained}
-                  required
+                  value={editDate}
+                  onValueChange={setEditDate}
+                  locale={uiLocale}
+                  placeholder={t("dateObtained")}
+                  aria-label={t("dateObtained")}
                 />
               </div>
               <div>

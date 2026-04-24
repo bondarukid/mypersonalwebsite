@@ -1,7 +1,11 @@
-'use client'
+/**
+ * @deprecated Use FAQSection from @/components/faq-section instead.
+ * This component used hardcoded i18n keys; FAQSection loads from DB.
+ */
+"use client"
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { Link } from '@/i18n/routing'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Link } from "@/i18n/routing"
 import { DynamicIcon, type IconName } from 'lucide-react/dynamic'
 import { useTranslations } from 'next-intl'
 
@@ -13,14 +17,14 @@ type FAQItem = {
 }
 
 export default function FAQsThree() {
-    const t = useTranslations('faqs')
+    const t = useTranslations("faqs")
 
     const faqItems: FAQItem[] = [
-        { id: 'item-1', icon: 'clock', questionKey: 'q1', answerKey: 'a1' },
-        { id: 'item-2', icon: 'credit-card', questionKey: 'q2', answerKey: 'a2' },
-        { id: 'item-3', icon: 'truck', questionKey: 'q3', answerKey: 'a3' },
-        { id: 'item-4', icon: 'globe', questionKey: 'q4', answerKey: 'a4' },
-        { id: 'item-5', icon: 'package', questionKey: 'q5', answerKey: 'a5' },
+        { id: "item-1", icon: "clock", questionKey: "q1", answerKey: "a1" },
+        { id: "item-2", icon: "credit-card", questionKey: "q2", answerKey: "a2" },
+        { id: "item-3", icon: "truck", questionKey: "q3", answerKey: "a3" },
+        { id: "item-4", icon: "globe", questionKey: "q4", answerKey: "a4" },
+        { id: "item-5", icon: "package", questionKey: "q5", answerKey: "a5" },
     ]
 
     return (

@@ -15,9 +15,11 @@
  */
 
 import { createClient } from "@/lib/supabase/server"
+import { getLandingCompanyId } from "@/lib/supabase/companies"
 
 export type Certificate = {
   id: string
+  company_id: string
   locale: string
   name: string
   description: string | null
@@ -47,9 +49,16 @@ export async function getCertificatesForLocale(
   if (!supabaseUrl || !supabaseAnonKey) return []
 
   const supabase = await createClient()
+  const landingId = await getLandingCompanyId()
+  if (!landingId) return []
+
+  const selectCols =
+    "id, company_id, locale, name, description, image_path, date_obtained, sort_order, created_at"
+
   const { data, error } = await supabase
     .from("certificates")
-    .select("id, locale, name, description, image_path, date_obtained, sort_order, created_at")
+    .select(selectCols)
+    .eq("company_id", landingId)
     .eq("locale", locale)
     .order("sort_order", { ascending: true })
 
@@ -61,7 +70,8 @@ export async function getCertificatesForLocale(
 
   const { data: fallbackData, error: fallbackError } = await supabase
     .from("certificates")
-    .select("id, locale, name, description, image_path, date_obtained, sort_order, created_at")
+    .select(selectCols)
+    .eq("company_id", landingId)
     .eq("locale", DEFAULT_LOCALE)
     .order("sort_order", { ascending: true })
 
@@ -71,9 +81,15 @@ export async function getCertificatesForLocale(
 
 export async function getAllCertificatesForAdmin(): Promise<CertificateGroup[]> {
   const supabase = await createClient()
+  const landingId = await getLandingCompanyId()
+  if (!landingId) return []
+
   const { data, error } = await supabase
     .from("certificates")
-    .select("id, locale, name, description, image_path, date_obtained, sort_order, created_at")
+    .select(
+      "id, company_id, locale, name, description, image_path, date_obtained, sort_order, created_at"
+    )
+    .eq("company_id", landingId)
     .order("sort_order", { ascending: true })
     .order("locale")
 
@@ -114,9 +130,15 @@ export async function createCertificate(
   input: CreateCertificateInput
 ): Promise<{ error?: string }> {
   const supabase = await createClient()
+  const landingId = await getLandingCompanyId()
+  if (!landingId) {
+    return { error: "Landing company not found" }
+  }
+
   const { data: maxRow } = await supabase
     .from("certificates")
     .select("sort_order")
+    .eq("company_id", landingId)
     .order("sort_order", { ascending: false })
     .limit(1)
     .maybeSingle()
@@ -129,6 +151,7 @@ export async function createCertificate(
   const descJa = input.description_ja ?? ""
 
   const rows = LOCALES.map((locale) => ({
+    company_id: landingId,
     locale,
     name:
       locale === "en"

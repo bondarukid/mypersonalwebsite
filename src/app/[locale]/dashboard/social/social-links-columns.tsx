@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import type { ColumnDef } from "@tanstack/react-table"
 import { SocialPlatformIcon } from "@/components/social-platform-icons"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -10,7 +11,6 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import type { SocialLink } from "@/lib/supabase/social-links"
-import { cn } from "@/lib/utils"
 
 const PLATFORM_LABELS: Record<string, string> = {
   twitter: "X / Twitter",
@@ -19,6 +19,31 @@ const PLATFORM_LABELS: Record<string, string> = {
   threads: "Threads",
   instagram: "Instagram",
   tiktok: "TikTok",
+}
+
+function SocialLinkEnabledCheckbox({ link }: { link: SocialLink }) {
+  const [enabled, setEnabled] = useState(link.enabled)
+  useEffect(() => {
+    setEnabled(link.enabled)
+  }, [link.id, link.enabled])
+
+  return (
+    <Field orientation="horizontal" className="w-fit">
+      <FieldLabel
+        htmlFor={`enabled-${link.id}`}
+        className="flex cursor-pointer items-center gap-2 font-normal"
+      >
+        <Checkbox
+          id={`enabled-${link.id}`}
+          name={`enabled-${link.id}`}
+          checked={enabled}
+          onCheckedChange={setEnabled}
+          value="on"
+          aria-label={`${enabled ? "Enabled" : "Disabled"} - ${link.platform}`}
+        />
+      </FieldLabel>
+    </Field>
+  )
 }
 
 export const socialLinksColumns: ColumnDef<SocialLink>[] = [
@@ -65,24 +90,6 @@ export const socialLinksColumns: ColumnDef<SocialLink>[] = [
   {
     accessorKey: "enabled",
     header: "Enabled",
-    cell: ({ row }) => {
-      const link = row.original
-      return (
-        <Field key={link.id} orientation="horizontal" className="w-fit">
-          <FieldLabel
-            htmlFor={`enabled-${link.id}`}
-            className="flex cursor-pointer items-center gap-2 font-normal"
-          >
-            <Checkbox
-              id={`enabled-${link.id}`}
-              name={`enabled-${link.id}`}
-              defaultChecked={link.enabled}
-              value="on"
-              aria-label={`${link.enabled ? "Enabled" : "Disabled"} - ${link.platform}`}
-            />
-          </FieldLabel>
-        </Field>
-      )
-    },
+    cell: ({ row }) => <SocialLinkEnabledCheckbox link={row.original} />,
   },
 ]

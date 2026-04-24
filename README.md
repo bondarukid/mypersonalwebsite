@@ -7,14 +7,22 @@ A personal portfolio site built with Next.js 16, featuring a public marketing la
 ## Features
 
 - **Landing page** — Hero section, testimonials, integrations showcase
+- **Projects** — Public project pages with Hero, FAQ, and store links
 - **i18n** — Multi-language support (English, Ukrainian, Japanese)
 - **Dashboard** — Protected admin area for managing:
+  - **Projects** — Add apps/products, icons (upload or iTunes fetch), platforms, per-project FAQ
   - **Testimonials** — Edit quote, author, and role per locale
   - **Landing stats** — GitHub stars, GA4 metrics, apps configuration
   - **Social links** — Social network URLs for the landing page
+  - **Certificates** — Certificates for the Professional page
+  - **Landing FAQ** — FAQ section on the landing page
 - **GitHub repo block** — Header badge with repo link, stars, and forks (MkDocs-style)
 - **Analytics** — Firebase Analytics (optional)
 - **Auth** — Supabase Auth with email whitelist
+
+## Documentation
+
+- **[Projects Guide](docs/PROJECTS-GUIDE.md)** — How to add projects and project pages
 
 ## Tech Stack
 
@@ -90,10 +98,11 @@ The app is suitable for deployment on Vercel, with Supabase and optional Firebas
 
 ## How It Works
 
-1. **Landing** — Public routes (`/`, `/about`, `/contact`, etc.) render the marketing site. Testimonials and hero content come from Supabase.
-2. **Auth** — Dashboard routes (`/dashboard/*`) require sign-in. Supabase Auth + `ALLOWED_EMAILS` restrict access.
-3. **Dashboard** — Server-rendered pages fetch data from Supabase. Client components handle forms and updates via Server Actions.
-4. **i18n** — Locale is derived from the URL (`/en/...`, `/uk/...`, `/ja/...`). Messages live in `messages/*.json`.
+1. **Landing** — Public routes (`/`, `/about`, `/contact`, `/projects`, `/projects/[slug]`, etc.) render the marketing site. Testimonials, hero content, and project data come from Supabase.
+2. **Projects** — Each project has a public page at `/projects/[slug]` (Hero + FAQ) and dashboard editors for Overview, Platforms, and FAQ. See [Projects Guide](docs/PROJECTS-GUIDE.md).
+3. **Auth** — Dashboard routes (`/dashboard/*`) require sign-in. Supabase Auth + `ALLOWED_EMAILS` restrict access.
+4. **Dashboard** — Server-rendered pages fetch data from Supabase. Client components handle forms and updates via Server Actions.
+5. **i18n** — Locale is derived from the URL (`/en/...`, `/uk/...`, `/ja/...`). Messages live in `messages/*.json`.
 
 ## License
 

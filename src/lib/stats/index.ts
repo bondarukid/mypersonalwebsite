@@ -1,5 +1,6 @@
 import { unstable_cache } from 'next/cache'
 import { BetaAnalyticsDataClient } from '@google-analytics/data'
+import type { LandingStatsContentRow } from '@/lib/supabase/landing-stats-content'
 
 /** Fallback values when APIs fail or env is not configured */
 const FALLBACK = {
@@ -12,6 +13,25 @@ export type Stats = {
   stars: number
   activeUsers: number
   poweredApps: number
+}
+
+export { formatActiveUsers } from '@/lib/stats-display'
+
+/**
+ * Returns synced/env stats, or manual totals from CMS when
+ * `use_manual_totals` is enabled on the landing company row.
+ */
+export async function getStatsForLandingDisplay(
+  content: LandingStatsContentRow | null
+): Promise<Stats> {
+  if (content?.use_manual_totals) {
+    return {
+      stars: content.manual_stars,
+      activeUsers: content.manual_active_users,
+      poweredApps: content.manual_powered_apps,
+    }
+  }
+  return getStats()
 }
 
 export async function fetchGitHubStars(
