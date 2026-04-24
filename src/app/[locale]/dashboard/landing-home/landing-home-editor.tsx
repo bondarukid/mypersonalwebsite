@@ -9,7 +9,7 @@
  * License, or (at your option) any later version.
  */
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
@@ -86,18 +86,39 @@ type LandingHomeEditorProps = {
   techCategories: LandingTechStackCategoryRow[]
 }
 
-export function LandingHomeEditor({
-  featureSection: initialFS,
-  featureCards: initialCards,
-  techSection: initialTS,
-  techItems: initialItems,
-  techCategories: initialCategories,
-}: LandingHomeEditorProps) {
-  const t = useTranslations("dashboard.landingHomePage")
-  const router = useRouter()
-  const [activeLocale, setActiveLocale] = useState("en")
+type Feat = {
+  heading_en: string
+  heading_uk: string
+  heading_ja: string
+  intro_en: string
+  intro_uk: string
+  intro_ja: string
+}
 
-  const [feat, setFeat] = useState(() => ({
+type TechF = {
+  heading_en: string
+  heading_uk: string
+  heading_ja: string
+  subcopy_en: string
+  subcopy_uk: string
+  subcopy_ja: string
+  learn_more_en: string
+  learn_more_uk: string
+  learn_more_ja: string
+}
+
+function LandingFeatureCopyCard({
+  initialFS,
+  activeLocale,
+  t,
+  router,
+}: {
+  initialFS: LandingFeatureSectionRow
+  activeLocale: string
+  t: (k: string) => string
+  router: ReturnType<typeof useRouter>
+}) {
+  const [feat, setFeat] = useState<Feat>(() => ({
     heading_en: initialFS.heading_en,
     heading_uk: initialFS.heading_uk,
     heading_ja: initialFS.heading_ja,
@@ -105,21 +126,7 @@ export function LandingHomeEditor({
     intro_uk: initialFS.intro_uk,
     intro_ja: initialFS.intro_ja,
   }))
-
-  const [tech, setTech] = useState(() => ({
-    heading_en: initialTS.heading_en,
-    heading_uk: initialTS.heading_uk,
-    heading_ja: initialTS.heading_ja,
-    subcopy_en: initialTS.subcopy_en,
-    subcopy_uk: initialTS.subcopy_uk,
-    subcopy_ja: initialTS.subcopy_ja,
-    learn_more_en: initialTS.learn_more_en,
-    learn_more_uk: initialTS.learn_more_uk,
-    learn_more_ja: initialTS.learn_more_ja,
-  }))
-
   const [savingF, setSavingF] = useState(false)
-  const [savingT, setSavingT] = useState(false)
 
   const onSaveFeatureSection = async () => {
     setSavingF(true)
@@ -133,28 +140,79 @@ export function LandingHomeEditor({
     }
   }
 
-  const onSaveTechSection = async () => {
-    setSavingT(true)
-    const r = await saveTechStackSectionAction(tech)
-    setSavingT(false)
-    if (r.error) {
-      toast.error(r.error)
-    } else {
-      toast.success(t("saved"))
-      router.refresh()
-    }
+  const featureHeadingKey: keyof Feat =
+    activeLocale === "en"
+      ? "heading_en"
+      : activeLocale === "uk"
+        ? "heading_uk"
+        : "heading_ja"
+  const featureIntroKey: keyof Feat =
+    activeLocale === "en"
+      ? "intro_en"
+      : activeLocale === "uk"
+        ? "intro_uk"
+        : "intro_ja"
+
+  const updateFeat = (k: keyof Feat, v: string) => {
+    setFeat((f) => ({ ...f, [k]: v }))
   }
 
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">{t("featureSectionTitle")}</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4 max-w-2xl">
+        <div>
+          <Label htmlFor="fh">{t("featureHeading")}</Label>
+          <Input
+            id="fh"
+            value={feat[featureHeadingKey] ?? ""}
+            onChange={(e) => updateFeat(featureHeadingKey, e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="fi">{t("featureIntro")}</Label>
+          <Textarea
+            id="fi"
+            value={feat[featureIntroKey] ?? ""}
+            onChange={(e) => updateFeat(featureIntroKey, e.target.value)}
+            rows={4}
+          />
+        </div>
+        <Button
+          type="button"
+          onClick={onSaveFeatureSection}
+          disabled={savingF}
+        >
+          {savingF ? t("saving") : t("saveSection")}
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
+
+function LandingFeatureCardsDnd({
+  featureCards: initialCards,
+  activeLocale,
+  t,
+  router,
+  onUpdateFeatureCard,
+  onAddFeatureCard,
+  onDeleteFeature,
+}: {
+  featureCards: LandingFeatureCardRow[]
+  activeLocale: string
+  t: (k: string) => string
+  router: ReturnType<typeof useRouter>
+  onUpdateFeatureCard: (id: string, field: string, value: string) => void
+  onAddFeatureCard: () => void
+  onDeleteFeature: (id: string) => void
+}) {
   const [orderedFeatureIds, setOrderedFeatureIds] = useState(() =>
     initialCards.map((c) => c.id)
   )
-  const cards = initialCards
-  const cardsById = new Map(cards.map((c) => [c.id, c]))
-
-  useEffect(() => {
-    setOrderedFeatureIds(initialCards.map((c) => c.id))
-  }, [initialCards.map((c) => c.id).join(",")])
-
+  const cardsById = new Map(initialCards.map((c) => [c.id, c]))
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
     useSensor(TouchSensor, {
@@ -185,56 +243,152 @@ export function LandingHomeEditor({
     [orderedFeatureIds, t, router]
   )
 
-  const featureHeadingKey: keyof typeof feat =
-    activeLocale === "en"
-      ? "heading_en"
-      : activeLocale === "uk"
-        ? "heading_uk"
-        : "heading_ja"
-  const featureIntroKey: keyof typeof feat =
-    activeLocale === "en"
-      ? "intro_en"
-      : activeLocale === "uk"
-        ? "intro_uk"
-        : "intro_ja"
+  return (
+    <div className="space-y-2">
+      <h3 className="text-sm font-medium">{t("featureCards")}</h3>
+      <DndContext
+        id="landing-dnd-feature-cards"
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        modifiers={[restrictToVerticalAxis]}
+        onDragEnd={onDragEndFeatures}
+      >
+        <SortableContext
+          items={orderedFeatureIds}
+          strategy={verticalListSortingStrategy}
+        >
+          {orderedFeatureIds.map((id) => {
+            const c = cardsById.get(id)
+            if (!c) return null
+            return (
+              <SortableFeatureRow
+                key={id}
+                id={id}
+                card={c}
+                activeLocale={activeLocale}
+                onUpdate={onUpdateFeatureCard}
+                onDelete={onDeleteFeature}
+                t={t}
+              />
+            )
+          })}
+        </SortableContext>
+      </DndContext>
+      <Button variant="outline" size="sm" onClick={onAddFeatureCard}>
+        <PlusIcon className="size-4 mr-1" />
+        {t("addFeatureCard")}
+      </Button>
+    </div>
+  )
+}
 
-  const updateFeat = (k: keyof typeof feat, v: string) => {
-    setFeat((f) => ({ ...f, [k]: v }))
+function LandingTechCopyCard({
+  initialTS,
+  activeLocale,
+  t,
+  router,
+}: {
+  initialTS: LandingTechStackSectionRow
+  activeLocale: string
+  t: (k: string) => string
+  router: ReturnType<typeof useRouter>
+}) {
+  const [tech, setTech] = useState<TechF>(() => ({
+    heading_en: initialTS.heading_en,
+    heading_uk: initialTS.heading_uk,
+    heading_ja: initialTS.heading_ja,
+    subcopy_en: initialTS.subcopy_en,
+    subcopy_uk: initialTS.subcopy_uk,
+    subcopy_ja: initialTS.subcopy_ja,
+    learn_more_en: initialTS.learn_more_en,
+    learn_more_uk: initialTS.learn_more_uk,
+    learn_more_ja: initialTS.learn_more_ja,
+  }))
+  const [savingT, setSavingT] = useState(false)
+
+  const onSaveTechSection = async () => {
+    setSavingT(true)
+    const r = await saveTechStackSectionAction(tech)
+    setSavingT(false)
+    if (r.error) {
+      toast.error(r.error)
+    } else {
+      toast.success(t("saved"))
+      router.refresh()
+    }
   }
 
-  useEffect(() => {
-    setFeat({
-      heading_en: initialFS.heading_en,
-      heading_uk: initialFS.heading_uk,
-      heading_ja: initialFS.heading_ja,
-      intro_en: initialFS.intro_en,
-      intro_uk: initialFS.intro_uk,
-      intro_ja: initialFS.intro_ja,
-    })
-  }, [initialFS.updated_at])
+  const updateTechField = (k: keyof TechF, v: string) => {
+    setTech((x) => ({ ...x, [k]: v }))
+  }
 
-  useEffect(() => {
-    setTech({
-      heading_en: initialTS.heading_en,
-      heading_uk: initialTS.heading_uk,
-      heading_ja: initialTS.heading_ja,
-      subcopy_en: initialTS.subcopy_en,
-      subcopy_uk: initialTS.subcopy_uk,
-      subcopy_ja: initialTS.subcopy_ja,
-      learn_more_en: initialTS.learn_more_en,
-      learn_more_uk: initialTS.learn_more_uk,
-      learn_more_ja: initialTS.learn_more_ja,
-    })
-  }, [initialTS.updated_at])
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">
+          {t("techStackSectionTitle")}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4 max-w-2xl">
+        {(["heading", "subcopy", "learn_more"] as const).map((prefix) => {
+          const su =
+            activeLocale === "en" ? "en" : activeLocale === "uk" ? "uk" : "ja"
+          const k = `${prefix}_${su}` as keyof TechF
+          return (
+            <div key={k}>
+              <Label>{t(`field_${prefix}` as "field_heading")}</Label>
+              <Input
+                value={String(tech[k] ?? "")}
+                onChange={(e) => updateTechField(k, e.target.value)}
+              />
+            </div>
+          )
+        })}
+        <Button
+          type="button"
+          onClick={onSaveTechSection}
+          disabled={savingT}
+        >
+          {savingT ? t("saving") : t("saveSection")}
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
 
+function LandingTechStackCategoriesAndItems({
+  initialCategories,
+  initialItems,
+  activeLocale,
+  t,
+  router,
+  onAddCategory,
+  onUpdateCategory,
+  onDeleteCategory,
+}: {
+  initialCategories: LandingTechStackCategoryRow[]
+  initialItems: LandingTechStackItemRow[]
+  activeLocale: string
+  t: (k: string) => string
+  router: ReturnType<typeof useRouter>
+  onAddCategory: () => void
+  onUpdateCategory: (id: string, field: string, value: string) => void
+  onDeleteCategory: (id: string) => void
+}) {
   const [orderedCategoryIds, setOrderedCategoryIds] = useState(() =>
     initialCategories.map((c) => c.id)
   )
-  const categories = initialCategories
-  const categoryById = new Map(categories.map((c) => [c.id, c]))
-  useEffect(() => {
-    setOrderedCategoryIds(initialCategories.map((c) => c.id))
-  }, [initialCategories.map((c) => c.id).join(",")])
+  const categoryById = new Map(
+    initialCategories.map((c) => [c.id, c] as [string, LandingTechStackCategoryRow])
+  )
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 200, tolerance: 8 },
+    }),
+    useSensor(KeyboardSensor)
+  )
+  const grouped = groupTechStackItemsByCategory(initialItems)
 
   const onDragEndCategories = useCallback(
     async (e: DragEndEvent) => {
@@ -258,9 +412,130 @@ export function LandingHomeEditor({
     [orderedCategoryIds, t, router]
   )
 
-  const updateTechField = (k: keyof typeof tech, v: string) => {
-    setTech((x) => ({ ...x, [k]: v }))
-  }
+  const firstCategoryId = orderedCategoryIds[0] ?? ""
+
+  return (
+    <>
+      <div className="space-y-2">
+        <h3 className="text-sm font-medium">{t("techStackCategories")}</h3>
+        <p className="text-muted-foreground text-xs max-w-xl">
+          {t("techStackCategoriesHelp")}
+        </p>
+        <DndContext
+          id="landing-dnd-tech-categories"
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          modifiers={[restrictToVerticalAxis]}
+          onDragEnd={onDragEndCategories}
+        >
+          <SortableContext
+            items={orderedCategoryIds}
+            strategy={verticalListSortingStrategy}
+          >
+            {orderedCategoryIds.map((id) => {
+              const cat = categoryById.get(id)
+              if (!cat) return null
+              return (
+                <SortableCategoryRow
+                  key={id}
+                  id={id}
+                  category={cat}
+                  activeLocale={activeLocale}
+                  onUpdate={onUpdateCategory}
+                  onDelete={onDeleteCategory}
+                  t={t}
+                />
+              )
+            })}
+          </SortableContext>
+        </DndContext>
+        <Button
+          variant="outline"
+          size="sm"
+          type="button"
+          onClick={onAddCategory}
+        >
+          <PlusIcon className="size-4 mr-1" />
+          {t("addCategory")}
+        </Button>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-sm font-medium">{t("techStackItems")}</h3>
+        {firstCategoryId ? (
+          <Tabs
+            key={orderedCategoryIds.join("-")}
+            defaultValue={firstCategoryId}
+            className="w-full"
+          >
+            <TabsList className="flex w-full max-w-2xl flex-wrap h-auto min-h-9 p-1">
+              {orderedCategoryIds.map((tabCid) => {
+                const cat = categoryById.get(tabCid)
+                if (!cat) return null
+                const su =
+                  activeLocale === "en"
+                    ? "en"
+                    : activeLocale === "uk"
+                      ? "uk"
+                      : "ja"
+                const label =
+                  su === "en"
+                    ? cat.label_en
+                    : su === "uk"
+                      ? cat.label_uk
+                      : cat.label_ja
+                return (
+                  <TabsTrigger key={tabCid} value={tabCid} className="shrink-0">
+                    {label || "—"}
+                  </TabsTrigger>
+                )
+              })}
+            </TabsList>
+            {orderedCategoryIds.map((tabCid) => {
+              const itemsInCat = grouped.get(tabCid) ?? []
+              return (
+                <TabsContent
+                  key={tabCid}
+                  value={tabCid}
+                  className="pt-4"
+                >
+                  <TechTabList
+                    key={itemsInCat
+                      .map((i) => i.id)
+                      .slice()
+                      .sort()
+                      .join(",")}
+                    categoryId={tabCid}
+                    items={itemsInCat}
+                    activeLocale={activeLocale}
+                    t={t}
+                    router={router}
+                    sensors={sensors}
+                  />
+                </TabsContent>
+              )
+            })}
+          </Tabs>
+        ) : (
+          <p className="text-muted-foreground text-sm">
+            {t("addCategoryFirst")}
+          </p>
+        )}
+      </div>
+    </>
+  )
+}
+
+export function LandingHomeEditor({
+  featureSection: initialFS,
+  featureCards: initialCards,
+  techSection: initialTS,
+  techItems: initialItems,
+  techCategories: initialCategories,
+}: LandingHomeEditorProps) {
+  const t = useTranslations("dashboard.landingHomePage")
+  const router = useRouter()
+  const [activeLocale, setActiveLocale] = useState("en")
 
   const onUpdateFeatureCard = async (
     id: string,
@@ -308,8 +583,6 @@ export function LandingHomeEditor({
 
   const localeOptions = LOCALES.filter((l) => routing.locales.includes(l.id))
 
-  const grouped = groupTechStackItemsByCategory(initialItems)
-
   const onAddCategory = async () => {
     const label = t("newCategoryLabel")
     const r = await createTechCategoryAction({
@@ -345,7 +618,18 @@ export function LandingHomeEditor({
     }
   }
 
-  const firstCategoryId = orderedCategoryIds[0] ?? ""
+  const featureCopyKey = String(initialFS.updated_at)
+  const featureCardsKey = initialCards
+    .map((c) => c.id)
+    .slice()
+    .sort()
+    .join(",")
+  const techCopyKey = String(initialTS.updated_at)
+  const categoryBlockKey = initialCategories
+    .map((c) => c.id)
+    .slice()
+    .sort()
+    .join(",")
 
   return (
     <div className="space-y-8">
@@ -373,201 +657,44 @@ export function LandingHomeEditor({
         ))}
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">{t("featureSectionTitle")}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 max-w-2xl">
-          <div>
-            <Label htmlFor="fh">{t("featureHeading")}</Label>
-            <Input
-              id="fh"
-              value={feat[featureHeadingKey] ?? ""}
-              onChange={(e) => updateFeat(featureHeadingKey, e.target.value)}
-            />
-          </div>
-          <div>
-            <Label htmlFor="fi">{t("featureIntro")}</Label>
-            <Textarea
-              id="fi"
-              value={feat[featureIntroKey] ?? ""}
-              onChange={(e) => updateFeat(featureIntroKey, e.target.value)}
-              rows={4}
-            />
-          </div>
-          <Button
-            type="button"
-            onClick={onSaveFeatureSection}
-            disabled={savingF}
-          >
-            {savingF ? t("saving") : t("saveSection")}
-          </Button>
-        </CardContent>
-      </Card>
+      <LandingFeatureCopyCard
+        key={featureCopyKey}
+        initialFS={initialFS}
+        activeLocale={activeLocale}
+        t={t}
+        router={router}
+      />
 
-      <div className="space-y-2">
-        <h3 className="text-sm font-medium">{t("featureCards")}</h3>
-        <DndContext
-          id="landing-dnd-feature-cards"
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          modifiers={[restrictToVerticalAxis]}
-          onDragEnd={onDragEndFeatures}
-        >
-          <SortableContext
-            items={orderedFeatureIds}
-            strategy={verticalListSortingStrategy}
-          >
-            {orderedFeatureIds.map((id) => {
-              const c = cardsById.get(id)
-              if (!c) return null
-              return (
-                <SortableFeatureRow
-                  key={id}
-                  id={id}
-                  card={c}
-                  activeLocale={activeLocale}
-                  onUpdate={onUpdateFeatureCard}
-                  onDelete={onDeleteFeature}
-                  t={t}
-                />
-              )
-            })}
-          </SortableContext>
-        </DndContext>
-        <Button variant="outline" size="sm" onClick={onAddFeatureCard}>
-          <PlusIcon className="size-4 mr-1" />
-          {t("addFeatureCard")}
-        </Button>
-      </div>
+      <LandingFeatureCardsDnd
+        key={featureCardsKey}
+        featureCards={initialCards}
+        activeLocale={activeLocale}
+        t={t}
+        router={router}
+        onUpdateFeatureCard={onUpdateFeatureCard}
+        onAddFeatureCard={onAddFeatureCard}
+        onDeleteFeature={onDeleteFeature}
+      />
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">
-            {t("techStackSectionTitle")}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 max-w-2xl">
-          {(["heading", "subcopy", "learn_more"] as const).map((prefix) => {
-            const su =
-              activeLocale === "en" ? "en" : activeLocale === "uk" ? "uk" : "ja"
-            const k = `${prefix}_${su}` as keyof typeof tech
-            return (
-              <div key={k}>
-                <Label>{t(`field_${prefix}` as "field_heading")}</Label>
-                <Input
-                  value={String(tech[k] ?? "")}
-                  onChange={(e) =>
-                    updateTechField(
-                      k,
-                      e.target.value
-                    )
-                  }
-                />
-              </div>
-            )
-          })}
-          <Button
-            type="button"
-            onClick={onSaveTechSection}
-            disabled={savingT}
-          >
-            {savingT ? t("saving") : t("saveSection")}
-          </Button>
-        </CardContent>
-      </Card>
+      <LandingTechCopyCard
+        key={techCopyKey}
+        initialTS={initialTS}
+        activeLocale={activeLocale}
+        t={t}
+        router={router}
+      />
 
-      <div className="space-y-2">
-        <h3 className="text-sm font-medium">{t("techStackCategories")}</h3>
-        <p className="text-muted-foreground text-xs max-w-xl">
-          {t("techStackCategoriesHelp")}
-        </p>
-        <DndContext
-          id="landing-dnd-tech-categories"
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          modifiers={[restrictToVerticalAxis]}
-          onDragEnd={onDragEndCategories}
-        >
-          <SortableContext
-            items={orderedCategoryIds}
-            strategy={verticalListSortingStrategy}
-          >
-            {orderedCategoryIds.map((id) => {
-              const cat = categoryById.get(id)
-              if (!cat) return null
-              return (
-                <SortableCategoryRow
-                  key={id}
-                  id={id}
-                  category={cat}
-                  activeLocale={activeLocale}
-                  onUpdate={onUpdateCategory}
-                  onDelete={onDeleteCategory}
-                  t={t}
-                />
-              )
-            })}
-          </SortableContext>
-        </DndContext>
-        <Button variant="outline" size="sm" type="button" onClick={onAddCategory}>
-          <PlusIcon className="size-4 mr-1" />
-          {t("addCategory")}
-        </Button>
-      </div>
-
-      <div className="space-y-4">
-        <h3 className="text-sm font-medium">{t("techStackItems")}</h3>
-        {firstCategoryId ? (
-          <Tabs
-            key={orderedCategoryIds.join("-")}
-            defaultValue={firstCategoryId}
-            className="w-full"
-          >
-            <TabsList className="flex w-full max-w-2xl flex-wrap h-auto min-h-9 p-1">
-              {orderedCategoryIds.map((cid) => {
-                const cat = categoryById.get(cid)
-                if (!cat) return null
-                const su =
-                  activeLocale === "en"
-                    ? "en"
-                    : activeLocale === "uk"
-                      ? "uk"
-                      : "ja"
-                const label =
-                  su === "en"
-                    ? cat.label_en
-                    : su === "uk"
-                      ? cat.label_uk
-                      : cat.label_ja
-                return (
-                  <TabsTrigger key={cid} value={cid} className="shrink-0">
-                    {label || "—"}
-                  </TabsTrigger>
-                )
-              })}
-            </TabsList>
-            {orderedCategoryIds.map((tabCid) => {
-              const cat = categoryById.get(tabCid)
-              if (!cat) return null
-              return (
-                <TabsContent key={tabCid} value={tabCid} className="pt-4">
-                  <TechTabList
-                    categoryId={tabCid}
-                    items={grouped.get(tabCid) ?? []}
-                    activeLocale={activeLocale}
-                    t={t}
-                    router={router}
-                    sensors={sensors}
-                  />
-                </TabsContent>
-              )
-            })}
-          </Tabs>
-        ) : (
-          <p className="text-muted-foreground text-sm">{t("addCategoryFirst")}</p>
-        )}
-      </div>
+      <LandingTechStackCategoriesAndItems
+        key={categoryBlockKey}
+        initialCategories={initialCategories}
+        initialItems={initialItems}
+        activeLocale={activeLocale}
+        t={t}
+        router={router}
+        onAddCategory={onAddCategory}
+        onUpdateCategory={onUpdateCategory}
+        onDeleteCategory={onDeleteCategory}
+      />
     </div>
   )
 }
@@ -777,9 +904,6 @@ function TechTabList({
   sensors: ReturnType<typeof useSensors>
 }) {
   const [order, setOrder] = useState(() => items.map((i) => i.id))
-  useEffect(() => {
-    setOrder(items.map((i) => i.id))
-  }, [items.map((i) => i.id).join(",")])
   const byId = new Map(items.map((i) => [i.id, i]))
 
   const onDragEnd = async (e: DragEndEvent) => {

@@ -9,7 +9,7 @@
  * License, or (at your option) any later version.
  */
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
@@ -76,7 +76,7 @@ function toForm(row: LandingStatsContentRow): FormState {
   }
 }
 
-export function LandingStatsSectionEditor({
+function LandingStatsSectionForm({
   initial,
 }: {
   initial: LandingStatsContentRow
@@ -86,10 +86,6 @@ export function LandingStatsSectionEditor({
   const [activeLocale, setActiveLocale] = useState("en")
   const [saving, setSaving] = useState(false)
   const [f, setF] = useState<FormState>(() => toForm(initial))
-
-  useEffect(() => {
-    setF(toForm(initial))
-  }, [initial.updated_at])
 
   const locale = activeLocale
   const headingKey = `heading_${locale === "en" ? "en" : locale === "uk" ? "uk" : "ja"}` as
@@ -265,4 +261,12 @@ export function LandingStatsSectionEditor({
       </CardContent>
     </Card>
   )
+}
+
+export function LandingStatsSectionEditor({
+  initial,
+}: {
+  initial: LandingStatsContentRow
+}) {
+  return <LandingStatsSectionForm key={initial.updated_at} initial={initial} />
 }

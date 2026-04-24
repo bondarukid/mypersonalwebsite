@@ -17,7 +17,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
@@ -46,7 +46,7 @@ import {
   deleteFaqItemAction,
   reorderFaqItemsAction,
 } from "./actions"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -84,6 +84,86 @@ const ICON_OPTIONS = [
 interface FaqEditorProps {
   faqSet: FaqSet
   items: FaqItem[]
+}
+
+type FaqItemsDndPanelProps = {
+  faqSet: FaqSet
+  items: FaqItem[]
+  activeLocale: string
+  savingId: string | null
+  t: (k: string) => string
+  onUpdateItem: (
+    itemId: string,
+    field: "question" | "answer" | "icon",
+    value: string
+  ) => void
+  onDeleteItem: (itemId: string) => void
+}
+
+function FaqItemsDndPanel({
+  faqSet: _faqSet,
+  items,
+  activeLocale,
+  savingId,
+  onUpdateItem,
+  onDeleteItem,
+  t,
+}: FaqItemsDndPanelProps) {
+  const router = useRouter()
+  const [orderedIds, setOrderedIds] = useState(() => items.map((i) => i.id))
+
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } }),
+    useSensor(KeyboardSensor)
+  )
+
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+    const oldIndex = orderedIds.indexOf(active.id as string)
+    const newIndex = orderedIds.indexOf(over.id as string)
+    if (oldIndex === -1 || newIndex === -1) return
+    const newOrder = arrayMove(orderedIds, oldIndex, newIndex)
+    setOrderedIds(newOrder)
+    const result = await reorderFaqItemsAction(_faqSet.id, newOrder)
+    if (result.error) {
+      toast.error(result.error)
+      setOrderedIds(orderedIds)
+    } else {
+      toast.success(t("saved"))
+      router.refresh()
+    }
+  }
+
+  return (
+    <DndContext
+      collisionDetection={closestCenter}
+      modifiers={[restrictToVerticalAxis]}
+      onDragEnd={handleDragEnd}
+      sensors={sensors}
+    >
+      <SortableContext
+        items={orderedIds}
+        strategy={verticalListSortingStrategy}
+      >
+        {orderedIds
+          .map((id) => items.find((i) => i.id === id))
+          .filter((i): i is FaqItem => !!i)
+          .map((item) => (
+            <SortableFaqCard
+              key={item.id}
+              item={item}
+              activeLocale={activeLocale}
+              savingId={savingId}
+              onUpdate={onUpdateItem}
+              onDelete={onDeleteItem}
+              t={t}
+            />
+          ))}
+      </SortableContext>
+    </DndContext>
+  )
 }
 
 function SortableFaqCard({
@@ -210,38 +290,12 @@ export function FaqEditor({ faqSet, items }: FaqEditorProps) {
   const [activeLocale, setActiveLocale] = useState("en")
   const [adding, setAdding] = useState(false)
   const [savingId, setSavingId] = useState<string | null>(null)
-  const [orderedIds, setOrderedIds] = useState<string[]>(() =>
-    items.map((i) => i.id)
-  )
 
-  const itemsKey = items.map((i) => i.id).join(",")
-  useEffect(() => {
-    setOrderedIds(items.map((i) => i.id))
-  }, [itemsKey])
-
-  const sensors = useSensors(
-    useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } }),
-    useSensor(KeyboardSensor)
-  )
-
-  const handleDragEnd = async (event: DragEndEvent) => {
-    const { active, over } = event
-    if (!over || active.id === over.id) return
-    const oldIndex = orderedIds.indexOf(active.id as string)
-    const newIndex = orderedIds.indexOf(over.id as string)
-    if (oldIndex === -1 || newIndex === -1) return
-    const newOrder = arrayMove(orderedIds, oldIndex, newIndex)
-    setOrderedIds(newOrder)
-    const result = await reorderFaqItemsAction(faqSet.id, newOrder)
-    if (result.error) {
-      toast.error(result.error)
-      setOrderedIds(orderedIds)
-    } else {
-      toast.success(t("saved"))
-      router.refresh()
-    }
-  }
+  const itemIdsKey = items
+    .map((i) => i.id)
+    .slice()
+    .sort()
+    .join(",")
 
   const handleUpdateItem = async (
     itemId: string,
@@ -322,32 +376,16 @@ export function FaqEditor({ faqSet, items }: FaqEditorProps) {
       </div>
 
       <div className="space-y-4">
-        <DndContext
-          collisionDetection={closestCenter}
-          modifiers={[restrictToVerticalAxis]}
-          onDragEnd={handleDragEnd}
-          sensors={sensors}
-        >
-          <SortableContext
-            items={orderedIds}
-            strategy={verticalListSortingStrategy}
-          >
-            {orderedIds
-              .map((id) => items.find((i) => i.id === id))
-              .filter((i): i is FaqItem => !!i)
-              .map((item) => (
-                <SortableFaqCard
-                  key={item.id}
-                  item={item}
-                  activeLocale={activeLocale}
-                  savingId={savingId}
-                  onUpdate={handleUpdateItem}
-                  onDelete={handleDeleteItem}
-                  t={t}
-                />
-              ))}
-          </SortableContext>
-        </DndContext>
+        <FaqItemsDndPanel
+          key={itemIdsKey}
+          faqSet={faqSet}
+          items={items}
+          activeLocale={activeLocale}
+          savingId={savingId}
+          t={t}
+          onUpdateItem={handleUpdateItem}
+          onDeleteItem={handleDeleteItem}
+        />
 
         <Button
           variant="outline"

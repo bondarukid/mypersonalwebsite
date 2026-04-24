@@ -4,8 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useState,
+  useSyncExternalStore,
 } from "react"
 
 const STORAGE_KEY = "cookie_consent"
@@ -14,6 +13,12 @@ export type ConsentState = {
   analytics: boolean
   timestamp: number
   version: 1
+}
+
+const storeListeners = new Set<() => void>()
+
+function emitConsentChange() {
+  for (const l of storeListeners) l()
 }
 
 function parseStoredConsent(): ConsentState | null {
@@ -29,6 +34,26 @@ function parseStoredConsent(): ConsentState | null {
   }
 }
 
+function getConsentSnapshot(): ConsentState | null {
+  if (typeof window === "undefined") return null
+  return parseStoredConsent()
+}
+
+function subscribeToConsentStore(onChange: () => void) {
+  if (typeof window === "undefined") {
+    return () => {}
+  }
+  storeListeners.add(onChange)
+  const onStorage = (e: StorageEvent) => {
+    if (e.key === STORAGE_KEY) onChange()
+  }
+  window.addEventListener("storage", onStorage)
+  return () => {
+    storeListeners.delete(onChange)
+    window.removeEventListener("storage", onStorage)
+  }
+}
+
 function persistConsent(state: ConsentState): void {
   if (typeof window === "undefined") return
   try {
@@ -36,6 +61,7 @@ function persistConsent(state: ConsentState): void {
   } catch {
     // ignore
   }
+  emitConsentChange()
 }
 
 type CookieConsentContextValue = {
@@ -55,11 +81,11 @@ export function CookieConsentProvider({
 }: {
   children: React.ReactNode
 }) {
-  const [state, setState] = useState<ConsentState | null>(null)
-
-  useEffect(() => {
-    setState(parseStoredConsent())
-  }, [])
+  const state = useSyncExternalStore(
+    subscribeToConsentStore,
+    getConsentSnapshot,
+    () => null
+  )
 
   const acceptAll = useCallback(() => {
     const next: ConsentState = {
@@ -68,7 +94,6 @@ export function CookieConsentProvider({
       version: 1,
     }
     persistConsent(next)
-    setState(next)
   }, [])
 
   const declineAll = useCallback(() => {
@@ -78,7 +103,6 @@ export function CookieConsentProvider({
       version: 1,
     }
     persistConsent(next)
-    setState(next)
   }, [])
 
   const clearConsent = useCallback(() => {
@@ -88,7 +112,7 @@ export function CookieConsentProvider({
     } catch {
       // ignore
     }
-    setState(null)
+    emitConsentChange()
   }, [])
 
   const value: CookieConsentContextValue = {

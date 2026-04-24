@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import type { ColumnDef } from "@tanstack/react-table"
 import { SocialPlatformIcon } from "@/components/social-platform-icons"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -23,9 +23,6 @@ const PLATFORM_LABELS: Record<string, string> = {
 
 function SocialLinkEnabledCheckbox({ link }: { link: SocialLink }) {
   const [enabled, setEnabled] = useState(link.enabled)
-  useEffect(() => {
-    setEnabled(link.enabled)
-  }, [link.id, link.enabled])
 
   return (
     <Field orientation="horizontal" className="w-fit">
@@ -90,6 +87,11 @@ export const socialLinksColumns: ColumnDef<SocialLink>[] = [
   {
     accessorKey: "enabled",
     header: "Enabled",
-    cell: ({ row }) => <SocialLinkEnabledCheckbox link={row.original} />,
+    cell: ({ row }) => (
+      <SocialLinkEnabledCheckbox
+        key={`${row.original.id}-${row.original.enabled}`}
+        link={row.original}
+      />
+    ),
   },
 ]

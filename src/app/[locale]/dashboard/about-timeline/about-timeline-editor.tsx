@@ -17,7 +17,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
@@ -429,11 +429,6 @@ function DepthEventsBlock({
     milestone.depth_events.map((d) => d.id)
   )
 
-  const depthKey = milestone.depth_events.map((d) => d.id).join(",")
-  useEffect(() => {
-    setOrderedIds(milestone.depth_events.map((d) => d.id))
-  }, [depthKey])
-
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } }),
@@ -628,6 +623,11 @@ function SortableMilestoneCard({
         : "description_ja"
 
   const [localSaving, setLocalSaving] = useState<string | null>(null)
+  const depthEventsSyncKey = milestone.depth_events
+    .map((d) => d.id)
+    .slice()
+    .sort()
+    .join(",")
 
   return (
     <div
@@ -738,6 +738,7 @@ function SortableMilestoneCard({
             items={milestone.attachments}
           />
           <DepthEventsBlock
+            key={depthEventsSyncKey}
             milestone={milestone}
             activeLocale={activeLocale}
             savingId={localSaving}
@@ -756,23 +757,46 @@ interface AboutTimelineEditorProps {
   tagCatalog: AboutTimelineTagRow[]
 }
 
-export function AboutTimelineEditor({
+type MilestoneFieldUpdate = (
+  id: string,
+  field:
+    | "happened_on"
+    | "ended_on"
+    | "icon"
+    | "title_en"
+    | "title_uk"
+    | "title_ja"
+    | "description_en"
+    | "description_uk"
+    | "description_ja",
+  value: string
+) => void
+
+function MilestonesDndSection({
   milestones,
+  activeLocale,
+  savingId,
   skillCatalog,
   tagCatalog,
-}: AboutTimelineEditorProps) {
-  const t = useTranslations("dashboard.aboutTimelinePage")
+  t,
+  onMilestoneUpdate,
+  onMilestoneDelete,
+  onMilestoneMetaRefresh,
+}: {
+  milestones: AboutTimelineMilestoneWithDepth[]
+  activeLocale: string
+  savingId: string | null
+  skillCatalog: AboutTimelineSkillRow[]
+  tagCatalog: AboutTimelineTagRow[]
+  t: (k: string) => string
+  onMilestoneUpdate: MilestoneFieldUpdate
+  onMilestoneDelete: (id: string) => void
+  onMilestoneMetaRefresh: () => void
+}) {
   const router = useRouter()
-  const [activeLocale, setActiveLocale] = useState("en")
-  const [savingId, setSavingId] = useState<string | null>(null)
   const [orderedIds, setOrderedIds] = useState<string[]>(() =>
     milestones.map((m) => m.id)
   )
-
-  const milestonesKey = milestones.map((m) => m.id).join(",")
-  useEffect(() => {
-    setOrderedIds(milestones.map((m) => m.id))
-  }, [milestonesKey])
 
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
@@ -797,6 +821,56 @@ export function AboutTimelineEditor({
       router.refresh()
     }
   }
+
+  return (
+    <DndContext
+      id="milestone-dnd"
+      collisionDetection={closestCenter}
+      modifiers={[restrictToVerticalAxis]}
+      onDragEnd={handleMilestoneDragEnd}
+      sensors={sensors}
+    >
+      <SortableContext
+        items={orderedIds}
+        strategy={verticalListSortingStrategy}
+      >
+        {orderedIds
+          .map((id) => milestones.find((m) => m.id === id))
+          .filter((m): m is AboutTimelineMilestoneWithDepth => !!m)
+          .map((milestone) => (
+            <SortableMilestoneCard
+              key={milestone.id}
+              milestone={milestone}
+              activeLocale={activeLocale}
+              savingId={savingId}
+              onUpdate={onMilestoneUpdate}
+              onDelete={onMilestoneDelete}
+              skillCatalog={skillCatalog}
+              tagCatalog={tagCatalog}
+              onMilestoneMetaRefresh={onMilestoneMetaRefresh}
+              t={t}
+            />
+          ))}
+      </SortableContext>
+    </DndContext>
+  )
+}
+
+export function AboutTimelineEditor({
+  milestones,
+  skillCatalog,
+  tagCatalog,
+}: AboutTimelineEditorProps) {
+  const t = useTranslations("dashboard.aboutTimelinePage")
+  const router = useRouter()
+  const [activeLocale, setActiveLocale] = useState("en")
+  const [savingId, setSavingId] = useState<string | null>(null)
+
+  const milestoneSetKey = milestones
+    .map((m) => m.id)
+    .slice()
+    .sort()
+    .join(",")
 
   const handleUpdateMilestone = async (
     id: string,
@@ -898,36 +972,18 @@ export function AboutTimelineEditor({
       </div>
 
       <div className="space-y-4">
-        <DndContext
-          id="milestone-dnd"
-          collisionDetection={closestCenter}
-          modifiers={[restrictToVerticalAxis]}
-          onDragEnd={handleMilestoneDragEnd}
-          sensors={sensors}
-        >
-          <SortableContext
-            items={orderedIds}
-            strategy={verticalListSortingStrategy}
-          >
-            {orderedIds
-              .map((id) => milestones.find((m) => m.id === id))
-              .filter((m): m is AboutTimelineMilestoneWithDepth => !!m)
-              .map((milestone) => (
-                <SortableMilestoneCard
-                  key={milestone.id}
-                  milestone={milestone}
-                  activeLocale={activeLocale}
-                  savingId={savingId}
-                  onUpdate={handleUpdateMilestone}
-                  onDelete={handleDeleteMilestone}
-                  skillCatalog={skillCatalog}
-                  tagCatalog={tagCatalog}
-                  onMilestoneMetaRefresh={() => router.refresh()}
-                  t={t}
-                />
-              ))}
-          </SortableContext>
-        </DndContext>
+        <MilestonesDndSection
+          key={milestoneSetKey}
+          milestones={milestones}
+          activeLocale={activeLocale}
+          savingId={savingId}
+          skillCatalog={skillCatalog}
+          tagCatalog={tagCatalog}
+          t={t}
+          onMilestoneUpdate={handleUpdateMilestone}
+          onMilestoneDelete={handleDeleteMilestone}
+          onMilestoneMetaRefresh={() => router.refresh()}
+        />
 
         <Button
           variant="outline"

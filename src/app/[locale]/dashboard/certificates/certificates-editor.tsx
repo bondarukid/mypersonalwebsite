@@ -125,7 +125,7 @@ export function CertificatesEditor({ certificates }: CertificatesEditorProps) {
 
     setSaving(true)
     try {
-      let res = await fetch("/api/certificates", {
+      const res = await fetch("/api/certificates", {
         method: "POST",
         body: (() => {
           injectFileIntoInput(form, createFile)
@@ -134,7 +134,7 @@ export function CertificatesEditor({ certificates }: CertificatesEditorProps) {
         })(),
         credentials: "include",
       })
-      let data = (await res.json()) as {
+      const data = (await res.json()) as {
         error?: string
         success?: string
         code?: string
