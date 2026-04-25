@@ -3,7 +3,7 @@ import { Link } from '@/i18n/routing'
 import { getTranslations } from 'next-intl/server'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-import { getHeroImageSrc } from '@/config/site'
+import { resolveHeroImageSrc } from '@/config/site'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
 import { VercelFull } from '@/components/ui/svgs/vercel'
@@ -14,6 +14,7 @@ import { Figma } from '@/components/ui/svgs/figma'
 
 export default async function HeroSection() {
     const t = await getTranslations('hero')
+    const heroImageSrc = await resolveHeroImageSrc()
 
     return (
         <div className="@container overflow-x-hidden">
@@ -33,7 +34,7 @@ export default async function HeroSection() {
                                 <div className="z-1 absolute inset-0 bg-zinc-950 opacity-80 mix-blend-overlay" />
                                 <Image
                                     className="size-full object-cover object-right"
-                                    src={getHeroImageSrc()}
+                                    src={heroImageSrc}
                                     alt={t('imageAlt')}
                                     height={2000}
                                     width={1500}

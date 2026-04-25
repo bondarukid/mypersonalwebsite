@@ -2,7 +2,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getLocale, getTranslations } from "next-intl/server"
 import { getTestimonial } from "@/lib/supabase/testimonials"
 
-const DEFAULT_AVATAR = "https://tailus.io/images/reviews/shekinah.webp"
+const DEFAULT_AVATAR =
+  "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
 
 function resolveAvatarUrl(avatarUrl: string | null): string {
   if (!avatarUrl) return DEFAULT_AVATAR

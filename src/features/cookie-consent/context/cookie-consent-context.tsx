@@ -34,9 +34,13 @@ function parseStoredConsent(): ConsentState | null {
   }
 }
 
-function getConsentSnapshot(): ConsentState | null {
+function getConsentRawSnapshot(): string | null {
   if (typeof window === "undefined") return null
-  return parseStoredConsent()
+  try {
+    return localStorage.getItem(STORAGE_KEY)
+  } catch {
+    return null
+  }
 }
 
 function subscribeToConsentStore(onChange: () => void) {
@@ -81,11 +85,22 @@ export function CookieConsentProvider({
 }: {
   children: React.ReactNode
 }) {
-  const state = useSyncExternalStore(
+  const rawState = useSyncExternalStore(
     subscribeToConsentStore,
-    getConsentSnapshot,
+    getConsentRawSnapshot,
     () => null
   )
+  const state =
+    rawState == null
+      ? null
+      : (() => {
+          try {
+            const parsed = JSON.parse(rawState) as ConsentState
+            return parsed.version === 1 ? parsed : null
+          } catch {
+            return null
+          }
+        })()
 
   const acceptAll = useCallback(() => {
     const next: ConsentState = {
