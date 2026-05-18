@@ -20,12 +20,10 @@ import { getLocale, getTranslations } from "next-intl/server"
 import { AboutPageHero } from "@/components/about-page-hero"
 import { AboutPageIntro } from "@/components/about-page-intro"
 import { AboutPageTimeline } from "@/components/about-page-timeline"
-import FooterSection from "@/components/footer"
 import {
   getTimelineMilestonesWithDepth,
 } from "@/content/about-timeline"
 import { mapMilestonesToPublicLocale } from "@/lib/about-timeline-map"
-import { getSocialLinks } from "@/content/social"
 import { createMetadata } from "@/lib/seo/metadata"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -41,7 +39,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AboutPage() {
   const locale = await getLocale()
-  const socialLinks = getSocialLinks()
   const rows = getTimelineMilestonesWithDepth()
   const milestones = mapMilestonesToPublicLocale(rows, locale)
 
@@ -52,7 +49,6 @@ export default async function AboutPage() {
         <AboutPageIntro />
         <AboutPageTimeline milestones={milestones} />
       </div>
-      <FooterSection socialLinks={socialLinks} />
     </div>
   )
 }

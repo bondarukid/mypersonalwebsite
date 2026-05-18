@@ -21,6 +21,8 @@ import {
   SiWebstorm,
   SiXcode,
 } from "@icons-pack/react-simple-icons"
+import { SiVisualStudioCode } from "@/components/ui/svgs/visual-studio-code"
+import { SiVisualStudioIde } from "@/components/ui/svgs/visual-studio-ide"
 
 /** Map DB slug -> Simple Icon component. Extra aliases (e.g. swiftui) reuse the same icon. */
 export const TECH_STACK_ICON_MAP = {
@@ -29,9 +31,8 @@ export const TECH_STACK_ICON_MAP = {
   swiftui: SiSwift,
   xcode: SiXcode,
   androidstudio: SiAndroidstudio,
-  /** Visual Studio (.NET IDE); Simple Icons has no dedicated VS logo in this set. */
-  visualstudio: SiDotnet,
-  vscode: SiVscodium,
+  visualstudio: SiVisualStudioIde,
+  vscode: SiVisualStudioCode,
   vscodium: SiVscodium,
   dotnet: SiDotnet,
   nextdotjs: SiNextdotjs,

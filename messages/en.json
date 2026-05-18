@@ -49,12 +49,14 @@
     "security": "Security",
     "copyright": "© {year} Ivan Bondaruk, All rights reserved",
     "ariaGoHome": "go home",
+    "ariaGitHub": "GitHub",
     "ariaTwitter": "X/Twitter",
     "ariaLinkedIn": "LinkedIn",
     "ariaFacebook": "Facebook",
     "ariaThreads": "Threads",
     "ariaInstagram": "Instagram",
-    "ariaTikTok": "TikTok"
+    "ariaTikTok": "TikTok",
+    "ariaYouTube": "YouTube"
   },
   "logo": {
     "name": "Ivan Bondaruk"
@@ -127,10 +129,11 @@
     "poweredApps": "Powered Apps"
   },
   "testimonials": {
-    "quote": "Do not be afraid of making a mistake. But make sure you don't make the same mistake twice.",
-    "author": "Akio Morita",
-    "role": "Co-founder, Sony",
-    "avatarAlt": "Akio Morita"
+    "quote": "Success represents the 1% of your work which results from the 99% that is called failure.",
+    "author": "Soichiro Honda",
+    "role": "Founder, Honda Motor Company",
+    "initials": "SH",
+    "avatarAlt": "Soichiro Honda"
   },
   "faqs": {
     "title": "Frequently Asked Questions",

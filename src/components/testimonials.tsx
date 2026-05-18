@@ -13,6 +13,16 @@ function resolveAvatarUrl(avatarUrl: string | null): string {
   return path || DEFAULT_AVATAR
 }
 
+function initialsFromAuthor(author: string): string {
+  const parts = author.trim().split(/\s+/).filter(Boolean)
+  if (parts.length >= 2) {
+    const a = parts[0]![0] ?? ""
+    const b = parts[parts.length - 1]![0] ?? ""
+    return (a + b).toUpperCase()
+  }
+  return author.slice(0, 2).toUpperCase()
+}
+
 export default async function TestimonialsSection() {
   const locale = await getLocale()
   const t = await getTranslations("testimonials")
@@ -21,8 +31,17 @@ export default async function TestimonialsSection() {
   const quote = testimonial?.quote ?? t("quote")
   const author = testimonial?.author ?? t("author")
   const role = testimonial?.role ?? t("role")
-  const avatarUrl = resolveAvatarUrl(testimonial?.avatar_url ?? null)
-  const avatarFallback = author.slice(0, 2).toUpperCase()
+  const usePhoto =
+    Boolean(testimonial?.avatar_url?.trim()) &&
+    !testimonial?.avatar_initials?.trim()
+  const avatarUrl = usePhoto
+    ? resolveAvatarUrl(testimonial!.avatar_url)
+    : null
+  const avatarFallback =
+    testimonial?.avatar_initials?.trim() ||
+    t("initials") ||
+    initialsFromAuthor(author) ||
+    author.slice(0, 2).toUpperCase()
 
   return (
     <section className="py-16 md:py-32">
@@ -33,14 +52,18 @@ export default async function TestimonialsSection() {
 
             <div className="mt-12 flex items-center justify-center gap-6">
               <Avatar className="size-12">
-                <AvatarImage
-                  src={avatarUrl}
-                  alt={author}
-                  height="400"
-                  width="400"
-                  loading="lazy"
-                />
-                <AvatarFallback>{avatarFallback}</AvatarFallback>
+                {usePhoto && avatarUrl ? (
+                  <AvatarImage
+                    src={avatarUrl}
+                    alt={author}
+                    height="400"
+                    width="400"
+                    loading="lazy"
+                  />
+                ) : null}
+                <AvatarFallback className="text-xs font-semibold">
+                  {avatarFallback}
+                </AvatarFallback>
               </Avatar>
 
               <div className="space-y-1 border-l pl-6">

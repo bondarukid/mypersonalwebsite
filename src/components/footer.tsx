@@ -7,12 +7,14 @@ import { useTranslations } from "next-intl"
 import type { SocialLink } from "@/content/types"
 
 const PLATFORM_ARIA_KEYS: Record<string, string> = {
+  github: "ariaGitHub",
   twitter: "ariaTwitter",
   linkedin: "ariaLinkedIn",
   facebook: "ariaFacebook",
   threads: "ariaThreads",
   instagram: "ariaInstagram",
   tiktok: "ariaTikTok",
+  youtube: "ariaYouTube",
 }
 
 type FooterSectionProps = {

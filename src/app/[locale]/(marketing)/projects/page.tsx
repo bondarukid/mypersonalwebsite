@@ -29,9 +29,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty"
-import FooterSection from "@/components/footer"
 import { createMetadata } from "@/lib/seo/metadata"
-import { getSocialLinks } from "@/content/social"
 import { getProjects } from "@/content/projects"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -49,7 +47,6 @@ export default async function ProjectsPage() {
   const tPage = await getTranslations("projectsPage")
   const tCommon = await getTranslations("common")
   const projects = getProjects()
-  const socialLinks = getSocialLinks()
 
   return (
     <div className="flex flex-1 flex-col">
@@ -108,7 +105,6 @@ export default async function ProjectsPage() {
           </div>
         </div>
       </div>
-      <FooterSection socialLinks={socialLinks} />
     </div>
   )
 }

@@ -55,6 +55,8 @@ export type Testimonial = {
   author: string
   role: string
   avatar_url: string | null
+  /** When set (e.g. "SH"), only initials are shown instead of a photo. */
+  avatar_initials: string | null
   sort_order: number
   created_at: string
 }

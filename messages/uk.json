@@ -49,12 +49,14 @@
     "security": "Безпека",
     "copyright": "© {year} Іван Бондарук, Всі права захищено",
     "ariaGoHome": "на головну",
+    "ariaGitHub": "GitHub",
     "ariaTwitter": "X/Twitter",
     "ariaLinkedIn": "LinkedIn",
     "ariaFacebook": "Facebook",
     "ariaThreads": "Threads",
     "ariaInstagram": "Instagram",
-    "ariaTikTok": "TikTok"
+    "ariaTikTok": "TikTok",
+    "ariaYouTube": "YouTube"
   },
   "logo": {
     "name": "Іван Бондарук"
@@ -127,10 +129,11 @@
     "poweredApps": "Створених додатків"
   },
   "testimonials": {
-    "quote": "Не бійтеся робити помилки. Але переконайтеся, що ви не робите ту саму помилку двічі.",
-    "author": "Акіо Моріта",
-    "role": "Співзасновник, Sony",
-    "avatarAlt": "Акіо Моріта"
+    "quote": "Успіх — це лише 1% вашої роботи, що народжується з 99% того, що називають невдачами.",
+    "author": "Соітіро Хонда",
+    "role": "Засновник Honda Motor Company",
+    "initials": "SH",
+    "avatarAlt": "Соітіро Хонда"
   },
   "faqs": {
     "title": "Часті запитання",

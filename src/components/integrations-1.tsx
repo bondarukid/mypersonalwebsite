@@ -50,7 +50,7 @@ const LEGACY_TAB_I18N_KEYS: Record<
     { iconSlug: "tailwindcss", titleKey: "tailwindcss", descKey: "tailwindcssDesc" },
   ],
   ides: [
-    { iconSlug: "vscodium", titleKey: "vsCode", descKey: "vsCodeDesc" },
+    { iconSlug: "vscode", titleKey: "vsCode", descKey: "vsCodeDesc" },
     { iconSlug: "webstorm", titleKey: "webstorm", descKey: "webstormDesc" },
   ],
   robotics: [

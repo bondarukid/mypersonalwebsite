@@ -44,10 +44,11 @@ export default async function HeroSection() {
                 <section className="bg-background border-t pb-16 pt-4 md:pb-32">
                     <div className="group relative m-auto max-w-6xl px-6">
                         <div className="flex flex-col items-center md:flex-row">
-                            <div className="md:max-w-44 md:border-r md:pr-6">
+                            {/* Copy stays in messages (hero.poweringTeams); hidden from layout for now. */}
+                            <div className="hidden">
                                 <p className="text-end text-sm">{t('poweringTeams')}</p>
                             </div>
-                            <div className="**:fill-foreground relative py-6 md:w-[calc(100%-11rem)]">
+                            <div className="**:fill-foreground relative w-full py-6">
                                 <InfiniteSlider
                                     speedOnHover={20}
                                     speed={40}

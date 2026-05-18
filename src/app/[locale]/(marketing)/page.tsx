@@ -12,10 +12,8 @@ import {
 } from "@/content/landing"
 import StatsSection from "@/components/stats"
 import TestimonialsSection from "@/components/testimonials"
-import FooterSection from "@/components/footer"
 import { FAQSection } from "@/components/faq-section"
 import { JsonLdPerson } from "@/components/seo/json-ld-person"
-import { getSocialLinks } from "@/content/social"
 import { createMetadata } from "@/lib/seo/metadata"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -30,7 +28,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const socialLinks = getSocialLinks()
   const locale = await getLocale()
   const section = getLandingFeatureSection()
   const cards = getLandingFeatureCards()
@@ -57,7 +54,6 @@ export default async function Home() {
       <StatsSection />
       <TestimonialsSection />
       <FAQSection />
-      <FooterSection socialLinks={socialLinks} />
     </div>
   )
 }
