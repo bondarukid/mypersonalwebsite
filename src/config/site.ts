@@ -1,22 +1,34 @@
-const HERO_IMAGE_PATH = "images/myphotolanding.jpg"
+/*
+ * Copyright (C) 2026 Ivan Bondaruk (https://bondarukid.com)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
 
-/** Shown if Supabase is unset, storage 404/400, or for local dev when no asset exists. */
+const DEFAULT_HERO = "/images/myphotolanding.jpg"
+
+/** Shown if the configured hero asset is missing or unreachable. */
 export const HERO_IMAGE_FALLBACK =
   "https://images.unsplash.com/photo-1586173806725-797f4d632f5d?q=80&w=2388&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 
 /**
- * - `NEXT_PUBLIC_LANDING_HERO_URL`: optional override. May be a site path (`/hero.jpg` →
- *   `public/hero.jpg`) or any absolute URL.
- * - Otherwise: Supabase public object `images` bucket, key `myphotolanding.jpg`.
- *   Create that bucket, mark public, and upload the file, or the URL will 400.
- * - If `NEXT_PUBLIC_SUPABASE_URL` is missing: returns Unsplash fallback.
+ * - `NEXT_PUBLIC_LANDING_HERO_URL`: optional override (site path `/hero.jpg` or full URL).
+ * - Otherwise: `/images/myphotolanding.jpg` under `public/`.
  */
 function configuredHeroImageSrc(): string {
   const o = process.env.NEXT_PUBLIC_LANDING_HERO_URL?.trim()
   if (o) return o
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  if (!supabaseUrl) return HERO_IMAGE_FALLBACK
-  return `${supabaseUrl}/storage/v1/object/public/${HERO_IMAGE_PATH}`
+  return DEFAULT_HERO
 }
 
 export function getHeroImageSrc(): string {
@@ -24,8 +36,8 @@ export function getHeroImageSrc(): string {
 }
 
 /**
- * Picks a hero URL that Next/Image can load. If the Storage object is missing or returns
- * 4xx, falls back to {@link HERO_IMAGE_FALLBACK} (avoids noisy optimizer errors in logs).
+ * Picks a hero URL that Next/Image can load. If the file is missing or returns
+ * 4xx, falls back to {@link HERO_IMAGE_FALLBACK}.
  */
 export async function resolveHeroImageSrc(): Promise<string> {
   const u = configuredHeroImageSrc()

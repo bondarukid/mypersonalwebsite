@@ -5,7 +5,8 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 const nextConfig: NextConfig = {
   /* config options here */
-  reactCompiler: true,
+  // React Compiler has been known to break subtle client behaviors (events/hydration) in edge setups.
+  reactCompiler: false,
   allowedDevOrigins: ["192.168.50.85", "172.16.43.247"],
   images: {
     remotePatterns: [
@@ -39,15 +40,16 @@ const nextConfig: NextConfig = {
         hostname: "is5-ssl.mzstatic.com",
         pathname: "/**",
       },
-      ...(process.env.NEXT_PUBLIC_SUPABASE_URL
-        ? [
-            {
-              protocol: "https" as const,
-              hostname: new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname,
-              pathname: "/storage/v1/object/public/**",
-            },
-          ]
-        : []),
+      {
+        protocol: "https",
+        hostname: "drive.google.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        pathname: "/**",
+      },
     ],
   },
 };

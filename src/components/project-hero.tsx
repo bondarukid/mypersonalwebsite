@@ -18,7 +18,7 @@
 import Image from "next/image"
 import { FolderIcon } from "lucide-react"
 import { getProjectIconUrl } from "@/lib/project-icon-url"
-import type { Project } from "@/lib/supabase/projects"
+import type { Project } from "@/content/types"
 import { STORE_LINKS } from "@/config/platforms"
 
 interface ProjectHeroProps {

@@ -2,33 +2,25 @@
 
 **Repository**: [https://github.com/bondarukid/mypersonalwebsite](https://github.com/bondarukid/mypersonalwebsite)
 
-A personal portfolio site built with Next.js 16, featuring a public marketing landing page and an authenticated dashboard for content management.
+A personal portfolio site built with Next.js 16. Public content lives in the repo under `src/content/` (no database).
 
 ## Features
 
-- **Landing page** — Hero section, testimonials, integrations showcase
-- **Projects** — Public project pages with Hero, FAQ, and store links
-- **i18n** — Multi-language support (English, Ukrainian, Japanese)
-- **Dashboard** — Protected admin area for managing:
-  - **Projects** — Add apps/products, icons (upload or iTunes fetch), platforms, per-project FAQ
-  - **Testimonials** — Edit quote, author, and role per locale
-  - **Landing stats** — GitHub stars, GA4 metrics, apps configuration
-  - **Social links** — Social network URLs for the landing page
-  - **Certificates** — Certificates for the Professional page
-  - **Landing FAQ** — FAQ section on the landing page
-- **GitHub repo block** — Header badge with repo link, stars, and forks (MkDocs-style)
+- **Landing page** — Hero, features, tech stack, stats, testimonials, FAQ
+- **Projects** — Static project list and `/projects/[slug]` pages with optional per-project FAQ
+- **i18n** — English, Ukrainian, Japanese (`messages/*.json`)
+- **GitHub repo block** — Header badge with repo link (optional)
 - **Analytics** — Firebase Analytics (optional)
-- **Auth** — Supabase Auth with email whitelist
 
 ## Documentation
 
-- **[Projects Guide](docs/PROJECTS-GUIDE.md)** — How to add projects and project pages
+- **[Projects Guide](docs/PROJECTS-GUIDE.md)** — How to add projects and FAQs in `src/content/`
 
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
 - **UI**: shadcn/ui, Tailwind CSS, Lucide icons
-- **Backend**: Supabase (Auth, PostgreSQL, Storage)
+- **Content**: TypeScript modules in `src/content/`
 - **Analytics**: Firebase Analytics (optional)
 - **i18n**: next-intl
 
@@ -38,8 +30,6 @@ A personal portfolio site built with Next.js 16, featuring a public marketing la
 
 - Node.js 18+
 - npm, pnpm, or yarn
-- Supabase project
-- (Optional) Firebase project, GitHub token, GA4
 
 ### Installation
 
@@ -51,31 +41,14 @@ npm install
 
 ### Environment Setup
 
-1. Copy `.env.example` to `.env.local`:
+Optional variables (see `.env.example` if present):
 
-```bash
-cp .env.example .env.local
-```
-
-2. Fill in the required variables (see `.env.example` for descriptions):
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Supabase anon key |
-| `SUPABASE_SERVICE_ROLE_KEY` | Yes (for cron) | Supabase service role key |
-| `ALLOWED_EMAILS` | Yes | Comma-separated emails allowed to sign in |
-| `ENCRYPTION_KEY` | Yes (for dashboard credentials) | 64-char hex key: `openssl rand -hex 32` |
-| `NEXT_PUBLIC_GITHUB_REPO` | Optional | Repo name for header block (owner from `GITHUB_USERNAME`) |
-| `GITHUB_USERNAME` | If using repo block | GitHub username |
-
-### Database
-
-Apply Supabase migrations:
-
-```bash
-npx supabase db push
-```
+| Variable | Description |
+|----------|-------------|
+| `NEXT_PUBLIC_SITE_URL` | Canonical site URL for SEO |
+| `NEXT_PUBLIC_LANDING_HERO_URL` | Hero image: `/path` under `public/` or full URL |
+| `NEXT_PUBLIC_GITHUB_REPO` | Repo for header block |
+| `GITHUB_USERNAME` | GitHub username when repo is not `owner/name` |
 
 ### Development
 
@@ -89,20 +62,18 @@ Open [http://localhost:3000](http://localhost:3000). The dev server uses Webpack
 
 ```bash
 npm run build
-npm run start
+npm start
 ```
 
 ### Deploy
 
-The app is suitable for deployment on Vercel, with Supabase and optional Firebase/GA4 configured via environment variables. For cron (stats refresh), set `CRON_SECRET` and configure Vercel Cron to call `/api/cron/refresh-stats` with `Bearer <CRON_SECRET>`.
+Deploy on Vercel or any Node host. No Supabase or cron jobs required.
 
-## How It Works
+## How it works
 
-1. **Landing** — Public routes (`/`, `/about`, `/contact`, `/projects`, `/projects/[slug]`, etc.) render the marketing site. Testimonials, hero content, and project data come from Supabase.
-2. **Projects** — Each project has a public page at `/projects/[slug]` (Hero + FAQ) and dashboard editors for Overview, Platforms, and FAQ. See [Projects Guide](docs/PROJECTS-GUIDE.md).
-3. **Auth** — Dashboard routes (`/dashboard/*`) require sign-in. Supabase Auth + `ALLOWED_EMAILS` restrict access.
-4. **Dashboard** — Server-rendered pages fetch data from Supabase. Client components handle forms and updates via Server Actions.
-5. **i18n** — Locale is derived from the URL (`/en/...`, `/uk/...`, `/ja/...`). Messages live in `messages/*.json`.
+1. **Content** — Edit `src/content/*.ts` (projects, FAQ, social links, landing copy, stats numbers, about timeline, certificates).
+2. **Assets** — Place images under `public/images/` (e.g. `public/images/myphotolanding.jpg`, `public/images/project-icons/…`, `public/images/certificates/…`).
+3. **i18n** — Locale from the URL (`/en/…`, `/uk/…`, `/ja/…`). UI strings in `messages/*.json`.
 
 ## License
 

@@ -23,10 +23,9 @@ import { AboutPageTimeline } from "@/components/about-page-timeline"
 import FooterSection from "@/components/footer"
 import {
   getTimelineMilestonesWithDepth,
-  mapMilestonesToPublicLocale,
-} from "@/lib/supabase/about-timeline"
-import { getLandingCompany } from "@/lib/supabase/companies"
-import { getSocialLinks } from "@/lib/supabase/social-links"
+} from "@/content/about-timeline"
+import { mapMilestonesToPublicLocale } from "@/lib/about-timeline-map"
+import { getSocialLinks } from "@/content/social"
 import { createMetadata } from "@/lib/seo/metadata"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -42,11 +41,8 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function AboutPage() {
   const locale = await getLocale()
-  const socialLinks = await getSocialLinks()
-  const landing = await getLandingCompany()
-  const rows = landing?.id
-    ? await getTimelineMilestonesWithDepth(landing.id)
-    : []
+  const socialLinks = getSocialLinks()
+  const rows = getTimelineMilestonesWithDepth()
   const milestones = mapMilestonesToPublicLocale(rows, locale)
 
   return (

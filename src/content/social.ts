@@ -15,11 +15,30 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { publicImageUrl } from "@/lib/public-asset-url"
+import type { SocialLink } from "@/content/types"
+import { CONTENT_TS } from "@/content/constants"
 
-/** Public URL for a project icon (`public/images/project-icons/` or absolute path). */
-export function getProjectIconUrl(iconPath: string | null): string | null {
-  if (!iconPath) return null
-  const url = publicImageUrl("project-icons", iconPath)
-  return url || null
+const allLinks: SocialLink[] = [
+  {
+    id: "soc-gh",
+    platform: "github",
+    url: "https://github.com/bondarukid",
+    enabled: true,
+    sort_order: 0,
+    created_at: CONTENT_TS,
+  },
+  {
+    id: "soc-li",
+    platform: "linkedin",
+    url: "https://www.linkedin.com/",
+    enabled: true,
+    sort_order: 1,
+    created_at: CONTENT_TS,
+  },
+]
+
+export function getSocialLinks(): SocialLink[] {
+  return allLinks
+    .filter((l) => l.enabled && l.url && l.url !== "#")
+    .sort((a, b) => a.sort_order - b.sort_order)
 }

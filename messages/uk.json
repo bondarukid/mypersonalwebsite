@@ -590,8 +590,10 @@
     "certificates": {
       "heading": "Сертифікати",
       "dateObtained": "Дата отримання",
+      "issuer": "Ким видано",
+      "verifyCredential": "Перевірити або відкрити сертифікат",
       "emptyTitle": "Сертифікатів ще немає",
-      "emptyDescription": "Сертифікати, які ви додасте з панелі керування, з’являться тут."
+      "emptyDescription": "Додайте сертифікати у `src/content/certificates.ts` (URL зображення, організація, дати, за потреби посилання для перевірки)."
     }
   },
   "aboutPage": {

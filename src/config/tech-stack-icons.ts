@@ -10,6 +10,7 @@
 import {
   SiAndroidstudio,
   SiArduino,
+  SiDotnet,
   SiKotlin,
   SiNextdotjs,
   SiReact,
@@ -28,11 +29,15 @@ export const TECH_STACK_ICON_MAP = {
   swiftui: SiSwift,
   xcode: SiXcode,
   androidstudio: SiAndroidstudio,
+  /** Visual Studio (.NET IDE); Simple Icons has no dedicated VS logo in this set. */
+  visualstudio: SiDotnet,
+  vscode: SiVscodium,
+  vscodium: SiVscodium,
+  dotnet: SiDotnet,
   nextdotjs: SiNextdotjs,
   react: SiReact,
   shadcnui: SiShadcnui,
   tailwindcss: SiTailwindcss,
-  vscodium: SiVscodium,
   webstorm: SiWebstorm,
   arduino: SiArduino,
 } as const

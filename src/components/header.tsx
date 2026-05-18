@@ -24,7 +24,7 @@ export const SiteHeader = () => {
         <header>
             <nav
                 data-state={menuState && 'active'}
-                className="bg-background/50 fixed z-20 w-full border-b backdrop-blur-3xl">
+                className="bg-background/50 fixed z-30 w-full border-b backdrop-blur-3xl">
                 <div className="mx-auto max-w-6xl px-6 transition-all duration-300">
                     <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
                         <div className="flex w-full items-center justify-between gap-12 lg:w-auto">
@@ -38,7 +38,7 @@ export const SiteHeader = () => {
                             <button
                                 onClick={() => setMenuState(!menuState)}
                                 aria-label={menuState ? t('closeMenu') : t('openMenu')}
-                                className="relative z-20 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden">
+                                className="relative z-30 -m-2.5 -mr-4 block cursor-pointer p-2.5 lg:hidden">
                                 <Menu className="in-data-[state=active]:rotate-180 in-data-[state=active]:scale-0 in-data-[state=active]:opacity-0 m-auto size-6 duration-200" />
                                 <X className="in-data-[state=active]:rotate-0 in-data-[state=active]:scale-100 in-data-[state=active]:opacity-100 absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 duration-200" />
                             </button>

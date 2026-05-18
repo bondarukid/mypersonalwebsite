@@ -4,7 +4,7 @@ import { Logo } from "@/components/logo"
 import { SOCIAL_PLATFORM_ICONS } from "@/components/social-platform-icons"
 import { Link } from "@/i18n/routing"
 import { useTranslations } from "next-intl"
-import type { SocialLink } from "@/lib/supabase/social-links"
+import type { SocialLink } from "@/content/types"
 
 const PLATFORM_ARIA_KEYS: Record<string, string> = {
   twitter: "ariaTwitter",

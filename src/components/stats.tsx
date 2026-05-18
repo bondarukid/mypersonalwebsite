@@ -1,21 +1,34 @@
+/*
+ * Copyright (C) 2026 Ivan Bondaruk (https://bondarukid.com)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { getLocale, getTranslations } from "next-intl/server"
 import { getStatsForLandingDisplay } from "@/lib/stats"
 import { formatActiveUsers } from "@/lib/stats-display"
-import { getLandingCompany } from "@/lib/supabase/companies"
-import { getLocalizedLandingStatsContent } from "@/lib/supabase/landing-stats-content-i18n"
-import { getLandingStatsContent } from "@/lib/supabase/landing-stats-content"
+import { getLocalizedLandingStatsContent } from "@/lib/landing-stats-content-i18n"
+import { getLandingStatsContent } from "@/content/stats"
 
 export default async function StatsSection() {
   const locale = await getLocale()
   const t = await getTranslations("stats")
-  const landing = await getLandingCompany()
-  const content = landing
-    ? await getLandingStatsContent(landing.id)
-    : null
-  const data = await getStatsForLandingDisplay(content)
+  const landingStats = getLandingStatsContent()
+  const data = await getStatsForLandingDisplay(landingStats)
 
-  const text = content
-    ? getLocalizedLandingStatsContent(content, locale)
+  const text = landingStats
+    ? getLocalizedLandingStatsContent(landingStats, locale)
     : {
         heading: t("heading"),
         description: t("description"),

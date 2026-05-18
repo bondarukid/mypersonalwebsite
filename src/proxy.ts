@@ -1,43 +1,28 @@
+/*
+ * Copyright (C) 2026 Ivan Bondaruk (https://bondarukid.com)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import { type NextRequest } from "next/server"
 import createIntlMiddleware from "next-intl/middleware"
-import { updateSession } from "@/lib/supabase/middleware"
 import { routing } from "@/i18n/routing"
 
 const intlMiddleware = createIntlMiddleware(routing)
 
-export async function proxy(request: NextRequest) {
-  const { response: supabaseResponse, user } = await updateSession(request)
-
-  const pathname = request.nextUrl.pathname
-  const localeSegment = pathname.match(/^\/(en|uk|ja)(\/|$)/)
-  const isDashboard =
-    pathname === "/dashboard" ||
-    pathname.startsWith("/dashboard/") ||
-    (localeSegment && pathname.includes("/dashboard"))
-
-  if (isDashboard && !user) {
-    const locale = localeSegment?.[1] ?? routing.defaultLocale
-    const loginPath =
-      locale === routing.defaultLocale ? "/login" : `/${locale}/login`
-    const redirectUrl = new URL(loginPath, request.url)
-    redirectUrl.searchParams.set("redirectTo", pathname)
-    return Response.redirect(redirectUrl)
-  }
-
-  const intlResponse = intlMiddleware(request)
-
-  supabaseResponse.cookies.getAll().forEach((cookie) => {
-    intlResponse.cookies.set(cookie.name, cookie.value, {
-      path: cookie.path,
-      maxAge: cookie.maxAge,
-      expires: cookie.expires,
-      httpOnly: cookie.httpOnly,
-      secure: cookie.secure,
-      sameSite: cookie.sameSite,
-    })
-  })
-
-  return intlResponse
+export function proxy(request: NextRequest) {
+  return intlMiddleware(request)
 }
 
 export const config = {

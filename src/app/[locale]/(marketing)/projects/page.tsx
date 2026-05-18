@@ -16,7 +16,6 @@
  */
 
 import type { Metadata } from "next"
-import { notFound } from "next/navigation"
 import { getLocale, getTranslations } from "next-intl/server"
 import { FolderCode } from "lucide-react"
 import { Link } from "@/i18n/routing"
@@ -32,9 +31,8 @@ import {
 } from "@/components/ui/empty"
 import FooterSection from "@/components/footer"
 import { createMetadata } from "@/lib/seo/metadata"
-import { getLandingCompany } from "@/lib/supabase/companies"
-import { getSocialLinks } from "@/lib/supabase/social-links"
-import { getProjectsByCompanyId } from "@/lib/supabase/projects"
+import { getSocialLinks } from "@/content/social"
+import { getProjects } from "@/content/projects"
 
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale()
@@ -48,15 +46,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ProjectsPage() {
-  const landing = await getLandingCompany()
-  if (!landing) notFound()
-
   const tPage = await getTranslations("projectsPage")
   const tCommon = await getTranslations("common")
-  const [projects, socialLinks] = await Promise.all([
-    getProjectsByCompanyId(landing.id),
-    getSocialLinks(),
-  ])
+  const projects = getProjects()
+  const socialLinks = getSocialLinks()
 
   return (
     <div className="flex flex-1 flex-col">

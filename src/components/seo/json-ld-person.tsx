@@ -15,7 +15,7 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { getSocialLinks } from "@/lib/supabase/social-links"
+import { getSocialLinks } from "@/content/social"
 import { SITE_URL, getOgImageUrl } from "@/config/seo"
 
 type PersonSchema = {
@@ -30,7 +30,7 @@ type PersonSchema = {
 }
 
 export async function JsonLdPerson() {
-  const socialLinks = await getSocialLinks()
+  const socialLinks = getSocialLinks()
   const sameAs = socialLinks
     .map((l) => l.url)
     .filter((url) => url && url !== "#" && url.startsWith("http"))

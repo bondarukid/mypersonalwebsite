@@ -1,10 +1,28 @@
 "use client"
 
+/*
+ * Copyright (C) 2026 Ivan Bondaruk (https://bondarukid.com)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import {
   createContext,
   useCallback,
   useContext,
-  useSyncExternalStore,
+  useEffect,
+  useState,
 } from "react"
 
 const STORAGE_KEY = "cookie_consent"
@@ -34,36 +52,12 @@ function parseStoredConsent(): ConsentState | null {
   }
 }
 
-function getConsentRawSnapshot(): string | null {
-  if (typeof window === "undefined") return null
-  try {
-    return localStorage.getItem(STORAGE_KEY)
-  } catch {
-    return null
-  }
-}
-
-function subscribeToConsentStore(onChange: () => void) {
-  if (typeof window === "undefined") {
-    return () => {}
-  }
-  storeListeners.add(onChange)
-  const onStorage = (e: StorageEvent) => {
-    if (e.key === STORAGE_KEY) onChange()
-  }
-  window.addEventListener("storage", onStorage)
-  return () => {
-    storeListeners.delete(onChange)
-    window.removeEventListener("storage", onStorage)
-  }
-}
-
 function persistConsent(state: ConsentState): void {
   if (typeof window === "undefined") return
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch {
-    // ignore
+    // ignore (private mode, disabled storage)
   }
   emitConsentChange()
 }
@@ -85,22 +79,28 @@ export function CookieConsentProvider({
 }: {
   children: React.ReactNode
 }) {
-  const rawState = useSyncExternalStore(
-    subscribeToConsentStore,
-    getConsentRawSnapshot,
-    () => null
-  )
-  const state =
-    rawState == null
-      ? null
-      : (() => {
-          try {
-            const parsed = JSON.parse(rawState) as ConsentState
-            return parsed.version === 1 ? parsed : null
-          } catch {
-            return null
-          }
-        })()
+  const [state, setState] = useState<ConsentState | null>(null)
+  const [hydrated, setHydrated] = useState(false)
+
+  const syncFromStorage = useCallback(() => {
+    setState(parseStoredConsent())
+  }, [])
+
+  useEffect(() => {
+    syncFromStorage()
+    setHydrated(true)
+
+    const onStoreChange = () => syncFromStorage()
+    storeListeners.add(onStoreChange)
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === STORAGE_KEY) syncFromStorage()
+    }
+    window.addEventListener("storage", onStorage)
+    return () => {
+      storeListeners.delete(onStoreChange)
+      window.removeEventListener("storage", onStorage)
+    }
+  }, [syncFromStorage])
 
   const acceptAll = useCallback(() => {
     const next: ConsentState = {
@@ -130,9 +130,13 @@ export function CookieConsentProvider({
     emitConsentChange()
   }, [])
 
+  /** Until hydrated, match server HTML (no localStorage) to avoid hydration errors. */
+  const hasAnswered = hydrated && state !== null
+  const analyticsConsent = hydrated && (state?.analytics ?? false)
+
   const value: CookieConsentContextValue = {
-    hasAnswered: state !== null,
-    analyticsConsent: state?.analytics ?? false,
+    hasAnswered,
+    analyticsConsent,
     acceptAll,
     declineAll,
     clearConsent,

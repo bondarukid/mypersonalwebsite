@@ -590,8 +590,10 @@
     "certificates": {
       "heading": "証明書",
       "dateObtained": "取得日",
+      "issuer": "発行元",
+      "verifyCredential": "資格情報を確認・表示",
       "emptyTitle": "証明書はまだありません",
-      "emptyDescription": "ダッシュボードから追加した証明書がここに表示されます。"
+      "emptyDescription": "`src/content/certificates.ts` を編集して証明書を追加してください（画像 URL、発行元、日付、必要なら確認用リンク）。"
     }
   },
   "aboutPage": {

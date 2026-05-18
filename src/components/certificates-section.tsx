@@ -17,7 +17,7 @@
 "use client"
 
 import { useState } from "react"
-import { useTranslations } from "next-intl"
+import { useLocale, useTranslations } from "next-intl"
 import Image from "next/image"
 import {
   Dialog,
@@ -33,19 +33,25 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty"
-import type { Certificate } from "@/lib/supabase/certificates"
+import type { Certificate } from "@/content/types"
+import { publicImageUrl } from "@/lib/public-asset-url"
 import { AwardIcon } from "lucide-react"
 
 function getCertificateImageUrl(imagePath: string): string {
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL
-  if (!base) return ""
-  return `${base}/storage/v1/object/public/certificates/${imagePath}`
+  return publicImageUrl("certificates", imagePath)
 }
 
-function formatDate(dateStr: string): string {
+/** BCP 47 tags aligned with `routing.locales` so dates follow site language, not OS locale. */
+function localeTagForIntl(locale: string): string {
+  if (locale === "uk") return "uk-UA"
+  if (locale === "ja") return "ja-JP"
+  return "en-US"
+}
+
+function formatDate(dateStr: string, locale: string): string {
   try {
     const d = new Date(dateStr + "T00:00:00")
-    return d.toLocaleDateString(undefined, {
+    return d.toLocaleDateString(localeTagForIntl(locale), {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -61,6 +67,7 @@ interface CertificatesSectionProps {
 
 export default function CertificatesSection({ certificates }: CertificatesSectionProps) {
   const t = useTranslations("professional.certificates")
+  const locale = useLocale()
   const [selected, setSelected] = useState<Certificate | null>(null)
 
   if (certificates.length === 0) {
@@ -110,8 +117,13 @@ export default function CertificatesSection({ certificates }: CertificatesSectio
               <p className="mt-2 font-medium text-sm text-foreground truncate">
                 {cert.name}
               </p>
+              {cert.issuer ? (
+                <p className="text-xs text-muted-foreground truncate">
+                  {cert.issuer}
+                </p>
+              ) : null}
               <p className="text-xs text-muted-foreground">
-                {formatDate(cert.date_obtained)}
+                {formatDate(cert.date_obtained, locale)}
               </p>
             </button>
           )
@@ -134,14 +146,34 @@ export default function CertificatesSection({ certificates }: CertificatesSectio
                   className="object-contain"
                 />
               </div>
+              {selected.issuer ? (
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">
+                    {t("issuer")}
+                  </span>
+                  : {selected.issuer}
+                </p>
+              ) : null}
               {selected.description && (
                 <p className="text-sm text-muted-foreground">
                   {selected.description}
                 </p>
               )}
               <p className="text-sm font-medium text-foreground">
-                {t("dateObtained")}: {formatDate(selected.date_obtained)}
+                {t("dateObtained")}: {formatDate(selected.date_obtained, locale)}
               </p>
+              {selected.credential_url?.trim() ? (
+                <p>
+                  <a
+                    href={selected.credential_url.trim()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary text-sm font-medium underline underline-offset-4 hover:no-underline"
+                  >
+                    {t("verifyCredential")}
+                  </a>
+                </p>
+              ) : null}
             </div>
           )}
         </DialogContent>

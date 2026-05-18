@@ -3,8 +3,11 @@ import { getLandingFeatureIcon } from "@/config/landing-feature-icons"
 import type {
   LandingFeatureCardRow,
   LandingFeatureSectionRow,
-} from "@/lib/supabase/landing-home"
-import { getLocalizedFeatureCard, getLocalizedSectionHeadingIntro } from "@/lib/supabase/landing-home"
+} from "@/lib/landing-home-i18n"
+import {
+  getLocalizedFeatureCard,
+  getLocalizedSectionHeadingIntro,
+} from "@/lib/landing-home-i18n"
 import { Cpu, Fingerprint, Pencil, Settings2, Sparkles, Zap } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
@@ -63,7 +66,7 @@ export default async function Features({ locale, fromDb }: FeaturesProps) {
   return <FeaturesI18nFallback />
 }
 
-/** Static copy from next-intl when the database has no landing feature section. */
+/** Static copy from next-intl when no landing feature data is configured in content. */
 async function FeaturesI18nFallback() {
   const t = await getTranslations("features")
   return (

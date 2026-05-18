@@ -19,11 +19,8 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { getLocale } from "next-intl/server"
 import { createMetadata } from "@/lib/seo/metadata"
-import { getLandingCompany } from "@/lib/supabase/companies"
-import {
-  getProjectBySlug,
-} from "@/lib/supabase/projects"
-import { getFaqSetByProjectId } from "@/lib/supabase/faq"
+import { getProjectBySlug } from "@/content/projects"
+import { getFaqSetByProjectId } from "@/content/faq"
 import { ProjectHero } from "@/components/project-hero"
 import { FAQSection } from "@/components/faq-section"
 
@@ -34,10 +31,8 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const locale = await getLocale()
-  const landing = await getLandingCompany()
-  if (!landing) return {}
 
-  const project = await getProjectBySlug(slug, landing.id)
+  const project = getProjectBySlug(slug)
   if (!project) return {}
 
   const description =
@@ -53,13 +48,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params
-  const landing = await getLandingCompany()
-  if (!landing) notFound()
 
-  const project = await getProjectBySlug(slug, landing.id)
+  const project = getProjectBySlug(slug)
   if (!project) notFound()
 
-  const faqSet = await getFaqSetByProjectId(project.id)
+  const faqSet = getFaqSetByProjectId(project.id)
 
   return (
     <main className="flex flex-1 flex-col">

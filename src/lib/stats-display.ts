@@ -1,6 +1,5 @@
 /**
- * Number formatting for the public landing stats block. Kept in a small module
- * with no server-only deps so client dashboard components can import it.
+ * Number formatting for the public landing stats block (no server-only deps).
  */
 export function formatActiveUsers(n: number): string {
   if (n >= 1_000_000) {

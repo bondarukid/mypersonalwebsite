@@ -5,17 +5,15 @@ import { AnalyticsProvider } from "./analytics-provider"
 import { PageViewTracker } from "./page-view-tracker"
 
 /**
- * Wraps children with cookie consent, analytics provider, and page view tracking.
- * Dashboard routes are excluded from tracking.
- * Analytics runs only after user accepts.
+ * Cookie consent (localStorage) + optional Firebase Analytics after opt-in.
  */
 export function AnalyticsInit({ children }: { children: React.ReactNode }) {
   return (
     <CookieConsentProvider>
       <AnalyticsProvider>
         <PageViewTracker />
-        <CookieConsentBanner />
         {children}
+        <CookieConsentBanner />
       </AnalyticsProvider>
     </CookieConsentProvider>
   )

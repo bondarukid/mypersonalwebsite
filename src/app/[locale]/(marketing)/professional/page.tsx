@@ -4,7 +4,7 @@ import ProfessionalIntroSection from "@/components/professional-intro-section"
 import CertificatesSection from "@/components/certificates-section"
 import ExperienceSection from "@/components/experience-section"
 import { JsonLdCertificates } from "@/components/seo/json-ld-certificates"
-import { getCertificatesForLocale } from "@/lib/supabase/certificates"
+import { getCertificatesForLocale } from "@/content/certificates"
 import { createMetadata } from "@/lib/seo/metadata"
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ProfessionalPage() {
   const locale = await getLocale()
   const t = await getTranslations("common")
-  const certificates = await getCertificatesForLocale(locale)
+  const certificates = getCertificatesForLocale(locale)
 
   return (
     <div className="mx-auto flex flex-1 flex-col px-6 py-16 md:max-w-4xl">

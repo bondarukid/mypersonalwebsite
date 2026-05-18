@@ -15,12 +15,11 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Certificate } from "@/lib/supabase/certificates"
+import type { Certificate } from "@/content/types"
+import { publicImageUrl } from "@/lib/public-asset-url"
 
 function getCertificateImageUrl(imagePath: string): string {
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL
-  if (!base) return ""
-  return `${base}/storage/v1/object/public/certificates/${imagePath}`
+  return publicImageUrl("certificates", imagePath)
 }
 
 /** Extracts issuing organization from certificate name when possible (e.g. "AWS Certified" -> "Amazon Web Services") */
@@ -43,6 +42,7 @@ type CredentialSchema = {
   credentialCategory: string
   description?: string
   image?: string
+  url?: string
   recognizedBy?: { "@type": "Organization"; name: string }
 }
 
@@ -71,11 +71,12 @@ export function JsonLdCertificates({ certificates }: JsonLdCertificatesProps) {
         credentialCategory: "professional certification",
         ...(cert.description && { description: cert.description }),
         ...(cert.image_path && { image: getCertificateImageUrl(cert.image_path) }),
+        ...(cert.credential_url?.trim() && { url: cert.credential_url.trim() }),
       }
       if (cert.date_obtained) {
         credential.datePublished = cert.date_obtained
       }
-      const issuer = inferIssuer(cert.name)
+      const issuer = cert.issuer?.trim() || inferIssuer(cert.name)
       if (issuer) {
         credential.recognizedBy = { "@type": "Organization", name: issuer }
       }

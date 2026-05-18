@@ -22,12 +22,14 @@ import {
   getLandingFaqSet,
   getFaqSetById,
   getFaqItems,
+} from "@/content/faq"
+import {
+  getFaqItemQuestion,
+  getFaqItemAnswer,
   getFaqSetTitle,
   getFaqSetSupportBlurb,
   getFaqSetSupportLinkText,
-  getFaqItemQuestion,
-  getFaqItemAnswer,
-} from "@/lib/supabase/faq"
+} from "@/lib/faq-i18n"
 
 interface FAQSectionProps {
   /** When null/undefined, uses landing FAQ. When set, uses that faq_set ID. */
@@ -36,13 +38,11 @@ interface FAQSectionProps {
 
 export async function FAQSection({ faqSetId }: FAQSectionProps) {
   const locale = await getLocale()
-  const faqSet = faqSetId
-    ? await getFaqSetById(faqSetId)
-    : await getLandingFaqSet()
+  const faqSet = faqSetId ? getFaqSetById(faqSetId) : getLandingFaqSet()
 
   if (!faqSet) return null
 
-  const items = await getFaqItems(faqSet.id)
+  const items = getFaqItems(faqSet.id)
   const accordionItems = items.map((item) => ({
     id: item.id,
     question: getFaqItemQuestion(item, locale),

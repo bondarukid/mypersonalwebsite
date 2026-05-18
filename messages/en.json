@@ -624,8 +624,10 @@
     "certificates": {
       "heading": "Certificates",
       "dateObtained": "Date obtained",
+      "issuer": "Issued by",
+      "verifyCredential": "Verify or view credential",
       "emptyTitle": "No certificates yet",
-      "emptyDescription": "Certificates you add from the dashboard will appear here."
+      "emptyDescription": "Edit `src/content/certificates.ts` to add certificates (image URL, issuer, dates, and optional verify link)."
     }
   },
   "aboutPage": {

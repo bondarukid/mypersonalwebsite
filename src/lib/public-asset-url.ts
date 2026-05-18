@@ -15,11 +15,15 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { publicImageUrl } from "@/lib/public-asset-url"
-
-/** Public URL for a project icon (`public/images/project-icons/` or absolute path). */
-export function getProjectIconUrl(iconPath: string | null): string | null {
-  if (!iconPath) return null
-  const url = publicImageUrl("project-icons", iconPath)
-  return url || null
+/**
+ * Maps a short storage-style key or a site path to a URL usable by Next/Image.
+ * Keys are served from `public/images/<subdir>/`.
+ */
+export function publicImageUrl(subdir: string, path: string | null): string {
+  if (!path) return ""
+  const p = path.trim()
+  if (!p) return ""
+  if (p.startsWith("http://") || p.startsWith("https://")) return p
+  if (p.startsWith("/")) return p
+  return `/images/${subdir}/${p.replace(/^\/+/, "")}`
 }

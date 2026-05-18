@@ -15,11 +15,4 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { publicImageUrl } from "@/lib/public-asset-url"
-
-/** Public URL for a project icon (`public/images/project-icons/` or absolute path). */
-export function getProjectIconUrl(iconPath: string | null): string | null {
-  if (!iconPath) return null
-  const url = publicImageUrl("project-icons", iconPath)
-  return url || null
-}
+export const CONTENT_TS = "2026-01-01T00:00:00.000Z"

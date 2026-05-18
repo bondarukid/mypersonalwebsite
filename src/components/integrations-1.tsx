@@ -17,7 +17,7 @@ import { ChevronRight } from "lucide-react"
 import { Link } from "@/i18n/routing"
 import { useLocale, useTranslations } from "next-intl"
 import { useMemo } from "react"
-import type { LegacyTechStackTabId } from "@/lib/supabase/landing-home-i18n"
+import type { LegacyTechStackTabId } from "@/lib/landing-home-i18n"
 import {
   groupTechStackItemsByCategory,
   getLocalizedCategoryLabel,
@@ -26,12 +26,12 @@ import {
   type LandingTechStackCategoryRow,
   type LandingTechStackItemRow,
   type LandingTechStackSectionRow,
-} from "@/lib/supabase/landing-home-i18n"
+} from "@/lib/landing-home-i18n"
 import { SiNextdotjs } from "@icons-pack/react-simple-icons"
 
 const TAB_IDS = ["mobile", "web", "ides", "robotics"] as const
 
-/** Fallback items when the database is empty (i18n keys for title/desc). */
+/** Fallback items when dynamic categories are empty (i18n keys for title/desc). */
 const LEGACY_TAB_I18N_KEYS: Record<
   (typeof TAB_IDS)[number],
   { titleKey: string; descKey: string; iconSlug: keyof typeof TECH_STACK_ICON_MAP }[]

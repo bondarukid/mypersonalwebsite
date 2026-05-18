@@ -19,7 +19,7 @@ import Image from "next/image"
 import { ArrowRight, FolderIcon } from "lucide-react"
 import { Link } from "@/i18n/routing"
 import { getProjectIconUrl } from "@/lib/project-icon-url"
-import type { Project } from "@/lib/supabase/projects"
+import type { Project } from "@/content/types"
 import { Button } from "@/components/ui/button"
 import {
   Card,

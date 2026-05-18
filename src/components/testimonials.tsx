@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getLocale, getTranslations } from "next-intl/server"
-import { getTestimonial } from "@/lib/supabase/testimonials"
+import { getTestimonial } from "@/content/testimonials"
+import { publicImageUrl } from "@/lib/public-asset-url"
 
 const DEFAULT_AVATAR =
   "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop"
@@ -8,14 +9,14 @@ const DEFAULT_AVATAR =
 function resolveAvatarUrl(avatarUrl: string | null): string {
   if (!avatarUrl) return DEFAULT_AVATAR
   if (avatarUrl.startsWith("http")) return avatarUrl
-  const base = process.env.NEXT_PUBLIC_SUPABASE_URL
-  return base ? `${base}/storage/v1/object/public/${avatarUrl}` : DEFAULT_AVATAR
+  const path = publicImageUrl("avatars", avatarUrl)
+  return path || DEFAULT_AVATAR
 }
 
 export default async function TestimonialsSection() {
   const locale = await getLocale()
   const t = await getTranslations("testimonials")
-  const testimonial = await getTestimonial(locale)
+  const testimonial = getTestimonial(locale)
 
   const quote = testimonial?.quote ?? t("quote")
   const author = testimonial?.author ?? t("author")

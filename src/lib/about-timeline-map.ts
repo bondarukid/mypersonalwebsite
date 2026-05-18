@@ -9,7 +9,7 @@
  * Client-safe: maps DB shapes to the public marketing page. No next/headers.
  */
 
-import { getAboutTimelineObjectPublicUrl } from "@/lib/about-timeline-file-url"
+import { publicImageUrl } from "@/lib/public-asset-url"
 import type {
   AboutTimelineAttachmentRow,
   AboutTimelineMilestoneRow,
@@ -25,7 +25,7 @@ function mapAttachmentToPublic(
   a: AboutTimelineAttachmentRow
 ): PublicTimelinePublicAttachment {
   const storageUrl = a.storage_path
-    ? getAboutTimelineObjectPublicUrl(a.storage_path)
+    ? publicImageUrl("about-timeline", a.storage_path)
     : null
   let imageSrc: string | null = null
   let href: string | null = null

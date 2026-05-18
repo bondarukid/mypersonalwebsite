@@ -15,11 +15,18 @@
  * along with this program. If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { publicImageUrl } from "@/lib/public-asset-url"
+import type { Company } from "@/content/types"
+import { CONTENT_TS } from "@/content/constants"
 
-/** Public URL for a project icon (`public/images/project-icons/` or absolute path). */
-export function getProjectIconUrl(iconPath: string | null): string | null {
-  if (!iconPath) return null
-  const url = publicImageUrl("project-icons", iconPath)
-  return url || null
+const landingCompany: Company = {
+  id: "00000000-0000-0000-0000-000000000001",
+  name: "Ivan Bondaruk",
+  slug: "landing",
+  logo_url: null,
+  created_at: CONTENT_TS,
+  created_by: null,
+}
+
+export function getLandingCompany(): Company {
+  return landingCompany
 }

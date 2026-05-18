@@ -6,11 +6,7 @@ import Image from 'next/image'
 import { resolveHeroImageSrc } from '@/config/site'
 import { InfiniteSlider } from '@/components/ui/infinite-slider'
 import { ProgressiveBlur } from '@/components/ui/progressive-blur'
-import { VercelFull } from '@/components/ui/svgs/vercel'
-import { SupabaseFull } from '@/components/ui/svgs/supabase'
 import { FirebaseFull } from '@/components/ui/svgs/firebase'
-import { Claude } from '@/components/ui/svgs/claude'
-import { Figma } from '@/components/ui/svgs/figma'
 
 export default async function HeroSection() {
     const t = await getTranslations('hero')
@@ -20,8 +16,8 @@ export default async function HeroSection() {
         <div className="@container overflow-x-hidden">
                 <section>
                     <div className="pb-24 pt-12 md:pb-32 lg:pb-56 lg:pt-44">
-                        <div className="relative mx-auto flex max-w-6xl flex-col px-6 lg:block">
-                            <div className="mx-auto max-w-lg text-center lg:ml-0 lg:w-1/2 lg:text-left">
+                        <div className="relative isolate mx-auto flex max-w-6xl flex-col px-6 lg:block">
+                            <div className="relative z-10 mx-auto max-w-lg text-center lg:ml-0 lg:w-1/2 lg:text-left">
                                 <h1 className="mt-8 max-w-2xl text-balance text-5xl font-medium md:text-6xl lg:mt-16 xl:text-7xl">{t('name')}</h1>
                                 <p className="mt-8 max-w-2xl text-pretty text-lg">{t('tagline')}</p>
 
@@ -30,7 +26,7 @@ export default async function HeroSection() {
                                     <Button key={2} size="lg" variant="ghost" className="px-5 text-base" render={<Link href="#" />} nativeButton={false}><span className="text-nowrap">{t('ctaDemo')}</span></Button>
                                 </div>
                             </div>
-                            <div className="lg:w-166 @max-lg:-translate-x-20 not-dark:invert mask-radial-from-35% mask-radial-to-70% max-lg:size-120 max-lg:order-first max-lg:mx-auto max-lg:-mb-20 lg:absolute lg:inset-0 lg:-inset-y-56 lg:ml-auto lg:translate-x-28">
+                            <div className="pointer-events-none [&_*]:pointer-events-none relative z-0 lg:w-166 @max-lg:-translate-x-20 not-dark:invert mask-radial-from-35% mask-radial-to-70% max-lg:size-120 max-lg:order-first max-lg:mx-auto max-lg:-mb-20 lg:absolute lg:inset-0 lg:-inset-y-56 lg:ml-auto lg:translate-x-28">
                                 <div className="z-1 absolute inset-0 bg-zinc-950 opacity-80 mix-blend-overlay" />
                                 <Image
                                     className="size-full object-cover object-right"
@@ -56,32 +52,19 @@ export default async function HeroSection() {
                                     speedOnHover={20}
                                     speed={40}
                                     gap={112}>
-                                    <VercelFull
-                                        height={22}
-                                        width={84}
-                                    />
-                                    <SupabaseFull className="h-6" />
                                     <FirebaseFull
                                         height={24}
                                         width={80}
-                                    />
-                                    <Claude
-                                        height={26}
-                                        width={90}
-                                    />
-                                    <Figma
-                                        height={24}
-                                        width={24}
                                     />
                                 </InfiniteSlider>
 
                                 <div
                                     aria-hidden
-                                    className="bg-linear-to-r from-background absolute inset-y-0 left-0 w-20"
+                                    className="pointer-events-none bg-linear-to-r from-background absolute inset-y-0 left-0 w-20"
                                 />
                                 <div
                                     aria-hidden
-                                    className="bg-linear-to-l from-background absolute inset-y-0 right-0 w-20"
+                                    className="pointer-events-none bg-linear-to-l from-background absolute inset-y-0 right-0 w-20"
                                 />
                                 <ProgressiveBlur
                                     className="pointer-events-none absolute left-0 top-0 h-full w-20"

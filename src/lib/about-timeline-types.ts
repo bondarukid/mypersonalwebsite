@@ -11,7 +11,6 @@
 
 export type AboutTimelineMilestoneRow = {
   id: string
-  company_id: string
   sort_order: number
   happened_on: string
   ended_on: string | null
@@ -45,7 +44,6 @@ export type AboutTimelineDepthRow = {
 
 export type AboutTimelineSkillRow = {
   id: string
-  company_id: string
   sort_order: number
   slug: string
   label_en: string
@@ -57,7 +55,6 @@ export type AboutTimelineSkillRow = {
 
 export type AboutTimelineTagRow = {
   id: string
-  company_id: string
   sort_order: number
   slug: string
   label_en: string
